@@ -162,8 +162,12 @@ namespace EcommerceTCG.Controllers
             return Ok(new
             {
                 Id = dbUser.UserId,
+                FirstName = dbUser.FirstName,
+                LastName = dbUser.LastName,
                 Email = dbUser.Email,
-                Token = tokenString
+                Token = tokenString,
+                EmailVerified = dbUser.EmailVerified,
+                Administrator = dbUser.Administrator
             });
         }
 
@@ -238,31 +242,31 @@ namespace EcommerceTCG.Controllers
         [Route("logout")]
         public IActionResult Logout()
         {
-            return Ok();
+            return Ok(new { message = "Sei stato disconesso" });
         }
-
-        //[HttpPost]
-        //[Route("forgotpassword")]
-        //public IActionResult ForgotPassword([FromBody] User user)
-        //{
-        //    // Cerca l'utente nel database
-        //    User dbUser = _context.Users.FirstOrDefault(u => u.Email == user.Email);
-        //    if (dbUser == null)
-        //    {
-        //        return BadRequest(new { message = "Utente non trovato." });
-        //    }
-
-        //    // Genera un token per il reset della password
-        //    string token = GenerateEmailConfirmationToken(user.Email);
-        //    dbUser.PasswordResetToken = token;
-        //    _context.SaveChanges();
-
-        //    // Invia l'email con il link per il reset della password
-        //    SendPasswordResetEmail(user.Email, token);
-
-        //    return Ok(new { message = "Email inviata con successo." });
-        //}
-
-
     }
+
+    //[HttpPost]
+    //[Route("forgotpassword")]
+    //public IActionResult ForgotPassword([FromBody] User user)
+    //{
+    //    // Cerca l'utente nel database
+    //    User dbUser = _context.Users.FirstOrDefault(u => u.Email == user.Email);
+    //    if (dbUser == null)
+    //    {
+    //        return BadRequest(new { message = "Utente non trovato." });
+    //    }
+
+    //    // Genera un token per il reset della password
+    //    string token = GenerateEmailConfirmationToken(user.Email);
+    //    dbUser.PasswordResetToken = token;
+    //    _context.SaveChanges();
+
+    //    // Invia l'email con il link per il reset della password
+    //    SendPasswordResetEmail(user.Email, token);
+
+    //    return Ok(new { message = "Email inviata con successo." });
+    //}
+
+
 }

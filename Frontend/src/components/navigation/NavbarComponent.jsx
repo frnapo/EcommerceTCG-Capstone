@@ -4,7 +4,7 @@ import { List, PersonCircle, Bag } from "react-bootstrap-icons";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import SearchOffcanvas from "./SearchOffcanvas";
-import Logout from "../autenticazione/Logout";
+import Logout from "../authentication/Logout";
 
 const NavbarComponent = () => {
   const [show, setShow] = useState(false);
@@ -45,7 +45,8 @@ const NavbarComponent = () => {
       <Offcanvas show={show} onHide={handleClose} placement="end">
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>
-            {user ? `Ciao, ${user.Nome}` : "Menu"}{" "}
+            {console.log(user)}
+            {user ? `Ciao, ${user.firstName}` : "Menu"}{" "}
             <Link to={token ? "/profilo" : "/login"} onClick={handleClose}>
               <PersonCircle className="text-black fs-1 cursor-pointer" />
             </Link>

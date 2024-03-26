@@ -6,13 +6,13 @@ import NavigationButtons from "./NavigationButtons";
 
 const Login = () => {
   const [email, setEmail] = useState("");
-  const [hashpassword, setHashpassword] = useState("");
+  const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(loginUser({ email, hashpassword }));
+    dispatch(loginUser({ email, password }));
   };
 
   return (
@@ -36,8 +36,8 @@ const Login = () => {
               type="password"
               className="form-control"
               required
-              value={hashpassword}
-              onChange={(e) => setHashpassword(e.target.value)}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div className="d-grid">

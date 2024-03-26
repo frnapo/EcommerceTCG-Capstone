@@ -3,7 +3,7 @@ import { toast } from "react-hot-toast";
 
 export const registerUser = createAsyncThunk("auth/register", async (userData, thunkAPI) => {
   try {
-    const response = await fetch("https://localhost:44333/api/Utenti/Registrazione", {
+    const response = await fetch("https://localhost:7289/api/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -26,20 +26,21 @@ export const registerUser = createAsyncThunk("auth/register", async (userData, t
   }
 });
 
-export const loginUser = createAsyncThunk("auth/login", async ({ email, hashpassword }, { rejectWithValue }) => {
+export const loginUser = createAsyncThunk("auth/login", async ({ email, password }, { rejectWithValue }) => {
   try {
-    const response = await fetch("https://localhost:44333/api/Utenti/Login", {
+    const response = await fetch("https://localhost:7289/api/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, hashpassword }),
+      body: JSON.stringify({ email, password }),
     });
 
     let data = await response.json();
 
     if (response.ok) {
-      toast.success("Ciao, " + data.user.Nome);
+      console.log("Data:", data);
+      toast.success("Ciao, " + data.firstName);
       localStorage.setItem("token", data.token);
       return data;
     } else {
@@ -54,7 +55,7 @@ export const loginUser = createAsyncThunk("auth/login", async ({ email, hashpass
 
 export const logoutUser = createAsyncThunk("auth/logout", async (_, { rejectWithValue }) => {
   try {
-    const response = await fetch("https://localhost:44333/api/Utenti/Logout", {
+    const response = await fetch("https://localhost:7289/api/auth/logout", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
@@ -115,8 +116,8 @@ export const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.user = action.payload.user;
-        state.token = action.payload.token;
+        state.user = action.payload;
+        state.token = action.payload;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;

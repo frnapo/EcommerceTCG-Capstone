@@ -5,10 +5,11 @@ import NavigationButtons from "./NavigationButtons";
 
 const Register = () => {
   const [user, setUser] = useState({
-    Nome: "",
-    Cognome: "",
-    Email: "",
-    HashPassword: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
   const dispatch = useDispatch();
   const { isLoading, isError, message } = useSelector((state) => state.auth);
@@ -16,10 +17,11 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const userData = {
-      Nome: user.Nome,
-      Cognome: user.Cognome,
-      Email: user.Email,
-      HashPassword: user.HashPassword,
+      firstName: user.FirstName,
+      lastName: user.LastName,
+      email: user.Email,
+      password: user.Password,
+      confirmPassword: user.ConfirmPassword,
     };
     console.log(userData);
     dispatch(registerUser(userData));
@@ -32,8 +34,8 @@ const Register = () => {
           <input
             type="text"
             className="form-control"
-            value={user.Nome}
-            onChange={(e) => setUser({ ...user, Nome: e.target.value })}
+            value={user.FirstName}
+            onChange={(e) => setUser({ ...user, FirstName: e.target.value })}
             placeholder="Nome"
             required
           />
@@ -42,8 +44,8 @@ const Register = () => {
           <input
             type="text"
             className="form-control"
-            value={user.Cognome}
-            onChange={(e) => setUser({ ...user, Cognome: e.target.value })}
+            value={user.LastName}
+            onChange={(e) => setUser({ ...user, LastName: e.target.value })}
             placeholder="Cognome"
             required
           />
@@ -62,9 +64,19 @@ const Register = () => {
           <input
             type="password"
             className="form-control"
-            value={user.HashPassword}
-            onChange={(e) => setUser({ ...user, HashPassword: e.target.value })}
+            value={user.Password}
+            onChange={(e) => setUser({ ...user, Password: e.target.value })}
             placeholder="Password"
+            required
+          />
+        </div>
+        <div className="w-100 mb-3" style={{ maxWidth: "320px" }}>
+          <input
+            type="password"
+            className="form-control"
+            value={user.ConfirmPassword}
+            onChange={(e) => setUser({ ...user, ConfirmPassword: e.target.value })}
+            placeholder="Conferma password"
             required
           />
         </div>
