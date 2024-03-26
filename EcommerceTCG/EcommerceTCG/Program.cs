@@ -12,7 +12,6 @@ builder.Services.AddDbContext<EcommerceTcgContext>(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-s
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
