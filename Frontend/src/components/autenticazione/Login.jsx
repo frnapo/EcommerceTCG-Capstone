@@ -1,0 +1,54 @@
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../redux/slices/authSlice";
+import { Button } from "react-bootstrap";
+import NavigationButtons from "./NavigationButtons";
+
+const Login = () => {
+  const [email, setEmail] = useState("");
+  const [hashpassword, setHashpassword] = useState("");
+
+  const dispatch = useDispatch();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    dispatch(loginUser({ email, hashpassword }));
+  };
+
+  return (
+    <>
+      <NavigationButtons />
+      <div className="d-flex align-items-center justify-content-center">
+        <form onSubmit={handleSubmit} className="w-100" style={{ maxWidth: "320px" }}>
+          <div className="mb-3">
+            <label className="form-label">Email</label>
+            <input
+              type="email"
+              className="form-control"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Password</label>
+            <input
+              type="password"
+              className="form-control"
+              required
+              value={hashpassword}
+              onChange={(e) => setHashpassword(e.target.value)}
+            />
+          </div>
+          <div className="d-grid">
+            <Button type="submit" className="btn btn-primary">
+              Login
+            </Button>
+          </div>
+        </form>
+      </div>
+    </>
+  );
+};
+
+export default Login;
