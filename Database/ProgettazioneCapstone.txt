@@ -1,0 +1,124 @@
+1. Utenti (Utenti)                                                                       
+IDUtente (int, PK)                                                      
+Nome (nvarchar(50))							       
+Cognome (nvarchar(50))                                                    
+Email (nvarchar(255)) - indice unico
+EmailVerificata (bit) - default 0                                                                                     
+HashPassword (nvarchar(256))
+Amministratore (bit) - default 0
+
+
+
+2. Prodotti (Prodotti)
+IDProdotto (int, PK)
+Nome (nvarchar(100))
+Prezzo (decimal(7,2))
+QuantitaDisponibile (int)
+URLImmagine (nvarchar(MAX), NULL)
+NumeroSeriale (nvarchar(50), NULL) - indice unico
+PrimaEdizione (bit)
+IDRarita (int, FK)
+IDEspansione (int, FK)
+IDTipo (int, FK)
+Lingua (nvarchar(50))
+Condizione (nvarchar(50))
+
+
+
+3. Rarità (Rarita)
+IDRarita (int, PK)
+Descrizione (nvarchar(50))
+IDTipo (int, FK)
+
+
+4. Espansioni (Espansioni)
+IDEspansione (int, PK)
+Nome (nvarchar(100))
+DataUscita (date)
+URLImmagine (nvarchar(MAX), NULL)
+IDTipo (int, FK)
+
+
+
+5. TipiCarta (TipiCarta)
+IDTipo (int, PK)
+Nome (nvarchar(50))
+
+
+
+
+6. Categorie (Categorie)
+IDCategoria (int, PK)
+Nome (nvarchar(50))
+IDTipo (int, FK)
+
+
+7. ProdottiCategorie (ProdottiCategorie)
+IDProdotto (int, FK)
+IDCategoria (int, FK)
+
+
+
+8. Ordini (Ordini)
+IDOrdine (int, PK)
+IDUtente (int, FK)
+DataOrdine (datetime)
+NomeDestinatario (nvarchar(50))
+CognomeDestinatario (nvarchar(50))
+Indirizzo (nvarchar(MAX))
+NumeroCivico (nvarchar(10))
+ScalaPianoInterno (nvarchar(MAX), NULL)
+CAP (nvarchar(5))
+Città (nvarchar(50))
+Provincia (nvarchar(2))
+Telefono (nvarchar(20), NULL)
+Totale (decimal(7,2))
+
+
+
+9. DettagliOrdine (DettagliOrdine)
+IDDettaglioOrdine (int, PK)
+IDOrdine (int, FK)
+IDProdotto (int, FK)
+Quantita (int)
+Prezzo (decimal(7,2))
+ScontoApplicato (decimal(7,2), NULL)
+
+
+10. Recensioni (Recensioni)
+IDRecensione (int, PK)
+IDOrdine (int, FK)
+IDUtente (int, FK)
+Valutazione (int)
+Testo (nvarchar(MAX), NULL)
+DataRecensione (datetime)
+
+
+11. Spedizioni (Spedizioni)
+IDSpedizione (int, PK)
+IDOrdine (int, FK)
+MetodoSpedizione (nvarchar(255))
+CostoSpedizione (decimal(7,2))
+Stato (nvarchar(255))
+Tracciamento (nvarchar(255), NULL)
+DataPartenza (datetime, NULL)
+DataPrevistaConsegna (datetime, NULL)
+DataEffettivaConsegna (datetime, NULL)
+
+
+
+12. Coupon (Coupon)
+IDCoupon (int, PK) - indice unico
+Codice (nvarchar(50))
+Descrizione (nvarchar(MAX), NULL)
+Valore (decimal(7,2))
+DataInizio (datetime)
+DataFine (datetime)
+UsiRimanenti (int)
+
+
+13. Wishlist
+IDWishlist (int, PK)
+IDUtente (int, FK)
+IDProdotto (int, FK)
+DataAggiunta (datetime)
