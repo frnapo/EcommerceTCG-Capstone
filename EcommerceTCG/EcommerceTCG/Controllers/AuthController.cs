@@ -17,10 +17,12 @@ namespace EcommerceTCG.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
+        private readonly IConfiguration _configuration;
         private readonly EcommerceTcgContext _context;
 
-        public AuthController(EcommerceTcgContext context)
+        public AuthController(IConfiguration configuration, EcommerceTcgContext context)
         {
+            _configuration = configuration;
             _context = context;
         }
 
@@ -174,21 +176,26 @@ namespace EcommerceTCG.Controllers
         //generate jwt token
         private string GenerateJwtToken(User user)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("unaChiaveSegretaMoltoMoltoLungaPerSoddisfareIRequisiti");
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-            new Claim(ClaimTypes.Name, user.UserId.ToString())
-                }),
-                Expires = DateTime.UtcNow.AddDays(30),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            var claims = new[]
+ {
+                new Claim(JwtRegisteredClaimNames.Jti, user.UserId.ToString()),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                new Claim(ClaimTypes.Role, user.Administrator ? "Admin" : "User")
             };
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+
+            var token = new JwtSecurityToken(
+               _configuration["Jwt:Issuer"],
+               _configuration["Jwt:Audience"],
+               claims,
+               expires: DateTime.Now.AddDays(30),
+               signingCredentials: creds
+           );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
 

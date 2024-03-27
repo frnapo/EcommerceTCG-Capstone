@@ -1,19 +1,9 @@
-import { useState } from "react";
-import { Offcanvas } from "react-bootstrap";
-import { List, PersonCircle, Bag } from "react-bootstrap-icons";
-import { useSelector } from "react-redux";
+import { Bag } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import SearchOffcanvas from "./SearchOffcanvas";
-import Logout from "../authentication/Logout";
+import MenuOffcanvas from "./MenuOffcanvas";
 
 const NavbarComponent = () => {
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const user = useSelector((state) => state.auth.user);
-  const token = useSelector((state) => state.auth.token);
-
   return (
     <>
       <nav className="navbar navbar-expand navbar-dark bg-black">
@@ -35,33 +25,12 @@ const NavbarComponent = () => {
                 <SearchOffcanvas />
               </li>
               <li className="nav-item">
-                <List className="text-white fs-1 cursor-pointer" onClick={handleShow} />
+                <MenuOffcanvas />
               </li>
             </ul>
           </div>
         </div>
       </nav>
-
-      <Offcanvas show={show} onHide={handleClose} placement="end">
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title>
-            {console.log(user)}
-            {user ? `Ciao, ${user.firstName}` : "Menu"}{" "}
-            <Link to={token ? "/profilo" : "/login"} onClick={handleClose}>
-              <PersonCircle className="text-black fs-1 cursor-pointer" />
-            </Link>
-          </Offcanvas.Title>
-        </Offcanvas.Header>
-        <Offcanvas.Body>
-          <div>
-            <a href="#">Home</a>
-          </div>
-          <div>
-            <a href="#">Features</a>
-          </div>
-          <div>{token ? <Logout /> : <></>}</div>
-        </Offcanvas.Body>
-      </Offcanvas>
     </>
   );
 };

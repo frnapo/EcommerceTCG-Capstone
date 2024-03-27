@@ -9,6 +9,7 @@ import Register from "./components/authentication/Register";
 import UserComponent from "./components/navigation/UserComponent";
 import { Toaster } from "react-hot-toast";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ProductComponent from "./components/products/ProductComponent";
 
 function App() {
   const token = useSelector((state) => state.auth.token);
@@ -34,6 +35,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/profilo" element={<UserComponent />} />
+          <Route path="/categories/:categoryId" element={<ProductComponent />} />
         </Routes>
       </div>
     </Router>

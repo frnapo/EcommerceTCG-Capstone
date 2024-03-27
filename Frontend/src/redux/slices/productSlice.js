@@ -2,9 +2,9 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchProdottiByCategoria = createAsyncThunk(
   "prodotti/fetchByCategoria",
-  async (idCategoria, { rejectWithValue }) => {
+  async (typeId, { rejectWithValue }) => {
     try {
-      const response = await fetch(`https://localhost:44333/api/Prodotti/Categoria/${idCategoria}`);
+      const response = await fetch(`https://localhost:7289/api/Products/bytype/${typeId}`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }

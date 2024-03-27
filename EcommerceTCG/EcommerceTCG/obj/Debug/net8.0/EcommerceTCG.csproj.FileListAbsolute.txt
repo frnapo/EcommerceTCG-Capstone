@@ -410,3 +410,4 @@ C:\Users\Francesco\Desktop\EcommerceTCG-Capstone\EcommerceTCG\EcommerceTCG\obj\D
 C:\Users\Francesco\Desktop\EcommerceTCG-Capstone\EcommerceTCG\EcommerceTCG\obj\Debug\net8.0\EcommerceTCG.pdb
 C:\Users\Francesco\Desktop\EcommerceTCG-Capstone\EcommerceTCG\EcommerceTCG\obj\Debug\net8.0\EcommerceTCG.genruntimeconfig.cache
 C:\Users\Francesco\Desktop\EcommerceTCG-Capstone\EcommerceTCG\EcommerceTCG\obj\Debug\net8.0\ref\EcommerceTCG.dll
+C:\Users\Francesco\Desktop\EcommerceTCG-Capstone\EcommerceTCG\EcommerceTCG\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
