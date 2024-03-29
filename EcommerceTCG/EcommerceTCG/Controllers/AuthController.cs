@@ -169,7 +169,8 @@ namespace EcommerceTCG.Controllers
                 Email = dbUser.Email,
                 Token = tokenString,
                 EmailVerified = dbUser.EmailVerified,
-                Administrator = dbUser.Administrator
+                Administrator = dbUser.Administrator,
+                RegistrationDate = dbUser.RegistrationDate
             });
         }
 

@@ -75,10 +75,10 @@ const MenuOffcanvas = () => {
               <p className="m-0 p-0">One Piece</p>
             </Link>
             <Link className="nav-link  fw-bold fs-3" to="/categories/3" onClick={handleClose}>
-              <p className="m-0 p-0">Pokémon</p>
+              <p className="m-0 p-0">Dragonball</p>
             </Link>
             <Link className="nav-link  fw-bold fs-3" to="/categories/4" onClick={handleClose}>
-              <p className="m-0 p-0">Dragonball</p>
+              <p className="m-0 p-0">Pokémon</p>
             </Link>
           </motion.div>
           <Link className="nav-link nav-link-transition fw-bold fs-1" onClick={handleClose}>
@@ -87,10 +87,10 @@ const MenuOffcanvas = () => {
           <Link className="nav-link nav-link-transition fw-bold fs-1" onClick={handleClose}>
             <p className="my-2">Acquista</p>
           </Link>
-          <Link className="nav-link nav-link-transition fw-bold fs-1" onClick={handleClose}>
+          <Link to="/hotbuy" className="nav-link nav-link-transition fw-bold fs-1" onClick={handleClose}>
             <p className="my-2">Hotbuy</p>
           </Link>
-          <Link className="nav-link nav-link-transition fw-bold fs-1" onClick={handleClose}>
+          <Link to="/wishlist" className="nav-link nav-link-transition fw-bold fs-1" onClick={handleClose}>
             <p className="my-2">Wishlist</p>
           </Link>
           <Link className="nav-link nav-link-transition fw-bold fs-1" onClick={handleClose}>

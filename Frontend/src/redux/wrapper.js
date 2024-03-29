@@ -1,14 +1,7 @@
-import { store } from "../redux/store/index";
-
-export async function fetchWrapper(url, options = {}) {
-  const state = store.getState();
-  const token = state.auth.token;
-
+export default async function fetchWithToken(url, token, options = {}) {
   const headers = {
     ...options.headers,
-    Authorization: `Bearer ${token.token}`,
+    Authorization: `Bearer ${token}`,
   };
-  const response = await fetch(url, { ...options, headers });
-
-  return response;
+  return fetch(url, { ...options, headers });
 }

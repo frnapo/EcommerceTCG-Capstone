@@ -1,3 +1,4 @@
+// stili cursori
 .cursor-pointer {
   cursor: pointer;
 }
@@ -53,6 +54,7 @@ body {
 
 .image-box:hover {
   width: 180px;
+  overflow: hidden !important;
 }
 
 // card
@@ -95,5 +97,9 @@ body {
 }
 
 .holo-card:hover::after {
+  opacity: 0;
+}
+
+.holo-active:hover::after {
   opacity: 1;
 }

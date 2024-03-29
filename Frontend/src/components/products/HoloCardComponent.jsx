@@ -2,7 +2,8 @@ import { useEffect, useRef } from "react";
 
 // eslint-disable-next-line react/prop-types
 //imageUrl = require
-const HoloCardComponent = () => {
+// eslint-disable-next-line react/prop-types
+const HoloCardComponent = ({ isHoloActive }) => {
   const cardRef = useRef(null);
 
   useEffect(() => {
@@ -49,7 +50,7 @@ const HoloCardComponent = () => {
   return (
     <div
       ref={cardRef}
-      className="holo-card"
+      className={`holo-card ${isHoloActive ? "holo-active" : ""}`}
       style={{
         backgroundImage: `url("https://www.cardtrader.com/uploads/blueprints/image/260846/show_sanji-alternate-art-kingdoms-of-intrigue.jpg")`,
       }}

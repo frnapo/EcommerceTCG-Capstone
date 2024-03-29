@@ -1,16 +1,16 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-export const fetchProdottiByCategoria = createAsyncThunk(
-  "prodotti/fetchByCategoria",
+export const fetchProdByCategory = createAsyncThunk(
+  "products/fetchProdByCategory",
   async (typeId, { rejectWithValue }) => {
     try {
-      const response = await fetch(`https://localhost:7289/api/Products/bytype/${typeId}`);
+      const response = await fetch(`https://localhost:7289/api/Products/bytype/${typeId}`); //aggiungere token come secondo parametro
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      const prodotti = await response.json();
-      console.log(prodotti);
-      return prodotti;
+      const products = await response.json();
+      console.log(products);
+      return products;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -18,7 +18,7 @@ export const fetchProdottiByCategoria = createAsyncThunk(
 );
 
 export const productSlice = createSlice({
-  name: "prodotti",
+  name: "product",
   initialState: {
     items: [],
     isLoading: false,
@@ -28,16 +28,16 @@ export const productSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchProdottiByCategoria.pending, (state) => {
+      .addCase(fetchProdByCategory.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
         state.errorMessage = "";
       })
-      .addCase(fetchProdottiByCategoria.fulfilled, (state, action) => {
+      .addCase(fetchProdByCategory.fulfilled, (state, action) => {
         state.isLoading = false;
         state.items = action.payload;
       })
-      .addCase(fetchProdottiByCategoria.rejected, (state, action) => {
+      .addCase(fetchProdByCategory.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.errorMessage = action.payload;

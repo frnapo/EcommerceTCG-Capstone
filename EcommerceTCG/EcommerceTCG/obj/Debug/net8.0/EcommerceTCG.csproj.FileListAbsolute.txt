@@ -155,6 +155,7 @@ C:\Users\Francesco\Desktop\EcommerceTCG-Capstone\EcommerceTCG\EcommerceTCG\bin\D
 C:\Users\Francesco\Desktop\EcommerceTCG-Capstone\EcommerceTCG\EcommerceTCG\bin\Debug\net8.0\System.Net.Http.Formatting.dll
 C:\Users\Francesco\Desktop\EcommerceTCG-Capstone\EcommerceTCG\EcommerceTCG\bin\Debug\net8.0\System.Web.Http.dll
 C:\Users\Francesco\Desktop\EcommerceTCG-Capstone\EcommerceTCG\EcommerceTCG\bin\Debug\net8.0\System.Web.Http.Cors.dll
+C:\Users\Francesco\Desktop\EcommerceTCG-Capstone\EcommerceTCG\EcommerceTCG\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\Francesco\Desktop\EcommerceTCG-Capstone\EcommerceTCG\EcommerceTCG\bin\Debug\net8.0\Microsoft.AspNetCore.Authorization.dll
 C:\Users\Francesco\Desktop\EcommerceTCG-Capstone\EcommerceTCG\EcommerceTCG\bin\Debug\net8.0\Microsoft.AspNetCore.Components.dll
 C:\Users\Francesco\Desktop\EcommerceTCG-Capstone\EcommerceTCG\EcommerceTCG\bin\Debug\net8.0\Microsoft.AspNetCore.Components.Forms.dll
@@ -410,4 +411,3 @@ C:\Users\Francesco\Desktop\EcommerceTCG-Capstone\EcommerceTCG\EcommerceTCG\obj\D
 C:\Users\Francesco\Desktop\EcommerceTCG-Capstone\EcommerceTCG\EcommerceTCG\obj\Debug\net8.0\EcommerceTCG.pdb
 C:\Users\Francesco\Desktop\EcommerceTCG-Capstone\EcommerceTCG\EcommerceTCG\obj\Debug\net8.0\EcommerceTCG.genruntimeconfig.cache
 C:\Users\Francesco\Desktop\EcommerceTCG-Capstone\EcommerceTCG\EcommerceTCG\obj\Debug\net8.0\ref\EcommerceTCG.dll
-C:\Users\Francesco\Desktop\EcommerceTCG-Capstone\EcommerceTCG\EcommerceTCG\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

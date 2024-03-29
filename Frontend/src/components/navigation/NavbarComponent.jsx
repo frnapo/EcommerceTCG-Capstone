@@ -6,7 +6,7 @@ import MenuOffcanvas from "./MenuOffcanvas";
 const NavbarComponent = () => {
   return (
     <>
-      <nav className="navbar navbar-expand navbar-dark bg-black">
+      <nav className="navbar navbar-expand navbar-dark bg-black bg-gradient">
         <div className="container-fluid">
           <Link to="/" className="navbar-brand">
             <img
