@@ -207,25 +207,25 @@ namespace EcommerceTCG.Controllers
             // Verifica che l'email sia valida
             if (!IsEmailValid(registerViewModel.Email))
             {
-                return BadRequest(new { message = "L'indirizzo email non è valido." });
+                return BadRequest(new { message = "L'indirizzo email non è valido" });
             }
 
             // Verifica che la password sia valida
             if (!IsPasswordValid(registerViewModel.Password))
             {
-                return BadRequest(new { message = "La password non è valida. Assicurati che la password soddisfi i requisiti." });
+                return BadRequest(new { message = "La password non è valida, assicurati che la password soddisfi i requisit" });
             }
 
             // Verifica che la password e la conferma password siano uguali
             if (registerViewModel.Password != registerViewModel.ConfirmPassword)
             {
-                return BadRequest(new { message = "Le password non corrispondono." });
+                return BadRequest(new { message = "Le password non corrispondono" });
             }
 
             // Verifica che l'utente non esista già
             if (_context.Users.Any(u => u.Email == registerViewModel.Email))
             {
-                return BadRequest(new { message = "Utente già registrato." });
+                return BadRequest(new { message = "Utente già registrato" });
             }
 
             string emailConfirmToken = GenerateEmailConfirmationToken(registerViewModel.Email);
@@ -243,7 +243,7 @@ namespace EcommerceTCG.Controllers
 
             _context.SaveChanges();
             SendConfirmEmail(registerViewModel.Email, emailConfirmToken);
-            return Ok(new { message = "Utente registrato con successo." });
+            return Ok(new { message = "Una mail di conferma è stata inviata al tuo indirizzo di posta elettronica" });
         }
 
         [HttpPost]

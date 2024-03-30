@@ -23,10 +23,10 @@ export const productSlice = createSlice({
     items: [],
     isLoading: false,
     isError: false,
-    errorMessage: "",
   },
   reducers: {},
   extraReducers: (builder) => {
+    // Le tue altre risposte di extraReducers vanno qui...
     builder
       .addCase(fetchProdByCategory.pending, (state) => {
         state.isLoading = true;
@@ -36,6 +36,8 @@ export const productSlice = createSlice({
       .addCase(fetchProdByCategory.fulfilled, (state, action) => {
         state.isLoading = false;
         state.items = action.payload;
+        // Potresti voler resettare l'activeCardIndex ogni volta che carichi nuove carte
+        state.activeCardIndex = 0;
       })
       .addCase(fetchProdByCategory.rejected, (state, action) => {
         state.isLoading = false;
@@ -44,5 +46,7 @@ export const productSlice = createSlice({
       });
   },
 });
+
+export const { nextCard, prevCard, setActiveCardIndex } = productSlice.actions;
 
 export default productSlice.reducer;

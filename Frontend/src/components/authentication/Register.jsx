@@ -81,7 +81,7 @@ const Register = () => {
           />
         </div>
         <div className="d-grid w-100 mb-3" style={{ maxWidth: "320px" }}>
-          <button type="submit" className="btn btn-primary" disabled={isLoading}>
+          <button type="submit" className="btn-custom py-2 rounded-pill" disabled={isLoading}>
             Registrati
           </button>
         </div>

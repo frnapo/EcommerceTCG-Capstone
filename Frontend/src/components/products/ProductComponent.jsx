@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProdByCategory } from "../../redux/slices/productSlice";
-import { addToWishlist } from "../../redux/slices/wishSlice";
+import { toggleWishlistItem } from "../../redux/slices/wishSlice";
 import { useParams } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import FilterComponent from "./FilterComponent";
 import HeaderComponent from "./HeaderComponent";
 import HoloCardComponent from "./HoloCardComponent";
 import { motion, AnimatePresence } from "framer-motion";
+import HeartAddIcon from "../../assets/icons/HeartAddIcon";
 
 const ProductComponent = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -15,16 +16,18 @@ const ProductComponent = () => {
   const dispatch = useDispatch();
   const { items, isLoading, isError, errorMessage } = useSelector((state) => state.product);
   const [holoActiveProductId, setHoloActiveProductId] = useState(null);
+  const wishlistProductIds = useSelector((state) => state.wishlist.items.map((item) => item.productId));
+  const userId = useSelector((state) => state.auth.user.id);
+  const token = useSelector((state) => state.auth.token);
+  const [wishlistAnimationTrigger, setWishlistAnimationTrigger] = useState(0);
 
   useEffect(() => {
     dispatch(fetchProdByCategory(categoryId));
   }, [dispatch, categoryId]);
 
-  const userId = useSelector((state) => state.auth.user.id);
-  const token = useSelector((state) => state.auth.token);
-
-  const handleAddToWishlist = (productId) => {
-    dispatch(addToWishlist({ userId, productId, token }));
+  const handleToggleWishlistItem = (productId) => {
+    dispatch(toggleWishlistItem({ userId, productId, token }));
+    setWishlistAnimationTrigger((prev) => prev + 1);
   };
 
   const handleToggleHoloEffect = (productId) => {
@@ -46,9 +49,9 @@ const ProductComponent = () => {
           <FilterComponent />
         </div>
         <div className="col-12 col-md-8">
-          <div className="row d-flex p-4">
+          <div className="row p-4">
             {items.map((prodotto) => (
-              <div className="col-6 col-lg-4 col-xl-3 py-3" key={prodotto.productId}>
+              <div className="col-6 col-lg-4 col-xxl-3 py-3" key={prodotto.productId}>
                 <motion.div
                   className="cursor-pointer"
                   layoutId={prodotto.productId}
@@ -68,9 +71,6 @@ const ProductComponent = () => {
                     {prodotto.availableQuantity > 0 ? "Disponibile" : "Non disponibile"}
                   </Button>
                 </div>
-                <Button variant="outline-primary" onClick={() => handleAddToWishlist(prodotto.productId)}>
-                  Aggiungi ai Preferiti
-                </Button>
               </div>
             ))}
 
@@ -108,6 +108,18 @@ const ProductComponent = () => {
                         ? "Visualizzazione normale"
                         : "Visualizazzione holografica"}
                     </Button>
+
+                    {selectedProduct && (
+                      <div
+                        className="cursor-pointer"
+                        onClick={() => handleToggleWishlistItem(selectedProduct.productId)}
+                      >
+                        <HeartAddIcon
+                          isWishlistItem={wishlistProductIds.includes(selectedProduct.productId)}
+                          triggerAnimation={wishlistAnimationTrigger}
+                        />
+                      </div>
+                    )}
                   </motion.div>
                 </>
               )}

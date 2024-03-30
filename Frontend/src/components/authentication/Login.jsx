@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../redux/slices/authSlice";
-import { Button } from "react-bootstrap";
 import NavigationButtons from "./NavigationButtons";
 import { useNavigate } from "react-router-dom";
 
@@ -49,9 +48,9 @@ const Login = () => {
             />
           </div>
           <div className="d-grid">
-            <Button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn-custom py-2 rounded-pill">
               Login
-            </Button>
+            </button>
           </div>
         </form>
       </div>

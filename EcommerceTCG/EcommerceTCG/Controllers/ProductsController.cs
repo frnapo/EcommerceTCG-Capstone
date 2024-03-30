@@ -1,7 +1,10 @@
 ﻿using EcommerceTCG.Data;
 using EcommerceTCG.Models;
+using EcommerceTCG.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
+using Tesseract;
 
 namespace EcommerceTCG.Controllers
 {
@@ -117,16 +120,165 @@ namespace EcommerceTCG.Controllers
             return NoContent();
         }
 
-        // POST: api/Products
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         [HttpPost]
-        public async Task<ActionResult<Product>> PostProduct(Product product)
+        public async Task<IActionResult> PostProduct([FromForm] ProductViewModel productViewModel)
         {
+            string extractedText = string.Empty;
+            string imagePath = null;
+
+            if (productViewModel.ImageFile != null && productViewModel.ImageFile.Length > 0)
+            {
+                var imageName = Guid.NewGuid().ToString() + Path.GetExtension(productViewModel.ImageFile.FileName);
+                var savePath = Path.Combine(Directory.GetCurrentDirectory(), "Img", imageName);
+                Directory.CreateDirectory(Path.GetDirectoryName(savePath));
+
+                using (var fileStream = new FileStream(savePath, FileMode.Create))
+                {
+                    await productViewModel.ImageFile.CopyToAsync(fileStream);
+                }
+
+
+                imagePath = $"/images/{imageName}";
+
+                // Estrai il testo dall'immagine salvata
+                extractedText = ExtractTextFromImage(savePath);
+            }
+
+            string productName = ExtractProductName(extractedText) ?? productViewModel.Name;
+            string serialNumber = ExtractSerialNumber(extractedText) ?? productViewModel.SerialNumber;
+
+            var product = new Product
+            {
+                Name = productName,
+                Price = productViewModel.Price,
+                AvailableQuantity = productViewModel.AvailableQuantity,
+                SerialNumber = serialNumber,
+                FirstEdition = productViewModel.FirstEdition,
+                RarityId = productViewModel.RarityId,
+                ExpansionId = productViewModel.ExpansionId,
+                TypeId = productViewModel.TypeId,
+                Language = productViewModel.Language,
+                Condition = productViewModel.Condition,
+                ImageUrl = imagePath
+            };
+
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetProduct", new { id = product.ProductId }, product);
         }
+
+
+
+        private string ExtractTextFromImage(string imagePath)
+        {
+            var dataPath = Path.Combine(Directory.GetCurrentDirectory(), "tessdata");
+            using (var engine = new TesseractEngine(dataPath, "eng", EngineMode.Default))
+            {
+                using (var img = Pix.LoadFromFile(imagePath))
+                {
+                    using (var page = engine.Process(img))
+                    {
+                        return page.GetText();
+                    }
+                }
+            }
+        }
+
+        private string ExtractProductName(string text)
+        {
+            var match = Regex.Match(text, "Product Name: (.+)");
+            if (match.Success)
+            {
+                return match.Groups[1].Value.Trim();
+            }
+            return null;
+        }
+
+        private string ExtractSerialNumber(string text)
+        {
+            var match = Regex.Match(text, "Serial Number: (.+)");
+            if (match.Success)
+            {
+                return match.Groups[1].Value.Trim();
+            }
+            return null;
+        }
+
+
+
+
+
+
+
+
+
+        [HttpGet("expansions/byType")]
+        public async Task<ActionResult<IEnumerable<Expansion>>> GetExpansionsByType(int typeId)
+        {
+            return await _context.Expansions
+                                 .Where(e => e.TypeId == typeId)
+                                 .ToListAsync();
+        }
+
+        // GET: api/Rarities
+        [HttpGet("rarities/byType")]
+        public async Task<ActionResult<IEnumerable<Rarity>>> GetRaritiesByType(int typeId)
+        {
+            return await _context.Rarities
+                                 .Where(r => r.TypeId == typeId)
+                                 .ToListAsync();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         // DELETE: api/Products/5
         [HttpDelete("{id}")]

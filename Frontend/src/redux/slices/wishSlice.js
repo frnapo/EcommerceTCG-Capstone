@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import fetchWithToken from "../wrapper";
+import { toast } from "react-hot-toast";
 
 export const fetchWishlist = createAsyncThunk(
   "wishlist/fetchWishlist",
@@ -18,8 +19,8 @@ export const fetchWishlist = createAsyncThunk(
   }
 );
 
-export const addToWishlist = createAsyncThunk(
-  "wishlist/addToWishlist",
+export const toggleWishlistItem = createAsyncThunk(
+  "wishlist/toggleWishlistItem",
   async ({ userId, productId, token }, { rejectWithValue }) => {
     try {
       const response = await fetchWithToken(
@@ -34,8 +35,9 @@ export const addToWishlist = createAsyncThunk(
       );
       const data = await response.json();
       console.log(data);
+      toast.success(data.message);
       if (!response.ok) {
-        throw new Error(data.message || "Could not add product to wishlist");
+        throw new Error(data.message || "Si è verificato un errore");
       }
       return data;
     } catch (error) {
@@ -66,13 +68,20 @@ export const wishlistSlice = createSlice({
         state.status = "failed";
         state.error = action.payload;
       })
-      .addCase(addToWishlist.pending, (state) => {
+      .addCase(toggleWishlistItem.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(addToWishlist.fulfilled, (state) => {
+      .addCase(toggleWishlistItem.fulfilled, (state, action) => {
         state.status = "succeeded";
+        const product = action.payload;
+
+        if (product.isInWishlist) {
+          state.items = [...state.items, product];
+        } else {
+          state.items = state.items.filter((item) => item.productId !== product.productId);
+        }
       })
-      .addCase(addToWishlist.rejected, (state, action) => {
+      .addCase(toggleWishlistItem.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });

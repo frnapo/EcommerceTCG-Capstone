@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 
 // eslint-disable-next-line react/prop-types
 //imageUrl = require
+
 // eslint-disable-next-line react/prop-types
 const HoloCardComponent = ({ isHoloActive }) => {
   const cardRef = useRef(null);

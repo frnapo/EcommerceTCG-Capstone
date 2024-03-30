@@ -1,12 +1,12 @@
-import { Bag } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import SearchOffcanvas from "./SearchOffcanvas";
 import MenuOffcanvas from "./MenuOffcanvas";
+import BagIcon from "../../assets/icons/BagIcon";
 
 const NavbarComponent = () => {
   return (
     <>
-      <nav className="navbar navbar-expand navbar-dark bg-black bg-gradient">
+      <nav className="navbar navbar-expand">
         <div className="container-fluid">
           <Link to="/" className="navbar-brand">
             <img
@@ -19,10 +19,12 @@ const NavbarComponent = () => {
           <div className="d-flex">
             <ul className="navbar-nav ms-auto">
               <li className="nav-item me-3">
-                <Bag className="text-white fs-2 cursor-pointer" />
+                <SearchOffcanvas />
               </li>
               <li className="nav-item me-3">
-                <SearchOffcanvas />
+                <div className="cursor-pointer">
+                  <BagIcon />
+                </div>
               </li>
               <li className="nav-item">
                 <MenuOffcanvas />

@@ -16,16 +16,20 @@ const WishlistComponent = () => {
 
   if (status === "loading") return <div>Loading...</div>;
 
-  return (
-    <div>
-      <h1>Wishlist</h1>
-      <ul>
-        {items.map((item) => (
-          <li key={item.wishlistId}>{item.name}</li>
-        ))}
-      </ul>
-    </div>
-  );
+  if (Array.isArray(items)) {
+    return (
+      <div>
+        <h1>Wishlist</h1>
+        <ul>
+          {items.map((item) => (
+            <li key={item.wishlistId}>{item.name}</li>
+          ))}
+        </ul>
+      </div>
+    );
+  } else {
+    return <div>Error: Items is not an array.</div>;
+  }
 };
 
 export default WishlistComponent;

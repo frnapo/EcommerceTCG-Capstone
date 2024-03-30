@@ -14,7 +14,7 @@ export const registerUser = createAsyncThunk("auth/register", async (userData, t
     let data = await response.json();
 
     if (response.status === 200) {
-      toast.success("Registrazione completata con successo!");
+      toast.success("Una mail di conferma è stata inviata al tuo indirizzo di posta elettronica");
       return { ...data };
     } else {
       toast.error(data.message);

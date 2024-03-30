@@ -67,13 +67,13 @@ namespace EcommerceTCG.Controllers
             if (await _context.Wishlists.AnyAsync(w => w.ProductId == ProductId && w.UserId == userId))
             {
                 await RemoveFromWishlist(ProductId, userId);
-                return Ok(new { message = "Articolo rimosso dai preferiti." });
+                return Ok(new { isInWishlist = false, ProductId = ProductId, Message = "Prodotto rimosso dai preferiti." });
             }
 
             _context.Wishlists.Add(wishlist);
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Articolo aggiunto ai preferiti." });
+            return Ok(new { isInWishlist = true, ProductId = ProductId, Message = "Prodotto aggiunto ai preferiti." });
         }
 
         [HttpPost]

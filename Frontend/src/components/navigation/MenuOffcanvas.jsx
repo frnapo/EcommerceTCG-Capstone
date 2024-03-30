@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Offcanvas } from "react-bootstrap";
-import { PersonCircle, List, CaretRightFill } from "react-bootstrap-icons";
+import { CaretRightFill } from "react-bootstrap-icons";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Logout from "../authentication/Logout";
 import { motion } from "framer-motion";
-
+import LogComponent from "../../assets/icons/LogComponent";
+import MenuIcon from "../../assets/icons/MenuIcon";
+import CloseIcon from "../../assets/icons/CloseIcon";
 const MenuOffcanvas = () => {
   const [show, setShow] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -30,16 +32,21 @@ const MenuOffcanvas = () => {
 
   return (
     <>
-      <List className="text-white fs-1 cursor-pointer" onClick={handleShow} />
-      <Offcanvas show={show} onHide={handleClose} placement="end" className="rounded-start-5">
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title className="fs-2">
-            {user ? `Ciao, ${user.firstName}` : "Menu"}{" "}
-            <Link to={token ? "/profilo" : "/login"} onClick={handleClose}>
-              <PersonCircle className="text-black fs-1 cursor-pointer" />
+      <div className="cursor-pointer" onClick={handleShow}>
+        <MenuIcon />
+      </div>
+      <Offcanvas show={show} onHide={handleClose} placement="end" className="custom-offcanvas">
+        <Offcanvas.Header className="d-flex justify-content-between">
+          <div>
+            <Link to={token ? "/profilo" : "/login"} className="nav-link" onClick={handleClose}>
+              {user ? <LogComponent text={`Ciao, ${user.firstName}`} /> : <LogComponent text={"Accedi"} />}
             </Link>
-          </Offcanvas.Title>
+          </div>
+          <div className="cursor-pointer" onClick={handleClose}>
+            <CloseIcon />
+          </div>
         </Offcanvas.Header>
+
         <Offcanvas.Body className=" d-flex flex-column justify-content-center">
           <Link className="nav-link-transition nav-link fw-bold fs-1" to="/" onClick={handleClose}>
             <p className="my-2">Home</p>
@@ -97,7 +104,7 @@ const MenuOffcanvas = () => {
             <p className="my-2">Info</p>
           </Link>
         </Offcanvas.Body>
-        <div className="p-5 mx-auto">{token ? <Logout /> : <></>}</div>
+        <div className="p-5 mx-auto">{token ? <Logout onLoggedOut={handleClose} /> : <></>}</div>
       </Offcanvas>
     </>
   );
