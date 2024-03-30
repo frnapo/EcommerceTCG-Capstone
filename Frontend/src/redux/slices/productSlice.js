@@ -1,16 +1,16 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-export const fetchProdottiByCategoria = createAsyncThunk(
-  "prodotti/fetchByCategoria",
-  async (idCategoria, { rejectWithValue }) => {
+export const fetchProdByCategory = createAsyncThunk(
+  "products/fetchProdByCategory",
+  async (typeId, { rejectWithValue }) => {
     try {
-      const response = await fetch(`https://localhost:44333/api/Prodotti/Categoria/${idCategoria}`);
+      const response = await fetch(`https://localhost:7289/api/Products/bytype/${typeId}`); //aggiungere token come secondo parametro
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      const prodotti = await response.json();
-      console.log(prodotti);
-      return prodotti;
+      const products = await response.json();
+      console.log(products);
+      return products;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -18,31 +18,35 @@ export const fetchProdottiByCategoria = createAsyncThunk(
 );
 
 export const productSlice = createSlice({
-  name: "prodotti",
+  name: "product",
   initialState: {
     items: [],
     isLoading: false,
     isError: false,
-    errorMessage: "",
   },
   reducers: {},
   extraReducers: (builder) => {
+    // Le tue altre risposte di extraReducers vanno qui...
     builder
-      .addCase(fetchProdottiByCategoria.pending, (state) => {
+      .addCase(fetchProdByCategory.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
         state.errorMessage = "";
       })
-      .addCase(fetchProdottiByCategoria.fulfilled, (state, action) => {
+      .addCase(fetchProdByCategory.fulfilled, (state, action) => {
         state.isLoading = false;
         state.items = action.payload;
+        // Potresti voler resettare l'activeCardIndex ogni volta che carichi nuove carte
+        state.activeCardIndex = 0;
       })
-      .addCase(fetchProdottiByCategoria.rejected, (state, action) => {
+      .addCase(fetchProdByCategory.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.errorMessage = action.payload;
       });
   },
 });
+
+export const { nextCard, prevCard, setActiveCardIndex } = productSlice.actions;
 
 export default productSlice.reducer;

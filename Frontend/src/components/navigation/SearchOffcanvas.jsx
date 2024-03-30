@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Offcanvas, Form, Button } from "react-bootstrap";
-import { Search } from "react-bootstrap-icons";
+import SearchIcon from "../../assets/icons/SearchIcon";
 
 const SearchOffcanvas = () => {
   const [show, setShow] = useState(false);
@@ -10,7 +10,9 @@ const SearchOffcanvas = () => {
 
   return (
     <>
-      <Search className="text-white fs-2 cursor-pointer" onClick={handleShow} />
+      <div className="cursor-pointer" onClick={handleShow}>
+        <SearchIcon />
+      </div>
       <Offcanvas show={show} onHide={handleClose} placement="top" className="w-100 h-100">
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Ricerca</Offcanvas.Title>

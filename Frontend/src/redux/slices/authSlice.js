@@ -14,7 +14,7 @@ export const registerUser = createAsyncThunk("auth/register", async (userData, t
     let data = await response.json();
 
     if (response.status === 200) {
-      toast.success("Registrazione completata con successo!");
+      toast.success("Una mail di conferma è stata inviata al tuo indirizzo di posta elettronica");
       return { ...data };
     } else {
       toast.error(data.message);
@@ -117,7 +117,7 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.user = action.payload;
-        state.token = action.payload;
+        state.token = action.payload.token;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;

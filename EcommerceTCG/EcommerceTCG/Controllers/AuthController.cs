@@ -17,10 +17,12 @@ namespace EcommerceTCG.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
+        private readonly IConfiguration _configuration;
         private readonly EcommerceTcgContext _context;
 
-        public AuthController(EcommerceTcgContext context)
+        public AuthController(IConfiguration configuration, EcommerceTcgContext context)
         {
+            _configuration = configuration;
             _context = context;
         }
 
@@ -167,28 +169,34 @@ namespace EcommerceTCG.Controllers
                 Email = dbUser.Email,
                 Token = tokenString,
                 EmailVerified = dbUser.EmailVerified,
-                Administrator = dbUser.Administrator
+                Administrator = dbUser.Administrator,
+                RegistrationDate = dbUser.RegistrationDate
             });
         }
 
         //generate jwt token
         private string GenerateJwtToken(User user)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("unaChiaveSegretaMoltoMoltoLungaPerSoddisfareIRequisiti");
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-            new Claim(ClaimTypes.Name, user.UserId.ToString())
-                }),
-                Expires = DateTime.UtcNow.AddDays(30),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            var claims = new[]
+ {
+                new Claim(JwtRegisteredClaimNames.Jti, user.UserId.ToString()),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                new Claim(ClaimTypes.Role, user.Administrator ? "Admin" : "User")
             };
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+
+            var token = new JwtSecurityToken(
+               _configuration["Jwt:Issuer"],
+               _configuration["Jwt:Audience"],
+               claims,
+               expires: DateTime.Now.AddDays(30),
+               signingCredentials: creds
+           );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
 
@@ -199,25 +207,25 @@ namespace EcommerceTCG.Controllers
             // Verifica che l'email sia valida
             if (!IsEmailValid(registerViewModel.Email))
             {
-                return BadRequest(new { message = "L'indirizzo email non è valido." });
+                return BadRequest(new { message = "L'indirizzo email non è valido" });
             }
 
             // Verifica che la password sia valida
             if (!IsPasswordValid(registerViewModel.Password))
             {
-                return BadRequest(new { message = "La password non è valida. Assicurati che la password soddisfi i requisiti." });
+                return BadRequest(new { message = "La password non è valida, assicurati che la password soddisfi i requisit" });
             }
 
             // Verifica che la password e la conferma password siano uguali
             if (registerViewModel.Password != registerViewModel.ConfirmPassword)
             {
-                return BadRequest(new { message = "Le password non corrispondono." });
+                return BadRequest(new { message = "Le password non corrispondono" });
             }
 
             // Verifica che l'utente non esista già
             if (_context.Users.Any(u => u.Email == registerViewModel.Email))
             {
-                return BadRequest(new { message = "Utente già registrato." });
+                return BadRequest(new { message = "Utente già registrato" });
             }
 
             string emailConfirmToken = GenerateEmailConfirmationToken(registerViewModel.Email);
@@ -235,7 +243,7 @@ namespace EcommerceTCG.Controllers
 
             _context.SaveChanges();
             SendConfirmEmail(registerViewModel.Email, emailConfirmToken);
-            return Ok(new { message = "Utente registrato con successo." });
+            return Ok(new { message = "Una mail di conferma è stata inviata al tuo indirizzo di posta elettronica" });
         }
 
         [HttpPost]
