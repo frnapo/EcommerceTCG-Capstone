@@ -45,10 +45,10 @@ const ProductComponent = () => {
         </div>
       </div>
       <div className="row">
-        <div className="col-12 col-md-4 d-md-flex align-items-start justify-content-md-end">
+        <div className="col-12 col-md-5 col-lg-4 d-md-flex align-items-start justify-content-md-end">
           <FilterComponent />
         </div>
-        <div className="col-12 col-md-8">
+        <div className="col-12 col-md-7 col-lg-8">
           <div className="row p-4">
             {items.map((prodotto) => (
               <div className="col-6 col-lg-4 col-xxl-3 py-3" key={prodotto.productId}>
@@ -65,7 +65,7 @@ const ProductComponent = () => {
 
                 <div className="mt-3 d-flex justify-content-between">
                   <Button
-                    className={`shadow ${prodotto.availableQuantity > 0 ? "btn-danger" : "btn-secondary"}`}
+                    className={`w-100  ${prodotto.availableQuantity > 0 ? "btn-custom" : "btn-secondary"}`}
                     disabled={prodotto.availableQuantity < 1}
                   >
                     {prodotto.availableQuantity > 0 ? "Disponibile" : "Non disponibile"}

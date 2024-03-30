@@ -23,8 +23,8 @@ const HoloCardComponent = ({ isHoloActive }) => {
       card.style.setProperty("--gradient-size", `${gradientSize}%`);
       const dx = (mouseX - boundingBox.width / 2) / (boundingBox.width / 2);
       const dy = (mouseY - boundingBox.height / 2) / (boundingBox.height / 2);
-      const rotateX = dy * 20;
-      const rotateY = -dx * 20;
+      const rotateX = dy * 22;
+      const rotateY = -dx * 22;
       card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
     };
     const handleMouseLeave = () => {
@@ -32,10 +32,13 @@ const HoloCardComponent = ({ isHoloActive }) => {
       card.style.setProperty("--x-percent", "50%");
       card.style.setProperty("--y-percent", "50%");
       card.style.setProperty("--gradient-size", "200%");
-      card.style.transition = "transform 1s ease, box-shadow 1s ease, --x-percent 1s ease, --y-percent 1s ease";
+      card.style.setProperty("scale", "1");
+      card.style.transition =
+        "scale 0.2s ease, transform 0.4s ease, box-shadow 0.4s ease, --x-percent 0.4s ease, --y-percent 0.4s ease";
     };
     const handleMouseEnter = () => {
-      card.style.transition = "transform 0.05s ease";
+      card.style.setProperty("scale", "1.06");
+      card.style.transition = "transform 0.08s ease, scale 0.2s ease";
     };
     card.addEventListener("mousemove", handleMouseMove);
     card.addEventListener("mouseleave", handleMouseLeave);
@@ -51,9 +54,9 @@ const HoloCardComponent = ({ isHoloActive }) => {
   return (
     <div
       ref={cardRef}
-      className={`holo-card ${isHoloActive ? "holo-active" : ""}`}
+      className={` ${isHoloActive ? "holo-active holo-card" : "basic-card basic-active"}`}
       style={{
-        backgroundImage: `url("https://www.cardtrader.com/uploads/blueprints/image/260846/show_sanji-alternate-art-kingdoms-of-intrigue.jpg")`,
+        backgroundImage: `url("https://www.cardtrader.com/uploads/blueprints/image/153134/show_charizard-vmax-rare-shiny-sv107-shining-fates.png")`,
       }}
     ></div>
   );

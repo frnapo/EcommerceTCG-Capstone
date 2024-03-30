@@ -12,6 +12,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProductComponent from "./components/products/ProductComponent";
 import HotbuyComponent from "./components/products/HotbuyComponent";
 import WishlistComponent from "./components/navigation/WishlistComponent";
+import ChatIcon from "./assets/icons/ChatIcon";
 
 function App() {
   const token = useSelector((state) => state.auth.token);
@@ -31,17 +32,20 @@ function App() {
             },
           }}
         />
-        <Routes>
-          <Route path="/" element={<HomeComponent />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/logout" element={<Logout />} />
-          <Route path="/profilo" element={<UserComponent />} />
-          <Route path="/categories/:categoryId" element={<ProductComponent />} />
-          {/* espansioni */}
-          <Route path="/hotbuy" element={<HotbuyComponent />} />
-          <Route path="/wishlist" element={<WishlistComponent />} />
-        </Routes>
+        <div id="padding-container">
+          <Routes>
+            <Route path="/" element={<HomeComponent />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="/profilo" element={<UserComponent />} />
+            <Route path="/categories/:categoryId" element={<ProductComponent />} />
+            {/* espansioni */}
+            <Route path="/hotbuy" element={<HotbuyComponent />} />
+            <Route path="/wishlist" element={<WishlistComponent />} />
+          </Routes>
+        </div>
+        <ChatIcon />
       </div>
     </Router>
   );

@@ -22,7 +22,7 @@ const SearchIcon = () => {
           lottieRef.current.goToAndStop(0, true);
           animationPlayed.current = false;
         }
-      }, 700);
+      }, 900);
     }
   };
 
@@ -33,7 +33,7 @@ const SearchIcon = () => {
         animationData={animationData}
         style={{ width: 45, height: 45 }}
         loop={false}
-        autoplay={false}
+        autoPlay={false}
       />
     </div>
   );

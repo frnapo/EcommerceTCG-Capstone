@@ -8,13 +8,14 @@ const NavigationButtons = () => {
   const isRegister = location.pathname === "/register";
 
   return (
-    <div className="text-center my-5">
+    <div className="text-center my-5 position-relative">
       <button
         onClick={() => navigate("/login")}
         className={`m-0 rounded-pill rounded-end-0 py-2 px-5 ${isLogin ? "btn-custom" : "btn-blue"}`}
       >
         Login
       </button>
+
       <button
         onClick={() => navigate("/register")}
         className={`m-0 rounded-pill rounded-start-0 py-2 px-5 ${isRegister ? "btn-custom" : "btn-blue"}`}

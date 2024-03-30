@@ -1,15 +1,23 @@
-// stili cursori
-
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
-
-.cursor-pointer {
-  cursor: pointer;
-}
 
 $main-color: #08142b;
 $secondary-color: #df980f;
 $background-color: #040a16;
 $text: #fff;
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: $secondary-color $background-color;
+}
+
+#padding-container {
+  padding-top: 78.76px;
+}
+
+// stili cursori
+.cursor-pointer {
+  cursor: pointer;
+}
 
 html,
 body {
@@ -20,9 +28,8 @@ body {
 }
 
 // transizione per i link
-
 .navbar {
-  background-color: $main-color;
+  background-color: $main-color !important;
 }
 
 .nav-link-transition {
@@ -105,9 +112,32 @@ body {
   overflow: hidden !important;
 }
 
+.bg-blue {
+  background-color: $main-color;
+}
+
+//  form per filtri
+
+.form-checkbox-group {
+  max-height: 120px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: block;
+  padding-right: 15px;
+}
+
+.checkbox-option {
+  margin-bottom: 5px;
+}
+
+#filter-container {
+  top: 120px;
+}
+
 // card
 
-.holo-card {
+.holo-card,
+.basic-card {
   width: 100%;
   aspect-ratio: 3 / 4;
   background-size: cover;
@@ -140,8 +170,6 @@ body {
   opacity: 0;
   transition: opacity 0.3s, background-position 0.3s, background-size 0.3s;
   background-size: 180% 180%;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
 }
 
 .holo-card:hover::after {
@@ -149,6 +177,31 @@ body {
 }
 
 .holo-active:hover::after {
+  opacity: 1;
+}
+
+.basic-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at var(--x-percent) var(--y-percent),
+    rgba(255, 255, 255, 0.6) 0%,
+    transparent 70%
+  );
+  mix-blend-mode: overlay;
+  opacity: 0;
+  transition: opacity 0.3s, background-position 0.3s;
+}
+
+.basic-card:hover::after {
+  opacity: 0;
+}
+
+.basic-active:hover::after {
   opacity: 1;
 }
 

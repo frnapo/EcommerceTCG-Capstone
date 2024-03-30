@@ -34,7 +34,7 @@ const LogIcon = ({ text }) => {
         animationData={animationData}
         style={{ width: 50, height: 50 }}
         loop={false}
-        autoplay={false}
+        autoPlay={false}
       />
     </div>
   );
