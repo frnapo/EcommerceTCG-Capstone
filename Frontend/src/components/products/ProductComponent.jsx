@@ -21,6 +21,23 @@ const ProductComponent = () => {
   const token = useSelector((state) => state.auth.token);
   const [wishlistAnimationTrigger, setWishlistAnimationTrigger] = useState(0);
 
+
+
+  TO DO
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
   useEffect(() => {
     dispatch(fetchProdByCategory(categoryId));
   }, [dispatch, categoryId]);
