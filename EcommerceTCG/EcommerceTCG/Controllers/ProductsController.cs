@@ -26,7 +26,6 @@ namespace EcommerceTCG.Controllers
         public IActionResult ByType(int id)
         {
             var products = _context.Products.Where(p => p.TypeId == id)
-                                            .OrderByDescending(p => p.AvailableQuantity)
                                             .Select(p => new
                                             {
                                                 p.ProductId,
