@@ -41,9 +41,9 @@ const HotbuyComponent = () => {
         spaceBetween={-200}
         slideActiveClass="swiper-slide-active-custom"
       >
-        {items.map((item, index) => (
+        {items.map((prodotto, index) => (
           <SwiperSlide key={index} className="custom-swiper-slide ">
-            <HoloCardComponent item={item} isHoloActive={true} />
+            <HoloCardComponent prodotto={prodotto} isHoloActive={true} isFocused={prodotto !== null} />
           </SwiperSlide>
         ))}
       </Swiper>

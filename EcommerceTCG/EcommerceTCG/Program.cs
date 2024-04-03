@@ -28,6 +28,7 @@ builder.Services.AddCors(options =>
 });
 
 
+
 builder
     .Services.AddAuthentication(opt =>
     {
@@ -50,6 +51,9 @@ builder
         };
     });
 
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
 
 var app = builder.Build();
 

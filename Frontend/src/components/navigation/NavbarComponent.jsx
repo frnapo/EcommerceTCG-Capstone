@@ -31,7 +31,7 @@ const NavbarComponent = () => {
       borderRadius: 0,
       left: 0,
       right: 0,
-      zIndex: 1040,
+      zIndex: 1030,
       translateX: "0%",
       transition: {
         top: { duration: 0.2 },
@@ -48,7 +48,7 @@ const NavbarComponent = () => {
       translateX: "-50%",
       scale: 0.8,
       borderRadius: "20px",
-      zIndex: 1050,
+      zIndex: 1040,
       transition: {
         top: { duration: 0.5 },
         scale: { duration: 0.5 },

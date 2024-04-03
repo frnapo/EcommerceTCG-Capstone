@@ -36,7 +36,6 @@ const ProductComponent = () => {
 
   if (isLoading) return <div>Caricamento...</div>;
   if (isError) return <div>Errore: {errorMessage}</div>;
-
   return (
     <div className="container">
       <div className="row">
@@ -57,10 +56,7 @@ const ProductComponent = () => {
                   layoutId={prodotto.productId}
                   onClick={() => setSelectedProduct(prodotto)}
                 >
-                  <HoloCardComponent
-                    imageUrl={prodotto.imageURL}
-                    isHoloActive={holoActiveProductId === prodotto.productId}
-                  />
+                  <HoloCardComponent isHoloActive={holoActiveProductId === prodotto.productId} prodotto={prodotto} />
                 </motion.div>
 
                 <div className="mt-3 d-flex justify-content-between">
@@ -100,8 +96,9 @@ const ProductComponent = () => {
                     </motion.button>
                     <h1 className="text-white">{selectedProduct.name}</h1>
                     <HoloCardComponent
-                      imageUrl={selectedProduct.imageURL}
+                      prodotto={selectedProduct}
                       isHoloActive={holoActiveProductId === selectedProduct.productId}
+                      isFocused={selectedProduct !== null}
                     />
                     <Button onClick={() => handleToggleHoloEffect(selectedProduct.productId)}>
                       {holoActiveProductId === selectedProduct.productId

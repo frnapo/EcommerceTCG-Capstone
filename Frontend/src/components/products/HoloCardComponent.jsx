@@ -1,11 +1,10 @@
-import { useEffect, useRef } from "react";
-
+/* eslint-disable react/prop-types */
+import { useEffect, useRef, useState } from "react";
 // eslint-disable-next-line react/prop-types
-//imageUrl = require
 
-// eslint-disable-next-line react/prop-types
-const HoloCardComponent = ({ isHoloActive }) => {
+const HoloCardComponent = ({ prodotto, isHoloActive, isFocused }) => {
   const cardRef = useRef(null);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     const card = cardRef.current;
@@ -50,15 +49,27 @@ const HoloCardComponent = ({ isHoloActive }) => {
     };
   }, []);
 
-  //   return <div ref={cardRef} className="holo-card" style={{ backgroundImage: `url(${imageUrl})` }}></div>;
   return (
     <div
       ref={cardRef}
-      className={` ${isHoloActive ? "holo-active holo-card" : "basic-card basic-active"}`}
-      style={{
-        backgroundImage: `url("https://www.cardtrader.com/uploads/blueprints/image/153134/show_charizard-vmax-rare-shiny-sv107-shining-fates.png")`,
-      }}
-    ></div>
+      className={`${isHoloActive ? "holo-active holo-card" : "basic-card basic-active"}`}
+      style={{ backgroundImage: `url(${prodotto.imageUrl})` }}
+      onMouseEnter={() => !isFocused && setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {isHovered && (
+        <>
+          <div className="card-info-overlay d-flex justify-content-center align-items-center text-center">
+            <div className="text-white">
+              <h3 className="mb-2">{prodotto.name}</h3>
+              <p className="mb-1">{prodotto.serialNumber}</p>
+              <p className="mb-1">{prodotto.rarity}</p>
+              <p className="mb-1">{prodotto.condition}</p>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
   );
 };
 
