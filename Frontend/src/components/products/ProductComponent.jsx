@@ -9,6 +9,7 @@ import HeaderComponent from "./HeaderComponent";
 import HoloCardComponent from "./HoloCardComponent";
 import { motion, AnimatePresence } from "framer-motion";
 import HeartAddIcon from "../../assets/icons/HeartAddIcon";
+import CloseIcon from "../../assets/icons/CloseIcon";
 
 const ProductComponent = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -21,23 +22,9 @@ const ProductComponent = () => {
   const token = useSelector((state) => state.auth.token);
   const [wishlistAnimationTrigger, setWishlistAnimationTrigger] = useState(0);
 
+  //to do icone wishlist in base a database
+  // to do utente puo vedere prodotti senza essere logato / controlli su wishlist
 
-
-  TO DO
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
   useEffect(() => {
     dispatch(fetchProdByCategory(categoryId));
   }, [dispatch, categoryId]);
@@ -108,8 +95,8 @@ const ProductComponent = () => {
                     className="position-fixed top-50 start-50 translate-middle p-5 bg-dark rounded-5"
                     style={{ zIndex: 1051, maxWidth: "90%", width: "auto" }}
                   >
-                    <motion.button onClick={() => setSelectedProduct(null)} className="btn btn-secondary">
-                      Chiudi
+                    <motion.button onClick={() => setSelectedProduct(null)} className="btn p-0 m-0">
+                      <CloseIcon />
                     </motion.button>
                     <h1 className="text-white">{selectedProduct.name}</h1>
                     <HoloCardComponent

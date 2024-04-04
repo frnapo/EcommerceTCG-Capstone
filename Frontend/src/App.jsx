@@ -13,6 +13,7 @@ import ProductComponent from "./components/products/ProductComponent";
 import HotbuyComponent from "./components/products/HotbuyComponent";
 import WishlistComponent from "./components/navigation/WishlistComponent";
 import ChatIcon from "./assets/icons/ChatIcon";
+import SellComponent from "./components/carousel/SellComponent";
 
 function App() {
   // const token = useSelector((state) => state.auth.token);
@@ -43,6 +44,7 @@ function App() {
             {/* espansioni */}
             <Route path="/hotbuy" element={<HotbuyComponent />} />
             <Route path="/wishlist" element={<WishlistComponent />} />
+            <Route path="/sell" element={<SellComponent />} />
           </Routes>
         </div>
         <ChatIcon />

@@ -35,7 +35,7 @@ const ChatIcon = () => {
         position: "fixed",
         bottom: "15px",
         right: "15px",
-        zIndex: 1000,
+        zIndex: 1045,
       }}
     >
       <Lottie

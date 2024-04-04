@@ -100,8 +100,8 @@ const MenuOffcanvas = () => {
           <Link to="/wishlist" className="nav-link nav-link-transition fw-bold fs-1" onClick={handleClose}>
             <p className="my-2">Wishlist</p>
           </Link>
-          <Link className="nav-link nav-link-transition fw-bold fs-1" onClick={handleClose}>
-            <p className="my-2">Info</p>
+          <Link to="/sell" className="nav-link nav-link-transition fw-bold fs-1" onClick={handleClose}>
+            <p className="my-2">Vendi</p>
           </Link>
         </Offcanvas.Body>
         <div className="p-5 mx-auto">{token ? <Logout onLoggedOut={handleClose} /> : <></>}</div>
