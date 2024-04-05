@@ -7,9 +7,17 @@ import { Button } from "react-bootstrap";
 import FilterComponent from "./FilterComponent";
 import HeaderComponent from "./HeaderComponent";
 import HoloCardComponent from "./HoloCardComponent";
-import { motion, AnimatePresence } from "framer-motion";
-import HeartAddIcon from "../../assets/icons/HeartAddIcon";
-import CloseIcon from "../../assets/icons/CloseIcon";
+import { motion } from "framer-motion";
+import ProductDetailModal from "./ProductDetailModal";
+import BreadcrumbsAndSort from "./BreadcrumbsAndSort";
+import { createSelector } from "reselect";
+
+const baseWishlistItemsSelector = (state) => state.wishlist.items;
+
+// Selettore memoizzato che ritorna gli ID dei prodotti nella wishlist
+const wishlistProductIdsSelector = createSelector([baseWishlistItemsSelector], (items) =>
+  items.map((item) => item.productId)
+);
 
 const ProductComponent = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -17,13 +25,45 @@ const ProductComponent = () => {
   const dispatch = useDispatch();
   const { items, isLoading, isError, errorMessage } = useSelector((state) => state.product);
   const [holoActiveProductId, setHoloActiveProductId] = useState(null);
-  const wishlistProductIds = useSelector((state) => state.wishlist.items.map((item) => item.productId));
-  const userId = useSelector((state) => state.auth.user.id);
+  const wishlistProductIds = useSelector(wishlistProductIdsSelector);
+  const userId = useSelector((state) => state.auth.user?.id);
   const token = useSelector((state) => state.auth.token);
   const [wishlistAnimationTrigger, setWishlistAnimationTrigger] = useState(0);
 
+  const [sortedItems, setSortedItems] = useState([]);
+
+  useEffect(() => {
+    setSortedItems([...items]);
+  }, [items]);
+
+  const sortItems = (sortValue) => {
+    const sorted = [...sortedItems].sort((a, b) => {
+      if (a.availableQuantity === 0 && b.availableQuantity > 0) return 1;
+      if (b.availableQuantity === 0 && a.availableQuantity > 0) return -1;
+
+      switch (sortValue) {
+        case "nome-az":
+          return a.name.localeCompare(b.name);
+        case "nome-za":
+          return b.name.localeCompare(a.name);
+        case "prezzo-alto-basso":
+          return b.price - a.price;
+        case "prezzo-basso-alto":
+          return a.price - b.price;
+        case "serialNumber-basso-alto":
+          return a.serialNumber.localeCompare(b.serialNumber);
+        case "serialNumber-alto-basso":
+          return b.serialNumber.localeCompare(a.serialNumber);
+        case "disponibile":
+          return b.availableQuantity - a.availableQuantity;
+        default:
+          return 0;
+      }
+    });
+    setSortedItems(sorted);
+  };
+
   //to do icone wishlist in base a database
-  // to do utente puo vedere prodotti senza essere logato / controlli su wishlist
 
   useEffect(() => {
     dispatch(fetchProdByCategory(categoryId));
@@ -38,97 +78,76 @@ const ProductComponent = () => {
     setHoloActiveProductId((currentId) => (currentId === productId ? null : productId));
   };
 
-  if (isLoading) return <div>Caricamento...</div>;
-  if (isError) return <div>Errore: {errorMessage}</div>;
-  return (
-    <div className="container">
-      <div className="row">
-        <div className="col-12 text-center">
-          <HeaderComponent />
+  if (isLoading) {
+    return (
+      <div
+        className="d-flex bg-blue justify-content-center align-items-center"
+        style={{
+          height: "100vh",
+          width: "100vw",
+          position: "fixed",
+          top: "0",
+          left: "0",
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+        }}
+      >
+        <div className="spinner-border text-light" role="status">
+          <span className="visually-hidden">Caricamento...</span>
         </div>
       </div>
-      <div className="row">
-        <div className="col-12 col-md-5 col-lg-4 d-md-flex align-items-start justify-content-md-end">
-          <FilterComponent />
-        </div>
-        <div className="col-12 col-md-7 col-lg-8">
-          <div className="row p-4">
-            {items.map((prodotto) => (
-              <div className="col-6 col-lg-4 col-xxl-3 py-3" key={prodotto.productId}>
-                <motion.div
-                  className="cursor-pointer"
-                  layoutId={prodotto.productId}
-                  onClick={() => setSelectedProduct(prodotto)}
-                >
-                  <HoloCardComponent isHoloActive={holoActiveProductId === prodotto.productId} prodotto={prodotto} />
-                </motion.div>
+    );
+  }
+  if (isError) return <div>Errore: {errorMessage}</div>;
+  return (
+    <>
+      <HeaderComponent />
+      <div className="container">
+        <div className="row">
+          <div className="col-12 col-md-5  pb-5 col-lg-4 d-md-flex align-items-start justify-content-md-end">
+            <FilterComponent />
+          </div>
+          <div className="col-12 col-md-7 col-lg-8">
+            <div>
+              <BreadcrumbsAndSort categoryId={categoryId} onSortChange={sortItems} />
+            </div>
 
-                <div className="mt-3 d-flex justify-content-between">
-                  <Button
-                    className={`w-100  ${prodotto.availableQuantity > 0 ? "btn-custom" : "btn-secondary"}`}
-                    disabled={prodotto.availableQuantity < 1}
-                  >
-                    {prodotto.availableQuantity > 0 ? "Disponibile" : "Non disponibile"}
-                  </Button>
-                </div>
-              </div>
-            ))}
-
-            <AnimatePresence>
-              {selectedProduct && (
-                <>
+            <div className="row pb-4">
+              {sortedItems.map((prodotto) => (
+                <div className="col-6 col-lg-4 col-xxl-3 py-3" key={prodotto.productId}>
                   <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="position-fixed top-0 start-0 w-100 h-100"
-                    style={{ background: "rgba(0, 0, 0, 0.8)", zIndex: 1050 }}
-                    onClick={() => setSelectedProduct(null)}
-                  />
-
-                  <motion.div
-                    layoutId={selectedProduct.productId}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="position-fixed top-50 start-50 translate-middle p-5 bg-dark rounded-5"
-                    style={{ zIndex: 1051, maxWidth: "90%", width: "auto" }}
+                    className="cursor-pointer"
+                    layoutId={prodotto.productId}
+                    onClick={() => setSelectedProduct(prodotto)}
                   >
-                    <motion.button onClick={() => setSelectedProduct(null)} className="btn p-0 m-0">
-                      <CloseIcon />
-                    </motion.button>
-                    <h1 className="text-white">{selectedProduct.name}</h1>
-                    <HoloCardComponent
-                      prodotto={selectedProduct}
-                      isHoloActive={holoActiveProductId === selectedProduct.productId}
-                      isFocused={selectedProduct !== null}
-                    />
-                    <Button onClick={() => handleToggleHoloEffect(selectedProduct.productId)}>
-                      {holoActiveProductId === selectedProduct.productId
-                        ? "Visualizzazione normale"
-                        : "Visualizazzione holografica"}
-                    </Button>
-
-                    {selectedProduct && (
-                      <div
-                        className="cursor-pointer"
-                        onClick={() => handleToggleWishlistItem(selectedProduct.productId)}
-                      >
-                        <HeartAddIcon
-                          isWishlistItem={wishlistProductIds.includes(selectedProduct.productId)}
-                          triggerAnimation={wishlistAnimationTrigger}
-                        />
-                      </div>
-                    )}
+                    <HoloCardComponent isHoloActive={holoActiveProductId === prodotto.productId} prodotto={prodotto} />
                   </motion.div>
-                </>
-              )}
-            </AnimatePresence>
+
+                  <div className="mt-3 d-flex justify-content-between">
+                    <Button
+                      className={`w-100  ${prodotto.availableQuantity > 0 ? "btn-custom" : "btn-secondary"}`}
+                      disabled={prodotto.availableQuantity < 1}
+                    >
+                      {prodotto.availableQuantity > 0 ? "Disponibile" : "Non disponibile"}
+                    </Button>
+                  </div>
+                </div>
+              ))}
+
+              <ProductDetailModal
+                selectedProduct={selectedProduct}
+                setSelectedProduct={setSelectedProduct}
+                handleToggleHoloEffect={handleToggleHoloEffect}
+                handleToggleWishlistItem={handleToggleWishlistItem}
+                wishlistProductIds={wishlistProductIds}
+                holoActiveProductId={holoActiveProductId}
+                wishlistAnimationTrigger={wishlistAnimationTrigger}
+                userId={userId}
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

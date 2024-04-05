@@ -14,7 +14,7 @@ const Logout = ({ onLoggedOut }) => {
   };
 
   return (
-    <button className="mt-4 px-5 py-1 rounded-pill fs-3 btn-custom" onClick={handleLogoutClick}>
+    <button className="py-1 rounded-pill fs-3 btn-custom" style={{ paddingInline: "55px" }} onClick={handleLogoutClick}>
       Logout
     </button>
   );

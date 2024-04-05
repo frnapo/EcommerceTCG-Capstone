@@ -67,6 +67,7 @@ body {
 .custom-offcanvas {
   background-color: $main-color;
   color: $text;
+  z-index: 2000;
 }
 
 .btn-custom {
@@ -125,16 +126,27 @@ body {
 
 //  form per filtri
 
-.form-checkbox-group {
-  max-height: 120px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  display: block;
-  padding-right: 15px;
+.form-checkbox-group input[type="checkbox"] {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
 }
 
-.checkbox-option {
-  margin-bottom: 5px;
+.form-checkbox-group label {
+  margin-bottom: 11px;
+  margin-left: 5px;
+  display: inline-block;
+  vertical-align: middle;
+}
+@media (min-width: 768px) {
+  .form-checkbox-group input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+  }
+
+  .form-checkbox-group label {
+    margin-left: 2px;
+  }
 }
 
 #filter-container {

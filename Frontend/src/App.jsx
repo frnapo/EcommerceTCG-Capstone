@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.scss";
-// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import NavbarComponent from "./components/navigation/NavbarComponent";
 import HomeComponent from "./components/navigation/HomeComponent";
 import Login from "./components/authentication/Login";
@@ -18,8 +18,8 @@ import SellComponent from "./components/carousel/SellComponent";
 function App() {
   // const token = useSelector((state) => state.auth.token);
   // console.log(token);
-  // const user = useSelector((state) => state.auth.user);
-  // console.log(user);
+  const user = useSelector((state) => state.auth.user);
+  console.log(user);
 
   return (
     <Router>

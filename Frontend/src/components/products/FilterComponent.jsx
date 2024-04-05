@@ -3,17 +3,19 @@ import { motion } from "framer-motion";
 import { Collapse } from "react-bootstrap";
 import ArrowDownIcon from "../../assets/icons/ArrowDownIcon";
 import ArrowUpIcon from "../../assets/icons/ArrowUpIcon";
+import { ChevronDown, ChevronUp } from "react-bootstrap-icons";
 
 const FilterComponent = () => {
   const [open, setOpen] = useState(window.innerWidth >= 768);
+  const [openRarity, setOpenRarity] = useState(window.innerWidth < 768);
+  const [openGrade, setOpenGrade] = useState(window.innerWidth < 768);
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768) {
-        setOpen(true);
-      } else {
-        setOpen(false);
-      }
+      const isDesktop = window.innerWidth >= 768;
+      setOpen(isDesktop);
+      setOpenRarity(!isDesktop);
+      setOpenGrade(!isDesktop);
     };
 
     window.addEventListener("resize", handleResize);
@@ -23,7 +25,7 @@ const FilterComponent = () => {
   return (
     <div className="rounded-4 p-4 bg-blue sticky-md-top" id="filter-container">
       <div className="d-flex justify-content-between align-items-center">
-        <h4 className="m-0" style={{ minWidth: "250px" }}>
+        <h4 className="m-0 fs-3" style={{ minWidth: "250px" }}>
           Imposta Filtri
         </h4>
 
@@ -58,68 +60,76 @@ const FilterComponent = () => {
           id="collpase-filter"
         >
           <form>
-            <div className="mb-3">
-              <label className="form-label">Espansione</label>
+            <div className="my-3">
               <select className="form-select" id="espansione">
-                <option value="seleziona">Seleziona espansione</option>
+                <option value="seleziona">Espansione</option>
                 <option value="1">Italiano</option>
                 <option value="2">Inglese</option>
                 <option value="3">Giapponese</option>
               </select>
             </div>
 
+            {/* Sezione "Rarità" */}
             <div className="mb-3">
-              <label className="form-label">Rarità</label>
-              <div className="form-checkbox-group" id="rarita">
-                <div className="checkbox-option">
-                  <input type="checkbox" value="1" id="comune" /> <label htmlFor="comune">Comune</label>
-                </div>
-                <div className="checkbox-option">
-                  <input type="checkbox" value="2" id="rara" /> <label htmlFor="rara">Rara</label>
-                </div>
-                <div className="checkbox-option">
-                  <input type="checkbox" value="3" id="ultraRara" /> <label htmlFor="ultraRara">Ultra Rara</label>
-                </div>
-                <div className="checkbox-option">
-                  <input type="checkbox" value="4" id="segreta" /> <label htmlFor="segreta">Segreta</label>
-                </div>
-                <div className="checkbox-option">
-                  <input type="checkbox" value="5" id="ultimate" /> <label htmlFor="ultimate">Ultimate</label>
-                </div>
-                <div className="checkbox-option">
-                  <input type="checkbox" value="6" id="ghost" /> <label htmlFor="ghost">Ghost</label>
-                </div>
+              <div
+                className="d-flex justify-content-between align-items-center"
+                onClick={() => window.innerWidth >= 768 && setOpenRarity(!openRarity)}
+              >
+                <label className="form-label fs-5">Rarità</label>
+                {window.innerWidth >= 768 &&
+                  (!openRarity ? (
+                    <ChevronUp className="fs-4 cursor-pointer" />
+                  ) : (
+                    <ChevronDown className="fs-4 cursor-pointer" />
+                  ))}
               </div>
+              <Collapse in={openRarity}>
+                <div className="form-checkbox-group" id="rarita"></div>
+              </Collapse>
             </div>
 
+            {/* Sezione "Gradiazione" */}
             <div className="mb-3">
-              <label className="form-label">Gradiazione</label>
-              <div className="form-checkbox-group" id="gradiazione">
-                <div className="checkbox-option">
-                  <input type="checkbox" value="nearMint" id="nearMint" /> <label htmlFor="nearMint">Near Mint</label>
-                </div>
-                <div className="checkbox-option">
-                  <input type="checkbox" value="mint" id="mint" /> <label htmlFor="mint">Mint</label>
-                </div>
-                <div className="checkbox-option">
-                  <input type="checkbox" value="excellent" id="excellent" />{" "}
-                  <label htmlFor="excellent">Excellent</label>
-                </div>
-                <div className="checkbox-option">
-                  <input type="checkbox" value="good" id="good" /> <label htmlFor="good">Good</label>
-                </div>
-                <div className="checkbox-option">
-                  <input type="checkbox" value="fair" id="fair" /> <label htmlFor="fair">Fair</label>
-                </div>
-                <div className="checkbox-option">
-                  <input type="checkbox" value="poor" id="poor" /> <label htmlFor="poor">Poor</label>
-                </div>
+              <div
+                className="d-flex justify-content-between align-items-center"
+                onClick={() => window.innerWidth >= 768 && setOpenGrade(!openGrade)}
+              >
+                <label className="form-label fs-5">Gradiazione</label>
+                {window.innerWidth >= 768 &&
+                  (!openGrade ? (
+                    <ChevronUp className="fs-4 cursor-pointer" />
+                  ) : (
+                    <ChevronDown className="fs-4 cursor-pointer" />
+                  ))}
               </div>
+              <Collapse in={openGrade}>
+                <div className="form-checkbox-group" id="gradiazione">
+                  <div className="checkbox-option">
+                    <input type="checkbox" value="nearMint" id="nearMint" /> <label htmlFor="nearMint">Near Mint</label>
+                  </div>
+                  <div className="checkbox-option">
+                    <input type="checkbox" value="mint" id="mint" /> <label htmlFor="mint">Mint</label>
+                  </div>
+                  <div className="checkbox-option">
+                    <input type="checkbox" value="excellent" id="excellent" />{" "}
+                    <label htmlFor="excellent">Excellent</label>
+                  </div>
+                  <div className="checkbox-option">
+                    <input type="checkbox" value="good" id="good" /> <label htmlFor="good">Good</label>
+                  </div>
+                  <div className="checkbox-option">
+                    <input type="checkbox" value="fair" id="fair" /> <label htmlFor="fair">Fair</label>
+                  </div>
+                  <div className="checkbox-option">
+                    <input type="checkbox" value="poor" id="poor" /> <label htmlFor="poor">Poor</label>
+                  </div>
+                </div>
+              </Collapse>
             </div>
 
             {/* Lingua come checkbox con scrollbar */}
             <div className="mb-3">
-              <label className="form-label">Lingua</label>
+              <label className="form-label fs-5">Lingua</label>
               <div className="form-checkbox-group" id="lingua">
                 <div className="checkbox-option">
                   <input type="checkbox" value="1" id="italiano" /> <label htmlFor="italiano">Italiano</label>

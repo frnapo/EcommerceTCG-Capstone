@@ -18,7 +18,7 @@ const SellComponent = () => {
   return (
     <div className="container text-center">
       <div className="row">
-        <div className="col-9 col-md-6 col-xl-7">
+        <div className="col-9 col-md-6 col-xl-7 pb-5">
           <h1 className="mt-5 fw-bold mb-4">
             <span className="secondary-color">Vendi</span> le Tue Carte da Gioco -{" "}
             <span className="secondary-color">Contattaci</span> per Iniziare!

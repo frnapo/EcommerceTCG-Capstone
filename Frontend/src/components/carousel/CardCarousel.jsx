@@ -51,7 +51,7 @@ const CardCarousel = ({ cards }) => {
               scale: isSelected ? 1 : 0.8,
               filter: isSelected ? "blur(0px)" : "blur(2px)", // Aumenta l'effetto di blur per le carte non selezionate
               opacity: isSelected ? 1 : 0.9, // Riduci l'opacità per le carte non selezionate
-              zIndex: isSelected ? 1040 : 1000, // Mantiene lo z-index ma enfatizza la carta selezionata tramite altri mezzi
+              zIndex: isSelected ? 1037 : 1000, // Mantiene lo z-index ma enfatizza la carta selezionata tramite altri mezzi
             }}
             transition={{
               duration: 0.5,

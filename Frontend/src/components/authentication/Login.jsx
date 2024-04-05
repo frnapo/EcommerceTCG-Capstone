@@ -26,7 +26,7 @@ const Login = () => {
     <>
       <NavigationButtons />
 
-      <div className="d-flex align-items-center justify-content-center" style={{ zIndex: -1 }}>
+      <div className="d-flex align-items-center justify-content-center">
         <form onSubmit={handleSubmit} className="w-100" style={{ maxWidth: "320px" }}>
           <div className="mb-3">
             <label className="form-label">Email</label>
