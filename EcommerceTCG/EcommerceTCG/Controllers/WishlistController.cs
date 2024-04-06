@@ -56,7 +56,6 @@ namespace EcommerceTCG.Controllers
         [Route("add")]
         public async Task<ActionResult<Wishlist>> AddToWishlist(int ProductId, int userId)
         {
-
             var wishlist = new Wishlist
             {
                 UserId = userId,
@@ -67,14 +66,17 @@ namespace EcommerceTCG.Controllers
             if (await _context.Wishlists.AnyAsync(w => w.ProductId == ProductId && w.UserId == userId))
             {
                 await RemoveFromWishlist(ProductId, userId);
-                return Ok(new { isInWishlist = false, ProductId = ProductId, Message = "Prodotto rimosso dai preferiti." });
+                var product = await _context.Products.FirstOrDefaultAsync(p => p.ProductId == ProductId);
+                return Ok(new { isInWishlist = false, ProductId = ProductId, Message = $"{product.Name} rimosso dalla watchlist" });
             }
 
             _context.Wishlists.Add(wishlist);
             await _context.SaveChangesAsync();
 
-            return Ok(new { isInWishlist = true, ProductId = ProductId, Message = "Prodotto aggiunto ai preferiti." });
+            var addedProduct = await _context.Products.FirstOrDefaultAsync(p => p.ProductId == ProductId);
+            return Ok(new { isInWishlist = true, ProductId = ProductId, Message = $"{addedProduct.Name} aggiunto alla watchlist" });
         }
+
 
         [HttpPost]
         [Route("remove")]

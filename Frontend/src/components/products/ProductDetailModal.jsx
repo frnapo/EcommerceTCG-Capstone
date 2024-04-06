@@ -33,7 +33,7 @@ const ProductDetailModal = ({
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          exit={{ opacity: 1 }}
           className="position-fixed top-0 start-0 w-100 h-100"
           style={{ background: "rgba(0, 0, 0, 0.8)", zIndex: 1050 }}
           onClick={() => setSelectedProduct(null)}
@@ -41,12 +41,12 @@ const ProductDetailModal = ({
 
         <motion.div
           layoutId={selectedProduct.productId}
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.95 }}
-          transition={{ duration: 0.2, ease: "easeInOut" }}
-          className="position-fixed top-50 start-50 translate-middle p-3 p-md-5 bg-blue rounded-5"
-          style={{ zIndex: 1051, maxWidth: "800px" }}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 0.9 }}
+          exit={{ opacity: 1, scale: 0 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+          className="position-fixed top-50 start-50 translate-middle p-3 p-md-5 bg-blue bg-opacity-50 rounded-5"
+          style={{ zIndex: 1051, maxWidth: "800px", width: "95%" }}
         >
           <div className="position-absolute top-0 end-0 me-3 mt-2">
             <motion.button onClick={() => setSelectedProduct(null)} className="btn p-0 m-0">
@@ -54,72 +54,78 @@ const ProductDetailModal = ({
             </motion.button>
           </div>
 
-          <div className="row mx-2">
-            <div className="col-5 mx-auto" style={{ minWidth: "200px" }}>
+          <div className="row mx-2 mt-3">
+            <div className="col-5 mx-auto d-none d-md-block" style={{ minWidth: "200px" }}>
               <HoloCardComponent
                 prodotto={selectedProduct}
                 isHoloActive={holoActiveProductId === selectedProduct.productId}
                 isFocused={true}
               />
-
-              <div className="d-flex mt-3 mt-md-4 mb-3 mb-md-0">
-                <p className="m-0 p-0 me-2 fw-light">
-                  Holo
-                  <OverlayTrigger
-                    placement="bottom"
-                    overlay={
-                      <Tooltip id="tooltip-bottom">
-                        Simula l&apos;effetto olografico delle carte.
-                        <br />
-                        <br />
-                        NB - La riproduzione digitale può variare dall&apos;originale, verifica con fonti ufficiali per
-                        una rappresentazione precisa.
-                      </Tooltip>
-                    }
-                  >
-                    <span className="ms-1">
-                      <InfoCircle className="mb-1" />
-                    </span>
-                  </OverlayTrigger>
-                </p>
-                <Form.Switch
-                  id="custom-switch"
-                  checked={isHoloActive}
-                  onChange={() => handleToggleHoloEffect(selectedProduct.productId)}
-                />
-              </div>
             </div>
 
-            <div className="col-12 col-md-7 m-4 mt-0 m-md-0">
-              <h1 className="text-white m-0 p-0">{selectedProduct.name}</h1>
-              <p className="lead fs-6 text-secondary">{selectedProduct.expansion}</p>
+            <div className="col-12 col-md-7 mt-0 m-md-0 p-0">
+              <h1 className="text-white m-0 p-0 ms-0 ms-md-3">{selectedProduct.name}</h1>
+              <p className="lead fs-6 text-secondary ms-0 ms-md-3">{selectedProduct.expansion}</p>
 
-              <p className="m-0 p-0 lead fs-3">{selectedProduct.condition}</p>
-              <p className="m-0 p-0 fw-light">
-                <Badge bg="danger">{selectedProduct.rarity}</Badge> - {selectedProduct.serialNumber}
-              </p>
-              <p className="m-0 p-0 lead fs-6">{selectedProduct.firstEdition ? "1st Edition" : "Unlimited"}</p>
-              <p className="m-0 p-0 lead fs-6">{selectedProduct.language}</p>
+              <div className="d-flex justify-content-center justify-content-md-start ms-0 ms-md-3 bg-dark p-3 rounded-3">
+                <div className="d-block d-md-none">
+                  <img
+                    src={selectedProduct.imageUrl}
+                    className="img-fluid"
+                    style={{ width: "120px" }}
+                    alt={selectedProduct.imageUrl}
+                  />
+                </div>
 
-              <form onSubmit={handleSubmit} className="mt-3 mt-md-5">
-                <p className="m-0 p-0 lead ms-1">
-                  {selectedProduct.availableQuantity == 1
-                    ? `${selectedProduct.availableQuantity} disponibile`
-                    : `${selectedProduct.availableQuantity} disponibili`}
-                </p>
-                <div className="d-flex align-items-center">
+                <div className="ms-4">
+                  <p className="m-0 p-0 lead fs-3">{selectedProduct.condition}</p>
+                  <p className="m-0 p-0 fw-light">
+                    <Badge bg="warning">{selectedProduct.rarity}</Badge> - {selectedProduct.serialNumber}
+                  </p>
+                  <p className="m-0 p-0 lead fs-6">{selectedProduct.firstEdition ? "1st Edition" : "Unlimited"}</p>
+                  <p className="m-0 p-0 lead fs-6">{selectedProduct.language}</p>
+
+                  <div className="d-flex d-none d-md-flex">
+                    <p className="m-0 p-0 me-2 fw-light">
+                      Holo
+                      <OverlayTrigger
+                        placement="bottom"
+                        overlay={
+                          <Tooltip id="tooltip-bottom">
+                            Simula l&apos;effetto olografico delle carte.
+                            <br />
+                            <br />
+                            NB - La riproduzione digitale può variare dall&apos;originale, verifica con fonti ufficiali
+                            per una rappresentazione precisa.
+                          </Tooltip>
+                        }
+                      >
+                        <span className="ms-1">
+                          <InfoCircle className="mb-1" />
+                        </span>
+                      </OverlayTrigger>
+                    </p>
+                    <Form.Switch
+                      id="custom-switch"
+                      checked={isHoloActive}
+                      onChange={() => handleToggleHoloEffect(selectedProduct.productId)}
+                    />
+                  </div>
+                </div>
+              </div>
+              <form onSubmit={handleSubmit} className="mt-3 mt-md-4">
+                <div className="d-flex align-items-center justify-content-center">
                   <input
                     type="number"
                     min="1"
                     max={selectedProduct.availableQuantity}
                     defaultValue="1"
-                    className="form-control rounded-3 rounded-end-0 py-2 border-0 fw-bold"
-                    style={{ width: "auto" }}
+                    className="form-control rounded-3 rounded-end-0 py-2 w-25 border-0 fw-bold"
                   />
-                  <button type="submit" className="btn btn-custom rounded-3 rounded-start-0 px-5 py-2">
+                  <button type="submit" className="btn btn-custom rounded-3 rounded-start-0 px-4 px-md-5 py-2">
                     Carrello
                   </button>
-                  {userId ? ( // o token, se stai passando quello
+                  {userId ? (
                     <div
                       className="cursor-pointer ms-3 mb-1"
                       onClick={() => handleToggleWishlistItem(selectedProduct.productId)}

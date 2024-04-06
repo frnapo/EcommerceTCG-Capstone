@@ -33,7 +33,7 @@ const FilterComponent = () => {
           {!open ? (
             <div
               onClick={() => setOpen(!open)}
-              className="cursor-pointer "
+              className="cursor-pointer"
               aria-controls="collpase-filter"
               aria-expanded={open}
             >

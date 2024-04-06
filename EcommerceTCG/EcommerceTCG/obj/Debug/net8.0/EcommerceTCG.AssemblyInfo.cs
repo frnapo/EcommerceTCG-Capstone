@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EcommerceTCG")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d5a9acee00002dd386d61e367516fc79b5b23e8c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9727a851c38293c3543e487cb570f2cfdb302e33")]
 [assembly: System.Reflection.AssemblyProductAttribute("EcommerceTCG")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EcommerceTCG")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

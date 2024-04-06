@@ -58,11 +58,11 @@ const HeaderComponent = () => {
         animate="visible"
         variants={imageVariants}
       >
-        <img src={selectedImage} className="img-fluid" alt="Immagine di sfondo" />
+        <img src={selectedImage} className="img-fluid shadow" alt="Immagine di sfondo" />
       </motion.div>
       <div
-        className="d-flex justify-content-center d-none d-md-flex position-absolute start-0 end-0"
-        style={{ bottom: "10px" }}
+        className="d-flex justify-content-center d-none d-md-flex position-absolute start-0 end-0 shadow"
+        style={{ bottom: "6.5px" }}
       >
         {products.map((product, index) => (
           <div
