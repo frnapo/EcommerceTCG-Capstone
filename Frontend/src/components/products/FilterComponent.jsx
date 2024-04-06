@@ -3,12 +3,26 @@ import { motion } from "framer-motion";
 import { Collapse } from "react-bootstrap";
 import ArrowDownIcon from "../../assets/icons/ArrowDownIcon";
 import ArrowUpIcon from "../../assets/icons/ArrowUpIcon";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import { ChevronDown, ChevronUp } from "react-bootstrap-icons";
+import { fetchExpansionsByType, fetchRaritiesByType } from "../../redux/slices/filterSlice";
 
 const FilterComponent = () => {
   const [open, setOpen] = useState(window.innerWidth >= 768);
   const [openRarity, setOpenRarity] = useState(window.innerWidth < 768);
   const [openGrade, setOpenGrade] = useState(window.innerWidth < 768);
+  const { categoryId } = useParams();
+  const dispatch = useDispatch();
+  const expansions = useSelector((state) => state.filters.expansions);
+  const rarities = useSelector((state) => state.filters.rarities);
+
+  useEffect(() => {
+    if (categoryId) {
+      dispatch(fetchExpansionsByType(categoryId));
+      dispatch(fetchRaritiesByType(categoryId));
+    }
+  }, [categoryId, dispatch]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -61,11 +75,13 @@ const FilterComponent = () => {
         >
           <form>
             <div className="my-3">
-              <select className="form-select" id="espansione">
-                <option value="seleziona">Espansione</option>
-                <option value="1">Italiano</option>
-                <option value="2">Inglese</option>
-                <option value="3">Giapponese</option>
+              <select className="form-select" aria-label="Espansione">
+                <option defaultValue>Seleziona Espansione</option>
+                {expansions.map((expansion) => (
+                  <option key={expansion.expansionId} value={expansion.expansionId}>
+                    {expansion.name}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -84,7 +100,14 @@ const FilterComponent = () => {
                   ))}
               </div>
               <Collapse in={openRarity}>
-                <div className="form-checkbox-group" id="rarita"></div>
+                <div className="form-checkbox-group" id="rarities">
+                  {rarities.map((rarity) => (
+                    <div key={rarity.rarityId}>
+                      <input type="checkbox" id={`rarity-${rarity.rarityId}`} name="rarity" value={rarity.rarityId} />
+                      <label htmlFor={`rarity-${rarity.rarityId}`}>{rarity.description}</label>
+                    </div>
+                  ))}
+                </div>
               </Collapse>
             </div>
 
