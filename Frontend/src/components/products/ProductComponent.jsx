@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProdByCategory } from "../../redux/slices/productSlice";
@@ -13,8 +14,6 @@ import BreadcrumbsAndSort from "./BreadcrumbsAndSort";
 import { createSelector } from "reselect";
 
 const baseWishlistItemsSelector = (state) => state.wishlist.items;
-
-// Selettore memoizzato che ritorna gli ID dei prodotti nella wishlist
 const wishlistProductIdsSelector = createSelector([baseWishlistItemsSelector], (items) =>
   items.map((item) => item.productId)
 );
@@ -31,6 +30,24 @@ const ProductComponent = () => {
   const [wishlistAnimationTrigger, setWishlistAnimationTrigger] = useState(0);
 
   const [sortedItems, setSortedItems] = useState([]);
+
+  const [filters, setFilters] = useState({
+    expansion: "",
+    rarity: [],
+    grade: [],
+    language: [],
+  });
+
+  const applyFilters = () => {
+    const filtered = items.filter((item) => {
+      const matchesExpansion = filters.expansion === "" || item.expansion === filters.expansion;
+      const matchesRarity = filters.rarity.length === 0 || filters.rarity.includes(item.rarity);
+      const matchesGrade = filters.grade.length === 0 || filters.grade.includes(item.condition);
+      const matchesLanguage = filters.language.length === 0 || filters.language.includes(item.language);
+      return matchesExpansion && matchesRarity && matchesGrade && matchesLanguage;
+    });
+    setSortedItems(filtered);
+  };
 
   useEffect(() => {
     setSortedItems([...items]);
@@ -63,7 +80,10 @@ const ProductComponent = () => {
     setSortedItems(sorted);
   };
 
-  //to do icone wishlist in base a database
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
+    applyFilters(newFilters);
+  };
 
   useEffect(() => {
     dispatch(fetchProdByCategory(categoryId));
@@ -77,6 +97,10 @@ const ProductComponent = () => {
   const handleToggleHoloEffect = (productId) => {
     setHoloActiveProductId((currentId) => (currentId === productId ? null : productId));
   };
+
+  useEffect(() => {
+    applyFilters(filters);
+  }, [items, filters]);
 
   if (isLoading) {
     return (
@@ -104,7 +128,7 @@ const ProductComponent = () => {
       <div className="container">
         <div className="row">
           <div className="col-12 col-md-5  pb-5 col-lg-4 d-md-flex align-items-start justify-content-md-end">
-            <FilterComponent />
+            <FilterComponent onFilter={handleFilterChange} />
           </div>
           <div className="col-12 col-md-7 col-lg-8">
             <div>
@@ -112,26 +136,35 @@ const ProductComponent = () => {
             </div>
 
             <div className="row pb-4">
-              {sortedItems.map((prodotto) => (
-                <div className="col-6 col-lg-4 col-xxl-3 py-3" key={prodotto.productId}>
-                  <motion.div
-                    className="cursor-pointer"
-                    layoutId={prodotto.productId}
-                    onClick={() => setSelectedProduct(prodotto)}
-                  >
-                    <HoloCardComponent isHoloActive={holoActiveProductId === prodotto.productId} prodotto={prodotto} />
-                  </motion.div>
-
-                  <div className="mt-3 d-flex justify-content-between">
-                    <Button
-                      className={`w-100  ${prodotto.availableQuantity > 0 ? "btn-custom" : "btn-secondary"}`}
-                      disabled={prodotto.availableQuantity < 1}
+              {sortedItems.length > 0 ? (
+                sortedItems.map((prodotto) => (
+                  <div className="col-6 col-lg-4 col-xxl-3 py-3" key={prodotto.productId}>
+                    <motion.div
+                      className="cursor-pointer"
+                      layoutId={prodotto.productId}
+                      onClick={() => setSelectedProduct(prodotto)}
                     >
-                      {prodotto.availableQuantity > 0 ? "Disponibile" : "Non disponibile"}
-                    </Button>
+                      <HoloCardComponent
+                        isHoloActive={holoActiveProductId === prodotto.productId}
+                        prodotto={prodotto}
+                      />
+                    </motion.div>
+
+                    <div className="mt-3 d-flex justify-content-between">
+                      <Button
+                        className={`w-100  ${prodotto.availableQuantity > 0 ? "btn-custom" : "btn-secondary"}`}
+                        disabled={prodotto.availableQuantity < 1}
+                      >
+                        {prodotto.availableQuantity > 0 ? "Disponibile" : "Non disponibile"}
+                      </Button>
+                    </div>
                   </div>
+                ))
+              ) : (
+                <div className="col-12 mt-5 text-center lead py-3 fs-2">
+                  <p>Nessun risultato</p>
                 </div>
-              ))}
+              )}
 
               <ProductDetailModal
                 selectedProduct={selectedProduct}

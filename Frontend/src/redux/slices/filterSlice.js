@@ -7,7 +7,6 @@ export const fetchExpansionsByType = createAsyncThunk(
       const response = await fetch(`https://localhost:7289/api/Products/expansions/byType?typeId=${typeId}`);
       if (!response.ok) throw new Error("Network response was not ok");
       const data = await response.json();
-      console.log(data);
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -22,7 +21,6 @@ export const fetchRaritiesByType = createAsyncThunk(
       const response = await fetch(`https://localhost:7289/api/Products/rarities/byType?typeId=${typeId}`);
       if (!response.ok) throw new Error("Network response was not ok");
       const data = await response.json();
-      console.log(data);
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -35,6 +33,7 @@ export const filtersSlice = createSlice({
   initialState: {
     expansions: [],
     rarities: [],
+    grade: [],
     isLoading: false,
     error: null,
   },

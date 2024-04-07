@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Collapse } from "react-bootstrap";
@@ -8,7 +9,7 @@ import { useParams } from "react-router-dom";
 import { ChevronDown, ChevronUp } from "react-bootstrap-icons";
 import { fetchExpansionsByType, fetchRaritiesByType } from "../../redux/slices/filterSlice";
 
-const FilterComponent = () => {
+const FilterComponent = ({ onFilter }) => {
   const [open, setOpen] = useState(window.innerWidth >= 768);
   const [openRarity, setOpenRarity] = useState(window.innerWidth < 768);
   const [openGrade, setOpenGrade] = useState(window.innerWidth < 768);
@@ -36,6 +37,44 @@ const FilterComponent = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const [filters, setFilters] = useState({
+    expansion: "",
+    rarity: [],
+    grade: [],
+    language: [],
+  });
+
+  const handleExpansionChange = (e) => {
+    setFilters({ ...filters, expansion: e.target.value });
+  };
+
+  const handleRarityChange = (e) => {
+    const { checked, value } = e.target;
+    setFilters({
+      ...filters,
+      rarity: checked ? [...filters.rarity, value] : filters.rarity.filter((r) => r !== value),
+    });
+  };
+  const handleLanguageChange = (e) => {
+    const { checked, value } = e.target;
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      language: checked ? [...prevFilters.language, value] : prevFilters.language.filter((lang) => lang !== value),
+    }));
+  };
+
+  const handleGradeChange = (e) => {
+    const { checked, value } = e.target;
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      grade: checked ? [...prevFilters.grade, value] : prevFilters.grade.filter((g) => g !== value),
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onFilter(filters);
+  };
   return (
     <div className="rounded-4 p-4 bg-blue sticky-md-top" id="filter-container">
       <div className="d-flex justify-content-between align-items-center">
@@ -73,19 +112,17 @@ const FilterComponent = () => {
           transition={{ duration: 0.5 }}
           id="collpase-filter"
         >
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="my-3">
-              <select className="form-select" aria-label="Espansione">
-                <option defaultValue>Seleziona Espansione</option>
+              <select className="form-select" aria-label="Espansione" onChange={handleExpansionChange}>
+                <option value="">Seleziona Espansione</option>
                 {expansions.map((expansion) => (
-                  <option key={expansion.expansionId} value={expansion.expansionId}>
+                  <option key={expansion.expansionId} value={expansion.name}>
                     {expansion.name}
                   </option>
                 ))}
               </select>
             </div>
-
-            {/* Sezione "Rarità" */}
             <div className="mb-3">
               <div
                 className="d-flex justify-content-between align-items-center"
@@ -103,15 +140,21 @@ const FilterComponent = () => {
                 <div className="form-checkbox-group" id="rarities">
                   {rarities.map((rarity) => (
                     <div key={rarity.rarityId}>
-                      <input type="checkbox" id={`rarity-${rarity.rarityId}`} name="rarity" value={rarity.rarityId} />
-                      <label htmlFor={`rarity-${rarity.rarityId}`}>{rarity.description}</label>
+                      <input
+                        type="checkbox"
+                        id={`rarity-${rarity.rarityId}`}
+                        name="rarity"
+                        value={rarity.description}
+                        onChange={handleRarityChange}
+                      />
+                      <label className="ms-2" htmlFor={`rarity-${rarity.rarityId}`}>
+                        {rarity.description}
+                      </label>
                     </div>
                   ))}
                 </div>
               </Collapse>
             </div>
-
-            {/* Sezione "Gradiazione" */}
             <div className="mb-3">
               <div
                 className="d-flex justify-content-between align-items-center"
@@ -127,42 +170,28 @@ const FilterComponent = () => {
               </div>
               <Collapse in={openGrade}>
                 <div className="form-checkbox-group" id="gradiazione">
-                  <div className="checkbox-option">
-                    <input type="checkbox" value="nearMint" id="nearMint" /> <label htmlFor="nearMint">Near Mint</label>
-                  </div>
-                  <div className="checkbox-option">
-                    <input type="checkbox" value="mint" id="mint" /> <label htmlFor="mint">Mint</label>
-                  </div>
-                  <div className="checkbox-option">
-                    <input type="checkbox" value="excellent" id="excellent" />{" "}
-                    <label htmlFor="excellent">Excellent</label>
-                  </div>
-                  <div className="checkbox-option">
-                    <input type="checkbox" value="good" id="good" /> <label htmlFor="good">Good</label>
-                  </div>
-                  <div className="checkbox-option">
-                    <input type="checkbox" value="fair" id="fair" /> <label htmlFor="fair">Fair</label>
-                  </div>
-                  <div className="checkbox-option">
-                    <input type="checkbox" value="poor" id="poor" /> <label htmlFor="poor">Poor</label>
-                  </div>
+                  {["Near Mint", "Mint", "Excellent", "Good", "Fair", "Poor"].map((grade) => (
+                    <div className="checkbox-option" key={grade}>
+                      <input type="checkbox" value={grade} id={grade} onChange={handleGradeChange} />
+                      <label className="ms-2" htmlFor={grade}>
+                        {grade}
+                      </label>
+                    </div>
+                  ))}
                 </div>
               </Collapse>
             </div>
-
-            {/* Lingua come checkbox con scrollbar */}
             <div className="mb-3">
               <label className="form-label fs-5">Lingua</label>
               <div className="form-checkbox-group" id="lingua">
-                <div className="checkbox-option">
-                  <input type="checkbox" value="1" id="italiano" /> <label htmlFor="italiano">Italiano</label>
-                </div>
-                <div className="checkbox-option">
-                  <input type="checkbox" value="2" id="inglese" /> <label htmlFor="inglese">Inglese</label>
-                </div>
-                <div className="checkbox-option">
-                  <input type="checkbox" value="3" id="giapponese" /> <label htmlFor="giapponese">Giapponese</label>
-                </div>
+                {["Italiano", "English", "Japanese"].map((language, index) => (
+                  <div className="checkbox-option" key={index}>
+                    <input type="checkbox" value={language} id={language} onChange={handleLanguageChange} />
+                    <label className="ms-2" htmlFor={language}>
+                      {language}
+                    </label>
+                  </div>
+                ))}
               </div>
             </div>
             <button type="submit" className="btn-custom w-100 rounded-pill py-2 px-4">

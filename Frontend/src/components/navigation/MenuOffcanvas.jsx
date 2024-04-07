@@ -99,7 +99,7 @@ const MenuOffcanvas = () => {
               <p className="m-0 p-0 py-1">Pokémon</p>
             </Link>
           </motion.div>
-          <Link className="nav-link nav-link-transition fw-bold fs-1" onClick={handleClose}>
+          <Link to="/expansions" className="nav-link nav-link-transition fw-bold fs-1" onClick={handleClose}>
             <p className="my-2">Espansioni</p>
           </Link>
           {/* <Link className="nav-link nav-link-transition fw-bold fs-1" onClick={handleClose}>

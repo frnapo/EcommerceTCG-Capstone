@@ -14,6 +14,7 @@ import HotbuyComponent from "./components/products/HotbuyComponent";
 import WishlistComponent from "./components/navigation/WishlistComponent";
 import ChatIcon from "./assets/icons/ChatIcon";
 import SellComponent from "./components/carousel/SellComponent";
+import ExpansionsComponent from "./components/products/ExpansionsComponent";
 
 function App() {
   // const token = useSelector((state) => state.auth.token);
@@ -41,7 +42,7 @@ function App() {
             <Route path="/logout" element={<Logout />} />
             <Route path="/profilo" element={<UserComponent />} />
             <Route path="/categories/:categoryId" element={<ProductComponent />} />
-            {/* espansioni */}
+            <Route path="/expansions" element={<ExpansionsComponent />} />
             <Route path="/hotbuy" element={<HotbuyComponent />} />
             <Route path="/wishlist" element={<WishlistComponent />} />
             <Route path="/sell" element={<SellComponent />} />

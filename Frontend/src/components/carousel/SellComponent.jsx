@@ -16,9 +16,9 @@ const cards = [
 
 const SellComponent = () => {
   return (
-    <div className="container text-center">
+    <div className="container text-center relative-container">
       <div className="row">
-        <div className="col-9 col-md-6 col-xl-7 pb-5">
+        <div className="col-12 col-md-6 col-xl-7 mt-5 pb-5 rounded-5 absolute-on-md">
           <h1 className="mt-5 fw-bold mb-4">
             <span className="secondary-color">Vendi</span> le Tue Carte da Gioco -{" "}
             <span className="secondary-color">Contattaci</span> per Iniziare!
@@ -32,7 +32,7 @@ const SellComponent = () => {
           <div className="d-flex mt-5 justify-content-center">
             <a
               href="mailto:packpeekershop@gmail.com?subject=Vendita%20Carte&body=Ciao%2C%20sono%20interessato%20a%20vendere%20le%20mie%20carte.%20Ecco%20i%20dettagli:"
-              className="btn-custom btn py-3 px-4 me-2"
+              className="btn-custom btn py-3 px-5 me-2"
               target="_blank"
             >
               <EnvelopeFill className="me-2 fs-5 " />
@@ -40,7 +40,7 @@ const SellComponent = () => {
             </a>
             <a
               href="https://wa.me/393703401020?text=Ciao%2C%20sono%20interessato%20a%20vendere%20le%20mie%20carte.%20Ecco%20i%20dettagli:"
-              className="btn-blue py-3 btn px-4 "
+              className="btn-blue py-3 btn px-5 "
               target="_blank"
             >
               <Whatsapp className="me-2 fs-5" />
@@ -48,7 +48,7 @@ const SellComponent = () => {
             </a>
           </div>
         </div>
-        <div className="col-3 col-md-6 col-xl-5" style={{ marginTop: "-70px" }}>
+        <div className="col-12 col-md-6 col-xl-5" style={{ marginTop: "-70px" }}>
           <CardCarousel cards={cards} />
         </div>
       </div>
