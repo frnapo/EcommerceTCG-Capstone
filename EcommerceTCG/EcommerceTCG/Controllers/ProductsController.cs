@@ -3,8 +3,7 @@ using EcommerceTCG.Models;
 using EcommerceTCG.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Text.RegularExpressions;
-using Tesseract;
+using Newtonsoft.Json;
 
 namespace EcommerceTCG.Controllers
 {
@@ -13,10 +12,12 @@ namespace EcommerceTCG.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly EcommerceTcgContext _context;
+        private readonly ILogger<ProductsController> _logger;
 
-        public ProductsController(EcommerceTcgContext context)
+        public ProductsController(EcommerceTcgContext context, ILogger<ProductsController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
 
@@ -25,7 +26,9 @@ namespace EcommerceTCG.Controllers
         public IActionResult ByType(int id)
         {
             var products = _context.Products.Where(p => p.TypeId == id)
+                                            .OrderByDescending(p => p.AvailableQuantity)
                                             .Select(p => new
+
                                             {
                                                 p.ProductId,
                                                 p.Name,
@@ -42,6 +45,8 @@ namespace EcommerceTCG.Controllers
                                             }).ToList();
             return Ok(products);
         }
+
+
 
         [HttpGet("search/{name}")]
         public IActionResult Search(string name)
@@ -145,93 +150,69 @@ namespace EcommerceTCG.Controllers
 
 
 
-
-
-        [HttpPost]
-        public async Task<IActionResult> PostProduct([FromForm] ProductViewModel productViewModel)
+        [HttpPost("newproduct")]
+        public async Task<IActionResult> PostProduct([FromBody] ProductViewModel productViewModel)
         {
-            string extractedText = string.Empty;
-            string imagePath = null;
+            _logger.LogInformation($"Ricevuta nuova richiesta di prodotto: {JsonConvert.SerializeObject(productViewModel)}");
 
-            if (productViewModel.ImageFile != null && productViewModel.ImageFile.Length > 0)
-            {
-                var imageName = Guid.NewGuid().ToString() + Path.GetExtension(productViewModel.ImageFile.FileName);
-                var savePath = Path.Combine(Directory.GetCurrentDirectory(), "Img", imageName);
-                Directory.CreateDirectory(Path.GetDirectoryName(savePath));
-
-                using (var fileStream = new FileStream(savePath, FileMode.Create))
-                {
-                    await productViewModel.ImageFile.CopyToAsync(fileStream);
-                }
-
-
-                imagePath = $"/images/{imageName}";
-
-                // Estrai il testo dall'immagine salvata
-                extractedText = ExtractTextFromImage(savePath);
-            }
-
-            string productName = ExtractProductName(extractedText) ?? productViewModel.Name;
-            string serialNumber = ExtractSerialNumber(extractedText) ?? productViewModel.SerialNumber;
+            string productname = productViewModel.Name;
 
             var product = new Product
             {
-                Name = productName,
+                Name = productname,
                 Price = productViewModel.Price,
                 AvailableQuantity = productViewModel.AvailableQuantity,
-                SerialNumber = serialNumber,
+                ImageUrl = productViewModel.ImageUrl,
+                SerialNumber = productViewModel.SerialNumber,
                 FirstEdition = productViewModel.FirstEdition,
                 RarityId = productViewModel.RarityId,
                 ExpansionId = productViewModel.ExpansionId,
                 TypeId = productViewModel.TypeId,
                 Language = productViewModel.Language,
                 Condition = productViewModel.Condition,
-                ImageUrl = imagePath
             };
+
+            if (!_context.Rarities.Any(r => r.RarityId == product.RarityId))
+            {
+                return BadRequest("L'ID della rarità specificato non esiste nel database.");
+            }
+
+            if (!_context.Expansions.Any(e => e.ExpansionId == product.ExpansionId))
+            {
+                return BadRequest("L'ID dell'espansione specificato non esiste nel database.");
+            }
+
+            if (!_context.CardTypes.Any(t => t.TypeId == product.TypeId))
+            {
+                return BadRequest("L'ID del tipo specificato non esiste nel database.");
+            }
 
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProduct", new { id = product.ProductId }, product);
+            return Ok(new { message = productname + " inserito con successo!" });
         }
 
 
 
-        private string ExtractTextFromImage(string imagePath)
+
+        [HttpPut("updateimage")]
+        public async Task<IActionResult> UpdateProductImage([FromBody] UpdateProductImageViewModel updateModel)
         {
-            var dataPath = Path.Combine(Directory.GetCurrentDirectory(), "tessdata");
-            using (var engine = new TesseractEngine(dataPath, "eng", EngineMode.Default))
-            {
-                using (var img = Pix.LoadFromFile(imagePath))
-                {
-                    using (var page = engine.Process(img))
-                    {
-                        return page.GetText();
-                    }
-                }
-            }
-        }
+            _logger.LogInformation($"Ricevuta richiesta di aggiornamento immagine per il prodotto: {updateModel.SerialNumber}");
+            var product = await _context.Products.FirstOrDefaultAsync(p => p.SerialNumber == updateModel.SerialNumber);
 
-        private string ExtractProductName(string text)
-        {
-            var match = Regex.Match(text, "Product Name: (.+)");
-            if (match.Success)
+            if (product == null)
             {
-                return match.Groups[1].Value.Trim();
+                return NotFound($"Prodotto con SerialNumber {updateModel.SerialNumber} non trovato.");
             }
-            return null;
-        }
 
-        private string ExtractSerialNumber(string text)
-        {
-            var match = Regex.Match(text, "Serial Number: (.+)");
-            if (match.Success)
-            {
-                return match.Groups[1].Value.Trim();
-            }
-            return null;
-        }
+            product.ImageUrl = updateModel.ImageUrl;
 
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = $"Immagine del prodotto {product.Name} aggiornata con successo!" });
+        }
 
 
 
@@ -258,8 +239,29 @@ namespace EcommerceTCG.Controllers
         }
 
 
+        [HttpGet("hotbuy")]
+        public async Task<ActionResult<IEnumerable<Product>>> GetHotbuy()
+        {
+            var products = _context.Products.Where(p => p.Price > 30 && p.AvailableQuantity > 1)
+                                    .OrderByDescending(p => p.AvailableQuantity)
+                                    .Select(p => new
 
-
+                                    {
+                                        p.ProductId,
+                                        p.Name,
+                                        p.Price,
+                                        p.AvailableQuantity,
+                                        p.ImageUrl,
+                                        p.SerialNumber,
+                                        p.FirstEdition,
+                                        Rarity = p.Rarity.Description,
+                                        Expansion = p.Expansion.Name,
+                                        Type = p.Type.Name,
+                                        p.Language,
+                                        p.Condition,
+                                    }).ToList();
+            return Ok(products);
+        }
 
 
 

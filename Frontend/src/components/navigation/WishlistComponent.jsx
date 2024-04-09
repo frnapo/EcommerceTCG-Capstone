@@ -21,8 +21,8 @@ const WishlistComponent = () => {
       <div>
         <h1>Wishlist</h1>
         <ul>
-          {items.map((item) => (
-            <li key={item.wishlistId}>{item.name}</li>
+          {items.map((item, index) => (
+            <li key={item.wishlistId + index}>{item.name}</li>
           ))}
         </ul>
       </div>

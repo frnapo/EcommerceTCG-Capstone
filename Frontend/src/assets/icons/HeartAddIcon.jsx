@@ -26,9 +26,9 @@ const HeartAddIcon = ({ isWishlistItem, triggerAnimation }) => {
     <Lottie
       ref={lottieRef}
       animationData={animationData}
-      style={{ width: 45, height: 45 }}
+      style={{ width: 30, height: 30 }}
       loop={false}
-      autoplay={false}
+      autoPlay={false}
     />
   );
 };

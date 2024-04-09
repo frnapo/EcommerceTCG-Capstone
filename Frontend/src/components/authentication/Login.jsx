@@ -25,6 +25,7 @@ const Login = () => {
   return (
     <>
       <NavigationButtons />
+
       <div className="d-flex align-items-center justify-content-center">
         <form onSubmit={handleSubmit} className="w-100" style={{ maxWidth: "320px" }}>
           <div className="mb-3">

@@ -41,7 +41,6 @@ export const loginUser = createAsyncThunk("auth/login", async ({ email, password
     if (response.ok) {
       console.log("Data:", data);
       toast.success("Ciao, " + data.firstName);
-      localStorage.setItem("token", data.token);
       return data;
     } else {
       toast.error(data.message);
@@ -64,6 +63,7 @@ export const logoutUser = createAsyncThunk("auth/logout", async (_, { rejectWith
     let data = await response.json();
     if (response.ok) {
       toast.success("Sei stato disconesso");
+      console.log(data);
       return data;
     } else {
       toast.error(data.message);
@@ -116,8 +116,10 @@ export const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
+        state.token = action.payload.token;
         state.user = action.payload;
         state.token = action.payload.token;
+        console.log(action.payload);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;

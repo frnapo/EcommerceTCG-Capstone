@@ -10,6 +10,7 @@ namespace EcommerceTCG.ViewModel
         public decimal Price { get; set; }
         [Required]
         public int AvailableQuantity { get; set; }
+        public string? ImageUrl { get; set; }
         public string? SerialNumber { get; set; }
         [Required]
         public bool FirstEdition { get; set; }
@@ -23,8 +24,5 @@ namespace EcommerceTCG.ViewModel
         public string Language { get; set; }
         [Required]
         public string Condition { get; set; }
-
-
-        public IFormFile? ImageFile { get; set; }
     }
 }

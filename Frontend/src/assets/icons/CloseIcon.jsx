@@ -33,7 +33,7 @@ const CloseIcon = () => {
         animationData={animationData}
         style={{ width: 45, height: 45 }}
         loop={false}
-        autoplay={false}
+        autoPlay={false}
       />
     </div>
   );

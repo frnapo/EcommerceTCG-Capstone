@@ -6,6 +6,10 @@ import DB from "../../assets/img/db.png";
 import PKM from "../../assets/img/pkm.png";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import DBbg from "../../assets/img/DBbg.png";
+import YGObg from "../../assets/img/YGObg.png";
+import PKMbg from "../../assets/img/PKMbg.png";
+import OPbg from "../../assets/img/OPbg.png";
 
 const HeaderComponent = () => {
   const [selectedImage, setSelectedImage] = useState();
@@ -24,19 +28,19 @@ const HeaderComponent = () => {
 
     switch (categoryId) {
       case "1":
-        setSelectedImage(YGO);
+        setSelectedImage(YGObg);
         break;
       case "2":
-        setSelectedImage(OP);
+        setSelectedImage(OPbg);
         break;
       case "3":
-        setSelectedImage(DB);
+        setSelectedImage(DBbg);
         break;
       case "4":
-        setSelectedImage(PKM);
+        setSelectedImage(PKMbg);
         break;
       default:
-        setSelectedImage(YGO);
+        setSelectedImage(YGObg);
     }
   }, [location]);
 
@@ -46,7 +50,7 @@ const HeaderComponent = () => {
   };
 
   return (
-    <div className="my-2 mb-4 text-center position-relative">
+    <div className="mb-2 mb-4 text-center position-relative ">
       <motion.div
         key={selectedImage}
         className="position-relative"
@@ -54,9 +58,12 @@ const HeaderComponent = () => {
         animate="visible"
         variants={imageVariants}
       >
-        <img src={selectedImage} className="img-fluid" alt="Selected" />
+        <img src={selectedImage} className="img-fluid shadow" alt="Immagine di sfondo" />
       </motion.div>
-      <div className="d-flex justify-content-center position-absolute bottom-0 start-0 end-0">
+      <div
+        className="d-flex justify-content-center d-none d-md-flex position-absolute start-0 end-0 shadow"
+        style={{ bottom: "6.5px" }}
+      >
         {products.map((product, index) => (
           <div
             className={`image-box ${index === 0 ? "rounded-start-3" : ""} ${

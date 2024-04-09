@@ -1,28 +1,51 @@
-// stili cursori
-
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
-
-.cursor-pointer {
-  cursor: pointer;
-}
 
 $main-color: #08142b;
 $secondary-color: #df980f;
 $background-color: #040a16;
 $text: #fff;
 
+html {
+  scrollbar-width: thin;
+  scrollbar-color: $secondary-color $background-color;
+}
+
+#padding-container {
+  padding-top: 78.76px;
+}
+
+.secondary-color {
+  color: $secondary-color;
+}
+// stili cursori
+.cursor-pointer {
+  cursor: pointer;
+}
+
 html,
-body {
+body,
+#root {
   background-color: $background-color;
   font-family: "Ubuntu", sans-serif;
   font-weight: 700;
   color: $text;
+  height: 100%;
+  margin: 0;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 240px);
+}
+
+body {
+  overflow-x: hidden !important;
 }
 
 // transizione per i link
-
 .navbar {
-  background-color: $main-color;
+  background-color: $main-color !important;
 }
 
 .nav-link-transition {
@@ -53,6 +76,7 @@ body {
 .custom-offcanvas {
   background-color: $main-color;
   color: $text;
+  z-index: 9999;
 }
 
 .btn-custom {
@@ -105,17 +129,77 @@ body {
   overflow: hidden !important;
 }
 
+.bg-blue {
+  background-color: $main-color;
+}
+
+.bg-lightblue {
+  background-color: #e6efff;
+}
+
+//  form per filtri
+
+.form-checkbox-group input[type="checkbox"] {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+
+.form-checkbox-group label {
+  margin-bottom: 11px;
+  margin-left: 5px;
+  display: inline-block;
+  vertical-align: middle;
+}
+@media (min-width: 768px) {
+  .form-checkbox-group input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+  }
+
+  .form-checkbox-group label {
+    margin-left: 2px;
+  }
+}
+
+#filter-container {
+  top: 120px;
+}
+
 // card
 
-.holo-card {
+.card-info-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  aspect-ratio: 3 / 4;
-  background-size: cover;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 8px;
+}
+
+.product-name,
+.product-price {
+  margin: 0; /* Rimuove il margine di default dei tag <p> */
+  text-align: center;
+}
+
+.holo-card,
+.basic-card {
+  width: 100%;
+  aspect-ratio: 3 / 4.4;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
   border-radius: 8px;
   box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5);
   position: relative;
   overflow: hidden;
-  transition: transform 0.5s, box-shadow 0.5s;
+  transition: transform 0.5s, box-shadow 0.5s, filter 0.5s;
+  filter: saturate(1.3) contrast(1.2);
   --x-percent: 50%;
   --y-percent: 50%;
 }
@@ -139,9 +223,7 @@ body {
   mix-blend-mode: overlay;
   opacity: 0;
   transition: opacity 0.3s, background-position 0.3s, background-size 0.3s;
-  background-size: 180% 180%;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
+  background-size: 170% 170%;
 }
 
 .holo-card:hover::after {
@@ -149,6 +231,31 @@ body {
 }
 
 .holo-active:hover::after {
+  opacity: 1;
+}
+
+.basic-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at var(--x-percent) var(--y-percent),
+    rgba(255, 255, 255, 0.6) 0%,
+    transparent 70%
+  );
+  mix-blend-mode: overlay;
+  opacity: 0;
+  transition: opacity 0.3s, background-position 0.3s;
+}
+
+.basic-card:hover::after {
+  opacity: 0;
+}
+
+.basic-active:hover::after {
   opacity: 1;
 }
 
@@ -181,4 +288,205 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/////////////////////////// ESPANSIONI/////////////////////////
+
+.card {
+  position: relative;
+  perspective: 2500px;
+}
+
+.cover-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wrapper {
+  transition: all 0.5s;
+  position: absolute;
+  width: 100%;
+  z-index: -1;
+}
+
+.card:hover .wrapper {
+  transform: perspective(900px) translateY(-5%) rotateX(25deg) translateZ(0);
+  box-shadow: 2px 35px 32px -8px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 2px 35px 32px -8px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 2px 35px 32px -8px rgba(0, 0, 0, 0.75);
+}
+
+.wrapper::before {
+  top: 0;
+  height: 100%;
+  background-image: linear-gradient(to top, transparent 46%, rgba(12, 13, 19, 0.5) 68%, rgba(12, 13, 19) 97%);
+}
+.wrapper::after {
+  bottom: 0;
+  opacity: 1;
+  background-image: linear-gradient(to bottom, transparent 46%, rgba(12, 13, 19, 0.5) 68%, rgba(12, 13, 19) 97%);
+}
+
+.card:hover .wrapper::before,
+.wrapper::after {
+  opacity: 1;
+}
+
+.card:hover .wrapper::after {
+  height: 120px;
+}
+.title {
+  width: 100%;
+  transition: transform 0.5s;
+}
+.card:hover .title {
+  transform: translate3d(0%, -50px, 100px);
+}
+
+.character {
+  width: 100%;
+  opacity: 0;
+  transition: all 0.5s;
+  position: absolute;
+  z-index: -1;
+}
+
+.card:hover .character {
+  opacity: 1;
+  transform: translate3d(0%, -30%, 100px);
+}
+
+@media (max-width: 767.98px) {
+  .relative-container {
+    position: relative;
+  }
+  .absolute-on-md {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999 !important;
+    background-color: rgba(8, 20, 43, 0.7);
+  }
+}
+
+.card-custom {
+  overflow: hidden;
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  background: linear-gradient(to right, $main-color, $main-color);
+  color: #fff;
+}
+
+.card-custom::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, $secondary-color, $secondary-color);
+  transition: left 0.3s ease-in-out;
+  z-index: 0;
+}
+
+.card-custom:hover::before {
+  left: 0;
+}
+
+.img-container {
+  overflow: hidden;
+  height: 200px;
+}
+
+.card-custom .card-img-top {
+  transition: transform 0.5s ease;
+  width: 100%;
+  height: auto;
+  transform: scale(1);
+}
+
+.card-custom:hover .card-img-top {
+  transform: scale(1.15);
+}
+
+.card-custom .card-body {
+  z-index: 1;
+  position: relative;
+}
+//////////////////////////// CARRELLO //////////////////////////
+.message-enter {
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+.message-enter-active {
+  opacity: 1;
+}
+
+.message-exit {
+  opacity: 1;
+  transition: opacity 0.5s ease-out;
+}
+
+.message-exit-active {
+  opacity: 0;
+}
+
+.cart-icon-container {
+  position: relative;
+  display: inline-block;
+}
+
+.cart-counter {
+  position: absolute;
+  top: -1px;
+  right: 0;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  font-size: 0.75em;
+  transition: transform 0.5s ease;
+  z-index: 1050;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.cart-counter span {
+  display: block;
+}
+
+.custom-icon {
+  transition: transform 0.2s ease;
+}
+
+.custom-icon:hover {
+  transform: scale(1.5);
+}
+
+//////////////////////////// FOOTER //////////////////////////
+
+.footer {
+  position: sticky;
+  background-color: $main-color;
+  z-index: 1040 !important;
+}
+
+.footer-link {
+  color: rgb(206, 206, 206);
+  text-decoration: none;
+}
+
+.footer-link:hover {
+  color: white;
 }

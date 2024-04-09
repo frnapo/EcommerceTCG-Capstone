@@ -8,6 +8,8 @@ import { motion } from "framer-motion";
 import LogComponent from "../../assets/icons/LogComponent";
 import MenuIcon from "../../assets/icons/MenuIcon";
 import CloseIcon from "../../assets/icons/CloseIcon";
+import { useNavigate } from "react-router-dom";
+
 const MenuOffcanvas = () => {
   const [show, setShow] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -17,6 +19,16 @@ const MenuOffcanvas = () => {
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
+  const navigate = useNavigate();
+
+  const handleWishlistClick = () => {
+    if (!user) {
+      navigate("/login");
+      handleClose();
+    } else {
+      handleClose();
+    }
+  };
 
   const dropdownVariants = {
     open: {
@@ -73,38 +85,53 @@ const MenuOffcanvas = () => {
             animate={dropdownOpen ? "open" : "closed"}
             variants={dropdownVariants}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            style={{ overflow: "hidden" }}
           >
-            <Link className="nav-link fw-bold fs-3" to="/categories/1" onClick={handleClose}>
-              <p className="m-0 p-0">Yu-Gi-Oh!</p>
+            <Link className="nav-link nav-link-transition fw-bold fs-3" to="/categories/1" onClick={handleClose}>
+              <p className="m-0 p-0 py-1">Yu-Gi-Oh!</p>
             </Link>
-            <Link className="nav-link  fw-bold fs-3" to="/categories/2" onClick={handleClose}>
-              <p className="m-0 p-0">One Piece</p>
+            <Link className="nav-link nav-link-transition fw-bold fs-3" to="/categories/2" onClick={handleClose}>
+              <p className="m-0 p-0 py-1">One Piece</p>
             </Link>
-            <Link className="nav-link  fw-bold fs-3" to="/categories/3" onClick={handleClose}>
-              <p className="m-0 p-0">Dragonball</p>
+            <Link className="nav-link nav-link-transition fw-bold fs-3" to="/categories/3" onClick={handleClose}>
+              <p className="m-0 p-0 py-1">Dragonball</p>
             </Link>
-            <Link className="nav-link  fw-bold fs-3" to="/categories/4" onClick={handleClose}>
-              <p className="m-0 p-0">Pokémon</p>
+            <Link className="nav-link nav-link-transition fw-bold fs-3" to="/categories/4" onClick={handleClose}>
+              <p className="m-0 p-0 py-1">Pokémon</p>
             </Link>
           </motion.div>
-          <Link className="nav-link nav-link-transition fw-bold fs-1" onClick={handleClose}>
+          <Link to="/expansions" className="nav-link nav-link-transition fw-bold fs-1" onClick={handleClose}>
             <p className="my-2">Espansioni</p>
           </Link>
-          <Link className="nav-link nav-link-transition fw-bold fs-1" onClick={handleClose}>
+          {/* <Link className="nav-link nav-link-transition fw-bold fs-1" onClick={handleClose}>
             <p className="my-2">Acquista</p>
-          </Link>
+          </Link> */}
           <Link to="/hotbuy" className="nav-link nav-link-transition fw-bold fs-1" onClick={handleClose}>
             <p className="my-2">Hotbuy</p>
           </Link>
-          <Link to="/wishlist" className="nav-link nav-link-transition fw-bold fs-1" onClick={handleClose}>
+          <Link
+            to={user ? "/wishlist" : "/login"}
+            className="nav-link nav-link-transition fw-bold fs-1"
+            onClick={handleWishlistClick}
+          >
             <p className="my-2">Wishlist</p>
           </Link>
-          <Link className="nav-link nav-link-transition fw-bold fs-1" onClick={handleClose}>
-            <p className="my-2">Info</p>
+
+          <Link to="/sell" className="nav-link nav-link-transition fw-bold fs-1" onClick={handleClose}>
+            <p className="my-2">Vendi</p>
           </Link>
         </Offcanvas.Body>
-        <div className="p-5 mx-auto">{token ? <Logout onLoggedOut={handleClose} /> : <></>}</div>
+        <div className="pb-3 mx-auto">
+          {user && user.administrator ? (
+            <Link to="/management" onClick={handleClose}>
+              <button className="py-1 rounded-pill fs-3 fw-bold btn btn-dark" style={{ paddingInline: "44px" }}>
+                Gestione
+              </button>
+            </Link>
+          ) : (
+            <></>
+          )}
+        </div>
+        <div className="pb-4 mx-auto">{token ? <Logout onLoggedOut={handleClose} /> : <></>}</div>
       </Offcanvas>
     </>
   );
