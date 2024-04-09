@@ -12,6 +12,9 @@ import { motion } from "framer-motion";
 import ProductDetailModal from "./ProductDetailModal";
 import BreadcrumbsAndSort from "./BreadcrumbsAndSort";
 import { createSelector } from "reselect";
+import { useLocation } from "react-router-dom";
+import CartManager from "../cart/CartManager";
+import toast from "react-hot-toast";
 
 const baseWishlistItemsSelector = (state) => state.wishlist.items;
 const wishlistProductIdsSelector = createSelector([baseWishlistItemsSelector], (items) =>
@@ -28,14 +31,40 @@ const ProductComponent = () => {
   const userId = useSelector((state) => state.auth.user?.id);
   const token = useSelector((state) => state.auth.token);
   const [wishlistAnimationTrigger, setWishlistAnimationTrigger] = useState(0);
+  const location = useLocation();
 
   const [sortedItems, setSortedItems] = useState([]);
 
-  const [filters, setFilters] = useState({
-    expansion: "",
-    rarity: [],
-    grade: [],
-    language: [],
+  const handleAddToCart = (product) => {
+    if (product) {
+      const wasAdded = CartManager.addToCart(product, 1);
+
+      if (wasAdded) {
+        toast.success(`Aggiunto ${product.name}, Quantità: 1 al carrello.`);
+      } else {
+        toast.error(`Non puoi aggiungere più di ${product.availableQuantity} unità di ${product.name} al carrello.`);
+      }
+    } else {
+      toast.error("Nessun prodotto selezionato.");
+    }
+  };
+
+  const [filters, setFilters] = useState(() => {
+    const initialState = {
+      expansion: "",
+      rarity: [],
+      grade: [],
+      language: [],
+    };
+
+    if (location.state?.expansion) {
+      return {
+        ...initialState,
+        expansion: location.state.expansion,
+      };
+    }
+
+    return initialState;
   });
 
   const applyFilters = () => {
@@ -154,6 +183,7 @@ const ProductComponent = () => {
                       <Button
                         className={`w-100  ${prodotto.availableQuantity > 0 ? "btn-custom" : "btn-secondary"}`}
                         disabled={prodotto.availableQuantity < 1}
+                        onClick={() => handleAddToCart(prodotto)}
                       >
                         {prodotto.availableQuantity > 0 ? "Disponibile" : "Non disponibile"}
                       </Button>

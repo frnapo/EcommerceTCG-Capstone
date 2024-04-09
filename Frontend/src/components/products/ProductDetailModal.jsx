@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react/prop-types */
 import { motion, AnimatePresence } from "framer-motion";
 import { Form } from "react-bootstrap";
@@ -6,6 +7,8 @@ import HeartAddIcon from "../../assets/icons/HeartAddIcon";
 import { InfoCircle } from "react-bootstrap-icons";
 import { OverlayTrigger, Tooltip, Badge } from "react-bootstrap";
 import { X } from "react-bootstrap-icons";
+import CartManager from "../cart/CartManager";
+import toast from "react-hot-toast";
 
 const ProductDetailModal = ({
   selectedProduct,
@@ -23,8 +26,22 @@ const ProductDetailModal = ({
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const quantity = event.target[0].value;
-    console.log(`Aggiunto ${selectedProduct.name}, Quantità: ${quantity} al carrello.`);
+    const quantity = parseInt(event.target[0].value, 10);
+
+    if (selectedProduct) {
+      const wasAdded = CartManager.addToCart(selectedProduct, quantity);
+
+      if (wasAdded) {
+        toast.success(`Aggiunto ${selectedProduct.name}, Quantità: ${quantity} al carrello.`);
+        setTimeout(() => setSelectedProduct(null), 70);
+      } else {
+        toast.error(
+          `Non puoi aggiungere più di ${selectedProduct.availableQuantity} unità di ${selectedProduct.name} al carrello.`
+        );
+      }
+    } else {
+      toast.error("Nessun prodotto selezionato.");
+    }
   };
 
   return (

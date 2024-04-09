@@ -5,10 +5,14 @@ import SearchOffcanvas from "./SearchOffcanvas";
 import MenuOffcanvas from "./MenuOffcanvas";
 import BagIcon from "../../assets/icons/BagIcon";
 import { useLocation } from "react-router-dom";
+import CartOffcanvas from "../cart/CartOffcanvas";
 
 const NavbarComponent = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const [showCart, setShowCart] = useState(false);
+
+  const handleToggleCart = () => setShowCart((prevShowCart) => !prevShowCart);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,6 +62,27 @@ const NavbarComponent = () => {
       },
     },
   };
+
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    const updateCartCount = () => {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const count = cart.reduce((acc, currentItem) => acc + currentItem.quantity, 0);
+      setCartCount(count);
+    };
+
+    updateCartCount();
+
+    window.addEventListener("cartUpdated", updateCartCount);
+    window.addEventListener("storage", updateCartCount);
+
+    return () => {
+      window.removeEventListener("cartUpdated", updateCartCount);
+      window.removeEventListener("storage", updateCartCount);
+    };
+  }, []);
+
   return (
     <motion.nav
       className="navbar navbar-expand"
@@ -79,7 +104,10 @@ const NavbarComponent = () => {
               <SearchOffcanvas />
             </li>
             <li className="nav-item me-3">
-              <div className="cursor-pointer">
+              <div className="cart-icon-container cursor-pointer" onClick={handleToggleCart}>
+                <div className={`cart-counter ${cartCount > 0 ? "" : "invisible"}`}>
+                  {cartCount > 0 && <span>{cartCount}</span>}
+                </div>
                 <BagIcon />
               </div>
             </li>
@@ -89,49 +117,9 @@ const NavbarComponent = () => {
           </ul>
         </div>
       </div>
+      <CartOffcanvas showCart={showCart} onClose={handleToggleCart} />
     </motion.nav>
   );
 };
 
 export default NavbarComponent;
-
-// import { Link } from "react-router-dom";
-// import SearchOffcanvas from "./SearchOffcanvas";
-// import MenuOffcanvas from "./MenuOffcanvas";
-// import BagIcon from "../../assets/icons/BagIcon";
-
-// const NavbarComponent = () => {
-//   return (
-//     <>
-//       <nav className="navbar navbar-expand">
-//         <div className="container-fluid">
-//           <Link to="/" className="navbar-brand">
-//             <img
-//               src="https://images.squarespace-cdn.com/content/v1/5c703e77af468378086493eb/1550874513182-ATUEBGG8E11N7PKJFMTH/TCG.png"
-//               alt="logo"
-//               width={100}
-//             />
-//           </Link>
-
-//           <div className="d-flex">
-//             <ul className="navbar-nav ms-auto">
-//               <li className="nav-item me-3">
-//                 <SearchOffcanvas />
-//               </li>
-//               <li className="nav-item me-3">
-//                 <div className="cursor-pointer">
-//                   <BagIcon />
-//                 </div>
-//               </li>
-//               <li className="nav-item">
-//                 <MenuOffcanvas />
-//               </li>
-//             </ul>
-//           </div>
-//         </div>
-//       </nav>
-//     </>
-//   );
-// };
-
-// export default NavbarComponent;

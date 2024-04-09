@@ -20,7 +20,7 @@ const SellComponent = () => {
       <div className="row">
         <div className="col-12 col-md-6 col-xl-7 mt-5 pb-5 rounded-5 absolute-on-md">
           <h1 className="mt-5 fw-bold mb-4">
-            <span className="secondary-color">Vendi</span> le Tue Carte da Gioco -{" "}
+            <span className="secondary-color">Vendi</span> le Tue Carte da Gioco -
             <span className="secondary-color">Contattaci</span> per Iniziare!
           </h1>
           <p className="lead">

@@ -50,6 +50,12 @@ const ExpansionsComponent = () => {
 
   return (
     <div className="container mt-5">
+      <h1 className="mt-5 fw-bold text-center mb-4">
+        Seleziona un
+        <span className="secondary-color"> TCG </span>
+        per accedere alle relative
+        <span className="secondary-color"> espansioni </span>
+      </h1>
       <div className="row">
         {expansionsCategory.map((category) => (
           <div className="col-12 p-4 col-md-6" key={category.id}>
@@ -65,6 +71,9 @@ const ExpansionsComponent = () => {
           </div>
         ))}
       </div>
+      <h6 className="mt-5 lead text-center fs-6 mb-4 text-secondary">
+        Lista in aggiornamento a seconda dei prodotti trattati...
+      </h6>
     </div>
   );
 };
