@@ -5,6 +5,7 @@ import CartManager from "./CartManager";
 import toast from "react-hot-toast";
 import CloseIcon from "../../assets/icons/CloseIcon";
 import { X } from "react-bootstrap-icons";
+import { Link } from "react-router-dom";
 
 const CartOffcanvas = ({ showCart, onClose }) => {
   const [cartItems, setCartItems] = useState([]);
@@ -96,16 +97,18 @@ const CartOffcanvas = ({ showCart, onClose }) => {
             </p>
 
             <div className="d-flex flex-column justify-content-center">
-              <button
-                className="py-2 fw-bold mb-3 rounded-pill fs-4 btn-custom"
-                style={{ paddingInline: "45px", marginInline: "30px" }}
+              <Link
+                to="/checkout"
+                className="py-2 fw-bold mb-3 rounded-pill text-center text-decoration-none fs-4 btn-custom"
+                style={{ marginInline: "60px" }}
+                onClick={onClose}
               >
                 Checkout
-              </button>
+              </Link>
               <button
                 onClick={handleClearCart}
                 className="py-2 fw-bold rounded-pill btn btn-dark fs-4"
-                style={{ paddingInline: "45px", marginInline: "30px" }}
+                style={{ marginInline: "60px" }}
               >
                 Svuota Carrello
               </button>

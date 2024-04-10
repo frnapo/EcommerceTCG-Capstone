@@ -17,13 +17,19 @@ import SellComponent from "./components/carousel/SellComponent";
 import ExpansionsComponent from "./components/products/ExpansionsComponent";
 import ExpansionsTypeComponent from "./components/products/ExpansionsTypeComponent";
 import Footer from "./components/navigation/Footer";
+import CheckoutPage from "./components/cart/CheckoutPage";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import OrderConfirmPage from "./components/cart/OrderConfirmPage";
 
 function App() {
   // const token = useSelector((state) => state.auth.token);
   // console.log(token);
   const user = useSelector((state) => state.auth.user);
   console.log(user);
-
+  const stripePromise = loadStripe(
+    "pk_test_51P3gtz07ALKP5UpSUmo7v2EWIWqOwxtKYmJzQIWCErsbuG1Dadqr02RDcB83wGpHwGF3EgVeaahopuW5sPtDIBtS00UrCvOkpM"
+  );
   return (
     <Router>
       <div className="app-container">
@@ -49,6 +55,15 @@ function App() {
             <Route path="/hotbuy" element={<HotbuyComponent />} />
             <Route path="/wishlist" element={<WishlistComponent />} />
             <Route path="/sell" element={<SellComponent />} />
+            <Route
+              path="/checkout"
+              element={
+                <Elements stripe={stripePromise}>
+                  <CheckoutPage />
+                </Elements>
+              }
+            />
+            <Route path="/order-confirm" element={<OrderConfirmPage />} />
           </Routes>
         </div>
         <ChatIcon />

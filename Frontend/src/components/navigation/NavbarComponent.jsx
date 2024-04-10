@@ -11,8 +11,8 @@ const NavbarComponent = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const [showCart, setShowCart] = useState(false);
-
   const handleToggleCart = () => setShowCart((prevShowCart) => !prevShowCart);
+  const isCheckoutPage = location.pathname === "/checkout";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -103,14 +103,17 @@ const NavbarComponent = () => {
             <li className="nav-item me-3">
               <SearchOffcanvas />
             </li>
-            <li className="nav-item me-3">
-              <div className="cart-icon-container cursor-pointer" onClick={handleToggleCart}>
-                <div className={`cart-counter ${cartCount > 0 ? "" : "invisible"}`}>
-                  {cartCount > 0 && <span>{cartCount}</span>}
+            {!isCheckoutPage && (
+              <li className="nav-item me-3">
+                <div className="cart-icon-container cursor-pointer" onClick={handleToggleCart}>
+                  <div className={`cart-counter ${cartCount > 0 ? "" : "invisible"}`}>
+                    {cartCount > 0 && <span>{cartCount}</span>}
+                  </div>
+                  <BagIcon />
                 </div>
-                <BagIcon />
-              </div>
-            </li>
+              </li>
+            )}
+
             <li className="nav-item">
               <MenuOffcanvas />
             </li>

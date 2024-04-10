@@ -474,6 +474,36 @@ body {
   transform: scale(1.5);
 }
 
+//////////////////////// ORDINI //////////////////////////
+
+// .my-custom-progress .circle {
+//   width: 30px;
+//   height: 30px;
+//   border-radius: 15px;
+//   background-color: #ccc;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   position: relative;
+// }
+
+// .my-custom-progress .circle.active {
+//   background-color: #fff;
+// }
+
+// .my-custom-progress .circle.completed {
+//   background-color: #4caf50;
+// }
+
+// .my-custom-progress .circle .spinner-border {
+//   width: 20px;
+//   height: 20px;
+// }
+
+.step-icon {
+  color: #4caf50 !important;
+}
+
 //////////////////////////// FOOTER //////////////////////////
 
 .footer {

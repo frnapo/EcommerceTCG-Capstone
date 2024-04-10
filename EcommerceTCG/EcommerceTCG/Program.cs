@@ -2,6 +2,7 @@ using EcommerceTCG.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Stripe;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -68,6 +69,7 @@ app.UseHttpsRedirection();
 
 app.UseCors("AllowSpecificOrigin");
 
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
 app.UseAuthentication();
 app.UseAuthorization();

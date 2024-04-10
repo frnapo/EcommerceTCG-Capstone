@@ -29,7 +29,7 @@ const Register = () => {
   return (
     <>
       <NavigationButtons />
-      <form onSubmit={handleSubmit} className="d-flex flex-column align-items-center">
+      <form onSubmit={handleSubmit} className="d-flex flex-column align-items-center pb-5">
         <div className="w-100 mb-3" style={{ maxWidth: "320px" }}>
           <input
             type="text"
