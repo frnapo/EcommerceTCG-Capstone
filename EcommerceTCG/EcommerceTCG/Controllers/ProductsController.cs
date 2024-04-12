@@ -149,7 +149,6 @@ namespace EcommerceTCG.Controllers
 
 
 
-
         [HttpPost("newproduct")]
         public async Task<IActionResult> PostProduct([FromBody] ProductViewModel productViewModel)
         {
@@ -264,24 +263,6 @@ namespace EcommerceTCG.Controllers
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         // DELETE: api/Products/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
@@ -302,5 +283,9 @@ namespace EcommerceTCG.Controllers
         {
             return _context.Products.Any(e => e.ProductId == id);
         }
+
+
+
+
     }
 }

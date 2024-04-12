@@ -476,32 +476,60 @@ body {
 
 //////////////////////// ORDINI //////////////////////////
 
-// .my-custom-progress .circle {
-//   width: 30px;
-//   height: 30px;
-//   border-radius: 15px;
-//   background-color: #ccc;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   position: relative;
-// }
+.circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  background-color: #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
 
-// .my-custom-progress .circle.active {
-//   background-color: #fff;
-// }
+.circle.active {
+  background-color: #4caf50;
+  color: white !important;
+}
 
-// .my-custom-progress .circle.completed {
-//   background-color: #4caf50;
-// }
-
-// .my-custom-progress .circle .spinner-border {
-//   width: 20px;
-//   height: 20px;
-// }
-
-.step-icon {
+.custom-check {
   color: #4caf50 !important;
+  font-size: 30px;
+}
+
+.divider-line {
+  flex: 1;
+  height: 2px;
+  background-color: #ccc;
+  transition: background-color 1s ease-in-out;
+}
+
+.divider-line.active {
+  background-color: #4caf50;
+}
+
+.label {
+  margin-top: 7px;
+}
+
+.badge-rarity {
+  background-color: #cb9eff;
+  color: black;
+}
+
+.modal-dialog-centered {
+  transform: translate(0, -20%) !important;
+}
+
+.modal.no-border .modal-dialog {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.modal.no-border .modal-content {
+  background-color: $main-color !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 //////////////////////////// FOOTER //////////////////////////

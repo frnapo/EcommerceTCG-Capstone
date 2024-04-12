@@ -3,11 +3,11 @@ class CartManager {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
     let foundIndex = cart.findIndex((prod) => prod.productId === item.productId);
 
-    console.log(`Tentativo di aggiungere ${quantity} di ${item.name} (Disponibili: ${item.availableQuantity})`);
+    // console.log(`Tentativo di aggiungere ${quantity} di ${item.name} (Disponibili: ${item.availableQuantity})`);
 
     if (foundIndex !== -1) {
       const desiredQuantity = cart[foundIndex].quantity + quantity;
-      console.log(`Quantità totale desiderata nel carrello: ${desiredQuantity}`);
+      // console.log(`Quantità totale desiderata nel carrello: ${desiredQuantity}`);
 
       if (desiredQuantity > item.availableQuantity) {
         console.error(`Non puoi aggiungere più di ${item.availableQuantity} unità di ${item.name} al carrello.`);
@@ -28,7 +28,7 @@ class CartManager {
 
     localStorage.setItem("cart", JSON.stringify(cart));
     window.dispatchEvent(new Event("cartUpdated"));
-    console.log("Prodotto aggiunto con successo.");
+    // console.log("Prodotto aggiunto con successo.");
     return true;
   }
 

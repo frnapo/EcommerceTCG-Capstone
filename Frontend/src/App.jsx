@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.scss";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import NavbarComponent from "./components/navigation/NavbarComponent";
 import HomeComponent from "./components/navigation/HomeComponent";
 import Login from "./components/authentication/Login";
@@ -25,8 +25,8 @@ import OrderConfirmPage from "./components/cart/OrderConfirmPage";
 function App() {
   // const token = useSelector((state) => state.auth.token);
   // console.log(token);
-  const user = useSelector((state) => state.auth.user);
-  console.log(user);
+  // const user = useSelector((state) => state.auth.user);
+  // console.log(user);
   const stripePromise = loadStripe(
     "pk_test_51P3gtz07ALKP5UpSUmo7v2EWIWqOwxtKYmJzQIWCErsbuG1Dadqr02RDcB83wGpHwGF3EgVeaahopuW5sPtDIBtS00UrCvOkpM"
   );

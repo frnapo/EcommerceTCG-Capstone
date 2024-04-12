@@ -66,7 +66,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseCors("AllowSpecificOrigin");
 
 StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];

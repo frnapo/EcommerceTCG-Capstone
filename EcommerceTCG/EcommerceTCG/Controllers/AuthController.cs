@@ -67,7 +67,7 @@ namespace EcommerceTCG.Controllers
             // Configura il client SMTP per l'invio dell'email
             SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
             smtpClient.UseDefaultCredentials = false;
-            smtpClient.Credentials = new NetworkCredential("napolitest14@gmail.com", "kegv pdde knob lihp");
+            smtpClient.Credentials = new NetworkCredential("napolitest14@gmail.com", "tubt hatj smdh bchg");
             smtpClient.EnableSsl = true;
 
             // Invia l'email

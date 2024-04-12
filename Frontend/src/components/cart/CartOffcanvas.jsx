@@ -5,10 +5,14 @@ import CartManager from "./CartManager";
 import toast from "react-hot-toast";
 import CloseIcon from "../../assets/icons/CloseIcon";
 import { X } from "react-bootstrap-icons";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const CartOffcanvas = ({ showCart, onClose }) => {
   const [cartItems, setCartItems] = useState([]);
+
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     if (showCart) {
@@ -42,6 +46,17 @@ const CartOffcanvas = ({ showCart, onClose }) => {
   const handleClearCart = () => {
     CartManager.clearCart();
     setCartItems([]);
+  };
+
+  const handleNavigation = () => {
+    onClose(); // Chiama eventuali funzioni di pulizia o chiusura necessarie
+
+    // Controlla se l'utente è loggato e naviga di conseguenza
+    if (user) {
+      navigate("/checkout");
+    } else {
+      navigate("/login");
+    }
   };
 
   return (
@@ -97,14 +112,13 @@ const CartOffcanvas = ({ showCart, onClose }) => {
             </p>
 
             <div className="d-flex flex-column justify-content-center">
-              <Link
-                to="/checkout"
+              <button
                 className="py-2 fw-bold mb-3 rounded-pill text-center text-decoration-none fs-4 btn-custom"
                 style={{ marginInline: "60px" }}
-                onClick={onClose}
+                onClick={handleNavigation}
               >
                 Checkout
-              </Link>
+              </button>
               <button
                 onClick={handleClearCart}
                 className="py-2 fw-bold rounded-pill btn btn-dark fs-4"

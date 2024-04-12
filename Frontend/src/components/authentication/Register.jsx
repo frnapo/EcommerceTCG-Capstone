@@ -23,7 +23,7 @@ const Register = () => {
       password: user.Password,
       confirmPassword: user.ConfirmPassword,
     };
-    console.log(userData);
+    // console.log(userData);
     dispatch(registerUser(userData));
   };
   return (

@@ -19,6 +19,7 @@ namespace EcommerceTCG.Controllers
             _context = context;
         }
 
+
         [HttpPost("createorder")]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto orderDto)
         {
@@ -115,8 +116,8 @@ namespace EcommerceTCG.Controllers
                 var paymentIntentService = new PaymentIntentService();
                 var paymentIntent = await paymentIntentService.CreateAsync(new PaymentIntentCreateOptions
                 {
-                    Amount = Convert.ToInt64(order.Total * 100), // Stripe vuole l'importo in centesimi
-                    Currency = "eur", // o la valuta che usi
+                    Amount = Convert.ToInt64(order.Total * 100),
+                    Currency = "eur",
                     Metadata = new Dictionary<string, string>
                     {
                         { "orderId", order.OrderId.ToString() }
@@ -124,7 +125,12 @@ namespace EcommerceTCG.Controllers
                 });
 
 
-                return Ok(new { orderId = order.OrderId, clientSecret = paymentIntent.ClientSecret });
+                return Ok(new
+                {
+                    orderId = order.OrderId,
+                    clientSecret = paymentIntent.ClientSecret,
+                    orderTotal = orderTotal
+                });
             }
             catch (Exception ex)
             {
@@ -143,7 +149,7 @@ namespace EcommerceTCG.Controllers
                 var stripeEvent = EventUtility.ConstructEvent(
                     json,
                     Request.Headers["Stripe-Signature"],
-                    "whsec_IWamLoXDnMo6KMP17cMe1ZRagnT9lkFc", // Sostituire con la tua chiave segreta del webhook
+                    "whsec_IWamLoXDnMo6KMP17cMe1ZRagnT9lkFc",
                     throwOnApiVersionMismatch: true
                 );
 
@@ -219,6 +225,8 @@ namespace EcommerceTCG.Controllers
 
             await _context.SaveChangesAsync();
         }
+
+
     }
 }
 

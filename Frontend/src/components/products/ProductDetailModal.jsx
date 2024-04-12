@@ -67,7 +67,7 @@ const ProductDetailModal = ({
         >
           <div className="position-absolute top-0 end-0 me-3 mt-2">
             <motion.button onClick={() => setSelectedProduct(null)} className="btn p-0 m-0">
-              <X className="fs-2 text-white" />
+              <X className="fs-4 cursor-pointer text-white custom-icon" />
             </motion.button>
           </div>
 

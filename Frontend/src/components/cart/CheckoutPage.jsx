@@ -5,12 +5,13 @@ import fetchWithToken from "../../redux/wrapper";
 import { useSelector } from "react-redux";
 import PaymentForm from "./PaymentForm";
 import ProgressBar from "../cart/ProgressBar";
-// Assicurati di importare altri componenti necessari
+import { useNavigate } from "react-router-dom";
 
 const CheckoutPage = () => {
   const [step, setStep] = useState(1);
   const [orderDetails, setOrderDetails] = useState({});
   const [cartTotal, setCartTotal] = useState(0);
+  const [outOfStockItems, setOutOfStockItems] = useState([]);
 
   useEffect(() => {
     const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
@@ -19,7 +20,7 @@ const CheckoutPage = () => {
   }, []);
 
   const userId = useSelector((state) => state.auth.user.id);
-  console.log(userId);
+  // console.log(userId);
 
   const handleFormSubmit = (formData) => {
     setOrderDetails({ ...orderDetails, ...formData });
@@ -42,11 +43,10 @@ const CheckoutPage = () => {
         productId: item.productId,
         quantity: item.quantity,
         price: item.price,
-        discountApplied: item.discountApplied || null, // Assicurati che questo campo esista o sia null
+        discountApplied: item.discountApplied || null,
       })),
     };
 
-    // Definisci l'URL dell'endpoint API e le opzioni fetch come prima
     const apiUrl = "https://localhost:7289/api/Cart/createorder";
     const fetchOptions = {
       method: "POST",
@@ -65,40 +65,85 @@ const CheckoutPage = () => {
       }
       const orderResponse = await response.json();
       console.log("Ordine creato con successo:", orderResponse);
-      // Imposta i dettagli dell'ordine inclusi `clientSecret` e `orderId`
       setOrderDetails({
         ...orderDetails,
         ...completeOrderDetails,
         clientSecret: orderResponse.clientSecret,
         orderId: orderResponse.orderId,
+        orderTotal: orderResponse.orderTotal,
       });
-
-      // Vai al passo del pagamento
       setStep(3);
     } catch (error) {
       console.error("Errore durante l'invio dell'ordine:", error);
     }
   };
 
-  // Funzione per gestire il successo del pagamento
-  const handlePaymentSuccess = () => {
-    // Gestisci il successo del pagamento, ad esempio mostrando una conferma
-    // o reindirizzando l'utente a una pagina di ringraziamento
-    console.log("Pagamento completato con successo");
+  useEffect(() => {
+    const verifyCartQuantities = async () => {
+      const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+      let itemsOutOfStock = [];
+
+      for (const item of cartItems) {
+        try {
+          const response = await fetch(`https://localhost:7289/api/products/${item.productId}`);
+          if (!response.ok) {
+            throw new Error("Problema nella fetch dei prodotti");
+          }
+          const product = await response.json();
+
+          if (product.availableQuantity < item.quantity) {
+            itemsOutOfStock.push({ ...item, availableQuantity: product.availableQuantity });
+          }
+        } catch (error) {
+          console.error("Errore durante la verifica delle quantità:", error);
+        }
+      }
+
+      setOutOfStockItems(itemsOutOfStock);
+    };
+
+    verifyCartQuantities();
+  }, []);
+
+  const navigate = useNavigate();
+
+  const handleOpenCartAndRedirect = () => {
+    window.dispatchEvent(new CustomEvent("openCart"));
+    navigate(-1);
   };
 
-  console.log("Current Step:", step);
+  const handleGoBack = () => {
+    setStep((currentStep) => Math.max(currentStep - 1, 1));
+  };
   return (
     <div className="container">
       <h1 className="mt-4">
         Il tuo <span className="secondary-color">Ordine</span>
       </h1>
+
       <ProgressBar currentStep={step} />
-      {step === 1 && <CheckoutForm onSubmit={handleFormSubmit} />}
-      {step === 2 && (
-        <ShippingMethod onProceed={handleProceedToPayment} orderDetails={orderDetails} cartTotal={cartTotal} />
+      {step === 1 && (
+        <CheckoutForm
+          onSubmit={handleFormSubmit}
+          outOfStockItems={outOfStockItems}
+          handleOpenCartAndRedirect={handleOpenCartAndRedirect}
+        />
       )}
-      {step === 3 && <PaymentForm onPaymentSuccess={handlePaymentSuccess} clientSecret={orderDetails.clientSecret} />}
+      {step === 2 && (
+        <ShippingMethod
+          onGoBack={handleGoBack}
+          onProceed={handleProceedToPayment}
+          orderDetails={orderDetails}
+          cartTotal={cartTotal}
+        />
+      )}
+      {step === 3 && (
+        <PaymentForm
+          clientSecret={orderDetails.clientSecret}
+          orderId={orderDetails.orderId}
+          orderTotal={orderDetails.orderTotal}
+        />
+      )}
     </div>
   );
 };

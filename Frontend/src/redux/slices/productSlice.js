@@ -9,7 +9,7 @@ export const fetchProdByCategory = createAsyncThunk(
         throw new Error("Network response was not ok");
       }
       const products = await response.json();
-      console.log(products);
+      // console.log(products);
       return products;
     } catch (error) {
       return rejectWithValue(error.message);

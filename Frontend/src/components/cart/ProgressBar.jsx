@@ -1,39 +1,49 @@
-/* eslint-disable react/prop-types */
-import React from "react";
-import { Spinner } from "react-bootstrap";
 import { CheckCircleFill } from "react-bootstrap-icons";
 
+/* eslint-disable react/prop-types */
 const ProgressBar = ({ currentStep }) => {
-  const circleClass = (step) => {
-    if (currentStep > step) return "completed";
-    if (currentStep === step) return "active";
-    return "";
-  };
+  const isActiveBar = (barStep) => currentStep > barStep;
 
   return (
     <div
-      className="my-custom-progress"
-      style={{ display: "flex", justifyContent: "space-between", alignItems: "center", margin: "20px 0" }}
+      className="progress-container px-5 my-4"
+      style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
     >
-      {["Dati", "Spedizione", "Pagamento"].map((label, index) => (
-        <React.Fragment key={label}>
-          {index > 0 && (
-            <div className="divider-line" style={{ flex: 1, height: "2px", backgroundColor: "#ccc" }}></div>
-          )}
-          <div className="step">
-            <div className={`circle ${circleClass(index + 1)}`}>
-              {currentStep === index + 1 ? (
-                <Spinner as="span" animation="border" size="md" role="status" aria-hidden="true" />
-              ) : currentStep > index + 1 ? (
-                <CheckCircleFill className="step-icon fs-3" />
-              ) : (
-                index + 1
-              )}
-            </div>
-          </div>
-        </React.Fragment>
-      ))}
+      <div className="step">
+        {renderStepContent(1, currentStep)}
+        <div className="label position-absolute fw-light">Dati</div>
+      </div>
+      <div className={`divider-line ${isActiveBar(1) ? "active" : ""}`}></div>
+
+      {/* Step 2 */}
+      <div className="step">
+        {renderStepContent(2, currentStep)}
+        <div className="label position-absolute fw-light" style={{ marginLeft: "-21px" }}>
+          Spedizione
+        </div>
+      </div>
+
+      {/* Divider 2 */}
+      <div className={`divider-line ${isActiveBar(2) ? "active" : ""}`}></div>
+
+      {/* Step 3 */}
+      <div className="step">
+        {renderStepContent(3, currentStep)}
+        <div className="label position-absolute fw-light" style={{ marginLeft: "-25px" }}>
+          Pagamento
+        </div>
+      </div>
     </div>
+  );
+};
+
+const renderStepContent = (step, currentStep) => {
+  return currentStep > step ? (
+    <div className={`position-relative`}>
+      <CheckCircleFill className="custom-check" />
+    </div>
+  ) : (
+    <div className={`position-relative circle ${currentStep === step ? "active" : ""}`}>{step}</div>
   );
 };
 

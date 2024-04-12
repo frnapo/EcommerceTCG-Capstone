@@ -15,6 +15,17 @@ const NavbarComponent = () => {
   const isCheckoutPage = location.pathname === "/checkout";
 
   useEffect(() => {
+    const handleOpenCart = () => {
+      setShowCart(true);
+    };
+    window.addEventListener("openCart", handleOpenCart);
+
+    return () => {
+      window.removeEventListener("openCart", handleOpenCart);
+    };
+  }, []);
+
+  useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 300 && location.pathname.includes("/categories")) {
         setIsScrolled(true);

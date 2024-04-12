@@ -7,7 +7,7 @@ export const fetchExpansionsByType = createAsyncThunk(
       const response = await fetch(`https://localhost:7289/api/Products/expansions/byType?typeId=${typeId}`);
       if (!response.ok) throw new Error("Network response was not ok");
       const data = await response.json();
-      console.log("Data received:", data);
+      // console.log("Data received:", data);
       return data;
     } catch (error) {
       console.error("Error fetching data:", error);
