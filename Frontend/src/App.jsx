@@ -12,7 +12,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProductComponent from "./components/products/ProductComponent";
 import HotbuyComponent from "./components/products/HotbuyComponent";
 import WishlistComponent from "./components/navigation/WishlistComponent";
-import ChatIcon from "./assets/icons/ChatIcon";
 import SellComponent from "./components/carousel/SellComponent";
 import ExpansionsComponent from "./components/products/ExpansionsComponent";
 import ExpansionsTypeComponent from "./components/products/ExpansionsTypeComponent";
@@ -21,6 +20,7 @@ import CheckoutPage from "./components/cart/CheckoutPage";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import OrderConfirmPage from "./components/cart/OrderConfirmPage";
+import Chatbot from "./components/chatbot/Chatbot";
 
 function App() {
   // const token = useSelector((state) => state.auth.token);
@@ -66,7 +66,7 @@ function App() {
             <Route path="/order-confirm" element={<OrderConfirmPage />} />
           </Routes>
         </div>
-        <ChatIcon />
+        <Chatbot />
       </div>
       <Footer />
     </Router>
