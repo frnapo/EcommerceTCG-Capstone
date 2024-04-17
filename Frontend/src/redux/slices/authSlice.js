@@ -39,7 +39,7 @@ export const loginUser = createAsyncThunk("auth/login", async ({ email, password
     let data = await response.json();
 
     if (response.ok) {
-      // console.log("Data:", data);
+      console.log("Data:", data);
       toast.success("Ciao, " + data.firstName);
       return data;
     } else {

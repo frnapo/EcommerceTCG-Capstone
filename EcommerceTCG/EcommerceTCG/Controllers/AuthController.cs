@@ -10,6 +10,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 
 namespace EcommerceTCG.Controllers
 {
@@ -213,7 +214,7 @@ namespace EcommerceTCG.Controllers
             // Verifica che la password sia valida
             if (!IsPasswordValid(registerViewModel.Password))
             {
-                return BadRequest(new { message = "La password non è valida, assicurati che la password soddisfi i requisit" });
+                return BadRequest(new { message = "La password non è valida, assicurati che la password soddisfi i requisiti" });
             }
 
             // Verifica che la password e la conferma password siano uguali
@@ -252,29 +253,151 @@ namespace EcommerceTCG.Controllers
         {
             return Ok(new { message = "Sei stato disconesso" });
         }
+
+        private string GeneratePasswordResetToken(string email)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Email == email);
+            if (user == null) return null;
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+            new Claim(ClaimTypes.Name, user.Email)
+                }),
+                Expires = DateTime.UtcNow.AddHours(1),
+
+                SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
+
+        [HttpPost]
+        [Route("forgotpassword")]
+        public IActionResult ForgotPassword([FromBody] ForgotPasswordRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { message = "Dati non validi." });
+            }
+
+            User dbUser = _context.Users.FirstOrDefault(u => u.Email == request.Email);
+            if (dbUser == null)
+            {
+                return BadRequest(new { message = "Utente non trovato." });
+            }
+
+            SendPasswordResetEmail(request.Email);
+
+            return Ok(new { message = "Email per il reset della password inviata con successo." });
+        }
+
+        private void SendPasswordResetEmail(string email)
+        {
+            string token = GeneratePasswordResetToken(email);
+            string mittente = "napolitest14@gmail.com";
+            string oggetto = "PACKPEEKERSHOP - Reset della password";
+
+            string corpo = $@"
+        <html>
+        <head>
+            <style>
+                body {{
+                    font-family: 'Arial', sans-serif;
+                    color: #333;
+                    background-color: #f4f4f4;
+                    padding: 20px;
+                }}
+                .container {{
+                    background-color: white;
+                    border: 1px solid #ddd;
+                    padding: 20px;
+                    text-align: center;
+                }}
+                a.button {{
+                    display: inline-block;
+                    padding: 10px 20px;
+                    margin: 20px 0;
+                    background-color: #007BFF;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 5px;
+                }}
+            </style>
+        </head>
+        <body>
+            <div class='container'>
+                <h1>Reset della Password</h1>
+                <p>Clicca sul pulsante qui sotto per resettare la tua password.</p>
+                <a href='http://localhost:5173/reset-password?token={HttpUtility.UrlEncode(token)}&email={HttpUtility.UrlEncode(email)}' class='button'>Resetta la Password</a>
+                <p>Se non hai richiesto un reset della password, ignora questa email.</p>
+            </div>
+        </body>
+        </html>";
+
+            MailMessage message = new MailMessage(mittente, email, oggetto, corpo);
+            message.IsBodyHtml = true;
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+            smtpClient.UseDefaultCredentials = false;
+            smtpClient.Credentials = new NetworkCredential("napolitest14@gmail.com", "tubt hatj smdh bchg");
+            smtpClient.EnableSsl = true;
+            smtpClient.Send(message);
+        }
+
+
+        [HttpPost]
+        [Route("resetpassword")]
+        public IActionResult ResetPassword([FromBody] ResetPasswordModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Dati non validi.");
+            }
+
+            var user = _context.Users.FirstOrDefault(u => u.Email == model.Email);
+            if (user == null)
+            {
+                return BadRequest("Nessun utente trovato con questa email.");
+            }
+
+            if (!IsPasswordValid(model.NewPassword))
+            {
+                return BadRequest(new { message = "La password non è valida, assicurati che la password soddisfi i requisiti" });
+            }
+
+            try
+            {
+                user.PasswordHash = HashPassword(model.NewPassword);
+                _context.SaveChanges();
+                return Ok("Password aggiornata con successo.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Errore interno del server.");
+            }
+        }
+
+
+        //action che presi due parametri Nome e Cognome fa una put su un utente tramite un id
+        [HttpPut("updateuser/{id}")]
+        public async Task<IActionResult> UpdateUser(int id, UpdateUserView user)
+        {
+            var dbUser = await _context.Users.FindAsync(id);
+            if (dbUser == null)
+            {
+                return NotFound();
+            }
+
+            dbUser.FirstName = user.FirstName;
+            dbUser.LastName = user.LastName;
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
     }
-
-    //[HttpPost]
-    //[Route("forgotpassword")]
-    //public IActionResult ForgotPassword([FromBody] User user)
-    //{
-    //    // Cerca l'utente nel database
-    //    User dbUser = _context.Users.FirstOrDefault(u => u.Email == user.Email);
-    //    if (dbUser == null)
-    //    {
-    //        return BadRequest(new { message = "Utente non trovato." });
-    //    }
-
-    //    // Genera un token per il reset della password
-    //    string token = GenerateEmailConfirmationToken(user.Email);
-    //    dbUser.PasswordResetToken = token;
-    //    _context.SaveChanges();
-
-    //    // Invia l'email con il link per il reset della password
-    //    SendPasswordResetEmail(user.Email, token);
-
-    //    return Ok(new { message = "Email inviata con successo." });
-    //}
-
-
 }

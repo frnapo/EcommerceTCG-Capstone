@@ -146,5 +146,30 @@ namespace EcommerceTCG.Controllers
         }
 
 
+        [HttpGet("orderbyuser/{userId}")]
+        public IActionResult ByUser(int userId)
+        {
+            var orders = _context.Orders
+                .Include(o => o.Shipments)
+                .Where(o => o.UserId == userId)
+                .OrderByDescending(o => o.OrderDate)
+                .Select(o => new
+                {
+                    o.OrderId,
+                    o.OrderDate,
+                    o.Shipments.FirstOrDefault().Status,
+                    o.Total,
+                    o.Shipments.FirstOrDefault().ShippingCost,
+                    o.Shipments.FirstOrDefault().ShippingMethod,
+                    o.Shipments.FirstOrDefault().TrackingNumber,
+                    o.Shipments.FirstOrDefault().DepartureDate,
+                    o.Shipments.FirstOrDefault().ActualDeliveryDate,
+                })
+                .ToList();
+
+            return Ok(orders);
+        }
+
+
     }
 }

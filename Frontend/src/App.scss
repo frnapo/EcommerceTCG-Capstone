@@ -4,6 +4,7 @@ $main-color: #08142b;
 $secondary-color: #df980f;
 $background-color: #040a16;
 $text: #fff;
+//light #CFE2FF
 
 html {
   scrollbar-width: thin;
@@ -26,6 +27,14 @@ html {
   background-color: $background-color;
 }
 
+.back-icon {
+  transition: transform 0.2s ease;
+}
+
+.back-icon:hover {
+  transform: scale(1.2);
+}
+
 // stili cursori
 .cursor-pointer {
   cursor: pointer;
@@ -45,7 +54,7 @@ body,
 .app-container {
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 240px);
+  min-height: calc(100vh - 216px);
 }
 
 body {
@@ -91,7 +100,7 @@ body {
 .btn-custom {
   background-color: $secondary-color;
   color: $main-color;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.2s ease;
   border: 0;
   font-weight: 700;
 }
@@ -99,7 +108,10 @@ body {
 .btn-custom:hover {
   background-color: $secondary-color;
   color: $text;
-  transition: color 0.2s ease;
+}
+
+.btn-custom:active {
+  background-color: $background-color !important;
 }
 
 .btn-blue {
@@ -366,6 +378,24 @@ body {
   transform: translate3d(0%, -30%, 100px);
 }
 
+.custom-card-title {
+  transition: all 0.3s ease-in-out;
+}
+
+.card:hover .custom-card-title {
+  transform: scale(1.03);
+  color: $background-color !important;
+}
+
+.custom-release-date {
+  transition: all 0.3s ease-in-out;
+}
+
+.card:hover .custom-release-date {
+  transform: scale(1.03);
+  color: $text !important;
+}
+
 @media (max-width: 767.98px) {
   .relative-container {
     position: relative;
@@ -618,4 +648,18 @@ pre {
 
 .input-custom-group .input-group-custom-append .btn {
   padding: 0.375rem 0.75rem;
+}
+
+/////////////////////////////////// FAQ //////////////////////////////////
+
+.accordion-button {
+  background-color: $main-color !important;
+  color: $text !important;
+  box-shadow: none !important;
+  border-color: $background-color !important;
+  border: 1px solid;
+}
+
+.accordion-button::after {
+  display: none;
 }

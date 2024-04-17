@@ -50,7 +50,7 @@ const MenuOffcanvas = () => {
       <Offcanvas show={show} onHide={handleClose} placement="end" className="custom-offcanvas">
         <Offcanvas.Header className="d-flex justify-content-between">
           <div>
-            <Link to={token ? "/profilo" : "/login"} className="nav-link" onClick={handleClose}>
+            <Link to={token ? "/userprofile" : "/login"} className="nav-link" onClick={handleClose}>
               {user ? <LogComponent text={`Ciao, ${user.firstName}`} /> : <LogComponent text={"Accedi"} />}
             </Link>
           </div>
@@ -113,7 +113,7 @@ const MenuOffcanvas = () => {
             className="nav-link nav-link-transition fw-bold fs-1"
             onClick={handleWishlistClick}
           >
-            <p className="my-2">Wishlist</p>
+            <p className="my-2">Watchlist</p>
           </Link>
 
           <Link to="/sell" className="nav-link nav-link-transition fw-bold fs-1" onClick={handleClose}>

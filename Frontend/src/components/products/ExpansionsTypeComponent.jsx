@@ -42,8 +42,8 @@ const ExpansionsTypeComponent = () => {
                 <img src={expansion.imageUrl} className="card-img-top" alt={expansion.name} />
               </div>
               <div className="card-body">
-                <h5 className="card-title">{expansion.name}</h5>
-                <p className="fw-light m-0 p-0 text-secondary">{expansion.releaseDate}</p>
+                <h5 className="card-title  custom-card-title">{expansion.name}</h5>
+                <p className="fw-light m-0 p-0 text-secondary custom-release-date">{expansion.releaseDate}</p>
               </div>
             </div>
           </div>

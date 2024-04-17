@@ -5,10 +5,13 @@ import { Form } from "react-bootstrap";
 import HoloCardComponent from "./HoloCardComponent";
 import HeartAddIcon from "../../assets/icons/HeartAddIcon";
 import { InfoCircle } from "react-bootstrap-icons";
-import { OverlayTrigger, Tooltip, Badge } from "react-bootstrap";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { X } from "react-bootstrap-icons";
 import CartManager from "../cart/CartManager";
 import toast from "react-hot-toast";
+import ITflag from "../../assets/img/ITflag.png";
+import ENGflag from "../../assets/img/ENGflag.png";
+import JPflag from "../../assets/img/JPflag.png";
 
 const ProductDetailModal = ({
   selectedProduct,
@@ -23,6 +26,19 @@ const ProductDetailModal = ({
   if (!selectedProduct) return null;
 
   const isHoloActive = holoActiveProductId === selectedProduct.productId;
+
+  function getFlag(language) {
+    switch (language) {
+      case "Italiano":
+        return ITflag;
+      case "English":
+        return ENGflag;
+      case "Japanese":
+        return JPflag;
+      default:
+        return "";
+    }
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -62,7 +78,7 @@ const ProductDetailModal = ({
           animate={{ opacity: 1, scale: 0.9 }}
           exit={{ opacity: 1, scale: 0 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
-          className="position-fixed top-50 start-50 translate-middle p-3 p-md-5 bg-blue bg-opacity-50 rounded-5"
+          className="position-fixed top-50 start-50 translate-middle bg-dark bg-opacity-50 p-3 p-md-5 rounded-5"
           style={{ zIndex: 1051, maxWidth: "800px", width: "95%" }}
         >
           <div className="position-absolute top-0 end-0 me-3 mt-2">
@@ -84,7 +100,7 @@ const ProductDetailModal = ({
               <h1 className="text-white m-0 p-0 ms-0 ms-md-3">{selectedProduct.name}</h1>
               <p className="lead fs-6 text-secondary ms-0 ms-md-3">{selectedProduct.expansion}</p>
 
-              <div className="d-flex justify-content-center justify-content-md-start ms-0 ms-md-3 bg-dark p-3 rounded-3">
+              <div className="d-flex justify-content-center justify-content-md-start ">
                 <div className="d-block d-md-none">
                   <img
                     src={selectedProduct.imageUrl}
@@ -95,15 +111,31 @@ const ProductDetailModal = ({
                 </div>
 
                 <div className="ms-4">
-                  <p className="m-0 p-0 lead fs-3">{selectedProduct.condition}</p>
                   <p className="m-0 p-0 fw-light">
-                    <Badge bg="warning">{selectedProduct.rarity}</Badge> - {selectedProduct.serialNumber}
+                    <span className="badge badge-rarity">{selectedProduct.rarity}</span> -{" "}
+                    <span>{selectedProduct.serialNumber}</span>
                   </p>
-                  <p className="m-0 p-0 lead fs-6">{selectedProduct.firstEdition ? "1st Edition" : "Unlimited"}</p>
-                  <p className="m-0 p-0 lead fs-6">{selectedProduct.language}</p>
+
+                  <div className="my-1 d-flex align-items-center my-2">
+                    <img
+                      className="rounded-1"
+                      src={getFlag(selectedProduct.language)}
+                      alt={`${selectedProduct.language} flag`}
+                      style={{ width: "30px", height: "20px", marginRight: "5px" }}
+                    />
+                    <p className="m-0 p-0 lead fs-5">
+                      {selectedProduct.condition} - <span>{selectedProduct.firstEdition ? "1st" : "Unlimited"}</span>
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="m-0 p-0">
+                      Prezzo: <span className="fs-2">€{selectedProduct.price}</span>
+                    </p>
+                  </div>
 
                   <div className="d-flex d-none d-md-flex">
-                    <p className="m-0 p-0 me-2 fw-light">
+                    <p className="m-0 p-0 me-2">
                       Holo
                       <OverlayTrigger
                         placement="bottom"

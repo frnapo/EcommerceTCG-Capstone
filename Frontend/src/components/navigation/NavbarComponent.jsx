@@ -27,8 +27,12 @@ const NavbarComponent = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 300 && location.pathname.includes("/categories")) {
-        setIsScrolled(true);
+      if (window.innerWidth > 768) {
+        if (window.scrollY > 300 && location.pathname.includes("/categories")) {
+          setIsScrolled(true);
+        } else {
+          setIsScrolled(false);
+        }
       } else {
         setIsScrolled(false);
       }

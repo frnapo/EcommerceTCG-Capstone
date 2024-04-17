@@ -1,5 +1,6 @@
 import { Container } from "react-bootstrap";
 import { Youtube, Instagram, Tiktok } from "react-bootstrap-icons";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -10,10 +11,18 @@ const Footer = () => {
             <h5 className="text-uppercase mb-2 fw-bold">Contatti</h5>
             <ul className="list-unstyled">
               <li>
-                <p className="fw-light m-0 p-0 footer-link">supporto@esempio.com</p>
+                <a href="mailto:packpeekershop@gmail.com" target="_blank" className="fw-light m-0 p-0 footer-link">
+                  packpeekershop@gmail.com
+                </a>
               </li>
               <li>
-                <p className="fw-light footer-link">0123456789</p>
+                <a
+                  href="https://wa.me/+393703401020?text=Salve!%20Ho%20bisogno%20di%20assistenza%20per%20un%20ordine%20sul%20vostro%20ecommerce%20di%20TCG."
+                  className="fw-light footer-link"
+                  target="_blank"
+                >
+                  +39 3703401020
+                </a>
               </li>
             </ul>
           </div>
@@ -22,24 +31,19 @@ const Footer = () => {
             <h5 className="text-uppercase mb-2 fw-bold">Link Utili</h5>
             <ul className="list-unstyled">
               <li>
-                <a href="/" className="footer-link fw-light">
+                <Link to="/" className="footer-link fw-light">
                   Home
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/prodotti" className="footer-link fw-light">
+                <Link to="/categories/1" className="footer-link fw-light">
                   Prodotti
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/account" className="footer-link fw-light">
-                  Account
-                </a>
-              </li>
-              <li>
-                <a href="/faq" className="footer-link fw-light">
+                <Link to="/faq" className="footer-link fw-light">
                   FAQ
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -48,37 +52,44 @@ const Footer = () => {
             <h5 className="text-uppercase mb-2 fw-bold">Politiche</h5>
             <ul className="list-unstyled">
               <li>
-                <a href="/termini" className="footer-link fw-light d-inline-block">
+                <Link to="/termsandconditions" className="footer-link fw-light d-inline-block">
                   Termini e Condizioni
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/privacy" className="footer-link fw-light d-inline-block">
+                <Link to="/privacypolicy" className="footer-link fw-light d-inline-block">
                   Politica sulla Privacy
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/resi" className=" footer-link fw-light d-inline-block">
-                  Politica di Reso
-                </a>
-              </li>
-              <li>
-                <a href="/spedizione" className="footer-link fw-light d-inline-block">
+                <Link to="/shippingpolicy" className="footer-link fw-light d-inline-block">
                   Politica di Spedizione
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
 
           <div className="col-12 col-sm-6 col-lg-3 mb-4 mb-lg-0">
             <h5 className="text-uppercase mb-2 fw-bold">Seguici</h5>
-            <a href="https://www.facebook.com" className="footer-link d-inline-block me-3">
+            <a
+              href="https://www.tiktok.com/@packpeekers?lang=it-IT"
+              target="_blank"
+              className="footer-link d-inline-block me-3"
+            >
               <Tiktok className="fs-4" />
             </a>
-            <a href="https://www.instagram.com" className="footer-link d-inline-block me-3">
+            <a
+              href="https://www.instagram.com/packpeekers/"
+              target="_blank"
+              className="footer-link d-inline-block me-3"
+            >
               <Instagram className="fs-4" />
             </a>
-            <a href="https://www.twitter.com" className="footer-link d-inline-block">
+            <a
+              href="https://www.youtube.com/channel/UCXFr_AGdoD5tHsDB8Fzok_w"
+              target="_blank"
+              className="footer-link d-inline-block"
+            >
               <Youtube className="fs-3" />
             </a>
           </div>

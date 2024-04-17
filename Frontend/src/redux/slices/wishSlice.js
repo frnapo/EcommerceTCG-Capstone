@@ -8,7 +8,7 @@ export const fetchWishlist = createAsyncThunk(
     try {
       const response = await fetchWithToken(`https://localhost:7289/api/Wishlist/getwishlist/?userId=${userId}`, token);
       const data = await response.json();
-      // console.log(data);
+      console.log(data);
       if (!response.ok) {
         throw new Error(data.message || "Could not fetch wishlist");
       }

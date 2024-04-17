@@ -2,7 +2,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.scss";
 // import { useSelector } from "react-redux";
 import NavbarComponent from "./components/navigation/NavbarComponent";
-import HomeComponent from "./components/navigation/HomeComponent";
 import Login from "./components/authentication/Login";
 import Logout from "./components/authentication/Logout";
 import Register from "./components/authentication/Register";
@@ -21,6 +20,14 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import OrderConfirmPage from "./components/cart/OrderConfirmPage";
 import Chatbot from "./components/chatbot/Chatbot";
+import Faq from "./components/footer/Faq";
+import TermsAndConditions from "./components/footer/TermsAndCondition";
+import PrivacyPolicy from "./components/footer/PrivacyPolicy";
+import ShippingPolicy from "./components/footer/ShippingPolicy";
+import ScrollToTop from "./components/navigation/ScrollToTop";
+import Homepage from "./components/navigation/Homepage";
+import ForgotPassword from "./components/navigation/ForgotPassword";
+import ResetPassword from "./components/navigation/ResetPassword";
 
 function App() {
   // const token = useSelector((state) => state.auth.token);
@@ -32,6 +39,7 @@ function App() {
   );
   return (
     <Router>
+      <ScrollToTop />
       <div className="app-container">
         <NavbarComponent />
         <Toaster
@@ -44,11 +52,13 @@ function App() {
         />
         <div id="padding-container">
           <Routes>
-            <Route path="/" element={<HomeComponent />} />
+            <Route path="/" element={<Homepage />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/forgotpassword" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/register" element={<Register />} />
             <Route path="/logout" element={<Logout />} />
-            <Route path="/profilo" element={<UserComponent />} />
+            <Route path="/userprofile" element={<UserComponent />} />
             <Route path="/categories/:categoryId" element={<ProductComponent />} />
             <Route path="/expansions" element={<ExpansionsComponent />} />
             <Route path="/expansions/type/:typeId" element={<ExpansionsTypeComponent />} />
@@ -64,6 +74,10 @@ function App() {
               }
             />
             <Route path="/order-confirm" element={<OrderConfirmPage />} />
+            <Route path="/faq" element={<Faq />} />
+            <Route path="/termsandconditions" element={<TermsAndConditions />} />
+            <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+            <Route path="/shippingpolicy" element={<ShippingPolicy />} />
           </Routes>
         </div>
         <Chatbot />

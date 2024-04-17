@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../redux/slices/authSlice";
 import NavigationButtons from "./NavigationButtons";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Eye, EyeSlash } from "react-bootstrap-icons";
 
 const Login = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -27,29 +29,39 @@ const Login = () => {
       <NavigationButtons />
 
       <div className="d-flex align-items-center justify-content-center pb-5">
-        <form onSubmit={handleSubmit} className="w-100" style={{ maxWidth: "320px" }}>
-          <div className="mb-3">
+        <form onSubmit={handleSubmit} className="w-100" style={{ maxWidth: "360px" }}>
+          <div className="bg-blue p-3 rounded-3">
             <label className="form-label">Email</label>
-            <input
-              type="email"
-              className="form-control"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
+            <div className="mb-3">
+              <input
+                type="email"
+                className="form-control"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
             <label className="form-label">Password</label>
-            <input
-              type="password"
-              className="form-control"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <div className="input-group mb-3 mx-auto">
+              <input
+                type={showPassword ? "text" : "password"}
+                className="form-control"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button type="button" className="btn btn-dark" onClick={() => setShowPassword(!showPassword)}>
+                {showPassword ? <Eye className="fs-4" /> : <EyeSlash className="fs-4" />}
+              </button>
+            </div>
+            <div className="text-center">
+              <Link to="/forgotpassword" className="secondary-color">
+                Password dimenticata?
+              </Link>
+            </div>
           </div>
           <div className="d-grid">
-            <button type="submit" className="btn-custom py-2 rounded-pill">
+            <button type="submit" className="btn-custom mt-3 py-2 rounded-pill">
               Login
             </button>
           </div>
