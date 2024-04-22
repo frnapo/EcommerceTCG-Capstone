@@ -6,6 +6,7 @@ import MenuOffcanvas from "./MenuOffcanvas";
 import BagIcon from "../../assets/icons/BagIcon";
 import { useLocation } from "react-router-dom";
 import CartOffcanvas from "../cart/CartOffcanvas";
+import Logo from "../../assets/img/logo.png";
 
 const NavbarComponent = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -107,11 +108,7 @@ const NavbarComponent = () => {
     >
       <div className="container-fluid">
         <Link to="/" className="navbar-brand">
-          <img
-            src="https://images.squarespace-cdn.com/content/v1/5c703e77af468378086493eb/1550874513182-ATUEBGG8E11N7PKJFMTH/TCG.png"
-            alt="logo"
-            width={100}
-          />
+          <img src={Logo} alt="logo" width={56} />
         </Link>
         <div className="d-flex">
           <ul className="navbar-nav ms-auto">

@@ -285,6 +285,20 @@ namespace EcommerceTCG.Controllers
         }
 
 
+        //action che ritorna le ultime 4 espansioni  uscite in base alla data d'uscita
+        [HttpGet("getlatestexpansions")]
+        public async Task<IActionResult> GetLatestExpansions()
+        {
+            var expansions = await _context.Expansions
+                .OrderByDescending(e => e.ReleaseDate)
+                .Take(4)
+                .ToListAsync();
+
+            return Ok(expansions);
+        }
+
+
+
 
 
     }

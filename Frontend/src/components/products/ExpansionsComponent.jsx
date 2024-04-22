@@ -11,6 +11,7 @@ import DBwrite from "../../assets/img/DBwrite.png";
 import PKMfirst from "../../assets/img/PKMfirst.png";
 import PKMsecond from "../../assets/img/PKMsecond.png";
 import PKMwrite from "../../assets/img/PKMwrite.png";
+import BackButton from "../BackButton";
 
 const ExpansionsComponent = () => {
   const expansionsCategory = [
@@ -51,18 +52,18 @@ const ExpansionsComponent = () => {
   return (
     <div className="container mt-5">
       <h1 className="mt-5 fw-bold text-center mb-4">
-        Seleziona un
+        <BackButton /> Seleziona un
         <span className="secondary-color"> TCG </span>
         per accedere alle relative
         <span className="secondary-color"> espansioni </span>
       </h1>
       <div className="row">
         {expansionsCategory.map((category) => (
-          <div className="col-12 p-4 col-md-6" key={category.id}>
+          <div className="col-12 p-4 col-md-6 col-xl-4" key={category.id}>
             <Link to={category.link} className="expansion-link">
               <div className="card bg-transparent ">
-                <div className="wrapper rounded-5">
-                  <img src={category.firstImage} className="cover-image rounded-5" />
+                <div className="wrapper rounded-0">
+                  <img src={category.firstImage} className="cover-image rounded-4" />
                 </div>
                 <img src={category.write} className="title" />
                 <img src={category.secondImage} className="character " />

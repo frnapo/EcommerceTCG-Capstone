@@ -4,7 +4,6 @@ $main-color: #08142b;
 $secondary-color: #df980f;
 $background-color: #040a16;
 $text: #fff;
-//light #CFE2FF
 
 html {
   scrollbar-width: thin;
@@ -49,6 +48,7 @@ body,
   color: $text;
   height: 100%;
   margin: 0;
+  color: &$text !important;
 }
 
 .app-container {
@@ -61,7 +61,59 @@ body {
   overflow-x: hidden !important;
 }
 
-// transizione per i link
+////////////////////////HOME/////////////////////////////////
+.custom-social-icon {
+  width: 60px;
+  margin-inline: 7px;
+  filter: brightness(50%);
+  cursor: pointer;
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.custom-social-icon:hover {
+  filter: brightness(100%);
+  transform: scale(1.1);
+}
+
+.custom-exp {
+  position: relative;
+  overflow: hidden;
+}
+
+.custom-exp .btn-custom {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+.custom-overlay {
+  display: block;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle closest-side at center, transparent 40%, rgba(0, 0, 0, 0.5) 100%);
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out, backdrop-filter 0.3s ease-in-out;
+  border-radius: 8px;
+}
+
+.custom-exp:hover .btn-custom {
+  opacity: 1;
+  visibility: visible;
+}
+
+.custom-exp:hover .custom-overlay {
+  opacity: 1;
+  backdrop-filter: blur(4px);
+}
+//////////////////////////////// transizione per i link///////////////////////////////////////
 .navbar {
   background-color: $main-color !important;
 }
@@ -204,14 +256,13 @@ body {
 
 .product-name,
 .product-price {
-  margin: 0; /* Rimuove il margine di default dei tag <p> */
+  margin: 0;
   text-align: center;
 }
 
 .holo-card,
 .basic-card {
   width: 100%;
-  aspect-ratio: 3 / 4.4;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -220,9 +271,16 @@ body {
   position: relative;
   overflow: hidden;
   transition: transform 0.5s, box-shadow 0.5s, filter 0.5s;
-  filter: saturate(1.3) contrast(1.2);
   --x-percent: 50%;
   --y-percent: 50%;
+}
+
+.yugioh-card {
+  aspect-ratio: 3 / 4.4;
+}
+
+.other-cards {
+  aspect-ratio: 143/200;
 }
 
 .holo-card::after {
@@ -513,6 +571,14 @@ body {
   transform: scale(1.5);
 }
 
+.custom-expand-icon {
+  transition: transform 0.2s ease;
+}
+
+.custom-expand-icon:hover {
+  transform: scale(1.2);
+}
+
 //////////////////////// ORDINI //////////////////////////
 
 .circle {
@@ -662,4 +728,113 @@ pre {
 
 .accordion-button::after {
   display: none;
+}
+
+///////////////////////////// HOMEPAGE ///////////////////////////////////
+.homepage-img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid $secondary-color;
+}
+
+.homepage-img::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #08142b;
+  transform: scale(1.5);
+  transition: transform 0.3s ease-out, opacity 0.3s ease;
+  opacity: 0;
+}
+
+.homepage-img:hover::before {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.homepage-img-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.5);
+  color: white;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.homepage-img:hover .homepage-img-text {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+/////////////////////////////////////////////////////////////////////////
+
+.order-details {
+  user-select: none;
+  pointer-events: none;
+  touch-action: none;
+}
+
+.continuous-carousel {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  max-height: 300px;
+}
+
+.carousel-track {
+  display: flex;
+  width: calc(400%);
+  animation: scroll 250s linear infinite;
+}
+
+.continuous-carousel .carousel-track {
+  position: relative;
+}
+
+.carousel-track img {
+  width: 12.5%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-70%);
+  }
+}
+
+.position-absolute-custom {
+  position: absolute !important;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10 !important;
+  max-width: 80vw;
+  max-height: 90vh;
+  width: auto;
+  height: auto;
+}
+
+@media (min-width: 1200px) {
+  .position-absolute-custom {
+    max-width: 970px;
+  }
+}
+
+#nprogress .bar {
+  z-index: 9999 !important;
+  background: $secondary-color !important;
+  height: 4px !important;
 }

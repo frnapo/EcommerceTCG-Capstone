@@ -102,9 +102,6 @@ const MenuOffcanvas = () => {
           <Link to="/expansions" className="nav-link nav-link-transition fw-bold fs-1" onClick={handleClose}>
             <p className="my-2">Espansioni</p>
           </Link>
-          {/* <Link className="nav-link nav-link-transition fw-bold fs-1" onClick={handleClose}>
-            <p className="my-2">Acquista</p>
-          </Link> */}
           <Link to="/hotbuy" className="nav-link nav-link-transition fw-bold fs-1" onClick={handleClose}>
             <p className="my-2">Hotbuy</p>
           </Link>

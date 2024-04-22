@@ -52,7 +52,9 @@ const HoloCardComponent = ({ prodotto, isHoloActive, isFocused }) => {
   return (
     <div
       ref={cardRef}
-      className={`${isHoloActive ? "holo-active holo-card" : "basic-card basic-active"}`}
+      className={`${prodotto.type === "Yu-Gi-Oh!" ? "yugioh-card" : "other-cards"} ${
+        isHoloActive ? "holo-active holo-card" : "basic-card basic-active"
+      }`}
       style={{ backgroundImage: `url(${prodotto.imageUrl})` }}
       onMouseEnter={() => !isFocused && setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

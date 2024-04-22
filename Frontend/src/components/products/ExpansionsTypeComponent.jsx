@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchExpansionsByType } from "../../redux/slices/filterSlice";
+import BackButton from "../BackButton";
 
 const ExpansionsTypeComponent = () => {
   const { typeId } = useParams();
@@ -23,13 +24,12 @@ const ExpansionsTypeComponent = () => {
     4: "Pokémon",
   };
 
-  // Recupero del titolo basato sul typeId
   const title = typeTitles[typeId] || "Espansioni";
 
   return (
     <div className="container">
       <h1 className="mt-5 fw-bold mb-5">
-        Espansioni <span className="secondary-color">{title}</span>
+        <BackButton /> Espansioni <span className="secondary-color">{title}</span>
       </h1>
       <div className="row">
         {expansions.map((expansion) => (

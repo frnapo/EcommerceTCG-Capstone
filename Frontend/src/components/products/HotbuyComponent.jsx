@@ -1,5 +1,4 @@
-import { useRef } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, EffectCoverflow } from "swiper/modules";
 import "swiper/css";
@@ -10,12 +9,28 @@ import "swiper/css/effect-coverflow";
 import HoloCardComponent from "../products/HoloCardComponent";
 import BG from "../../assets/img/hotbuy-bg.mp4";
 
-// Installa i moduli necessari
-
 const HotbuyComponent = () => {
-  const { items } = useSelector((state) => state.product);
   const swiperRef = useRef(null);
 
+  const [hotbuy, setHotbuy] = useState([]);
+
+  useEffect(() => {
+    fetchHotbuy();
+  }, []);
+
+  const fetchHotbuy = async () => {
+    try {
+      const response = await fetch(`https://localhost:7289/api/Products/hotbuy`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log(data);
+      setHotbuy(data);
+    } catch (error) {
+      console.error("Failed to fetch hotbuy products:", error);
+    }
+  };
   return (
     <div className="swiper-container position-relative">
       <div className="hotbuy-video-container">
@@ -41,9 +56,9 @@ const HotbuyComponent = () => {
         spaceBetween={-200}
         slideActiveClass="swiper-slide-active-custom"
       >
-        {items.map((prodotto, index) => (
+        {hotbuy.map((prodotto, index) => (
           <SwiperSlide key={index} className="custom-swiper-slide ">
-            <HoloCardComponent prodotto={prodotto} isHoloActive={true} isFocused={prodotto !== null} />
+            <HoloCardComponent prodotto={prodotto} isHoloActive={false} isFocused={prodotto !== null} />
           </SwiperSlide>
         ))}
       </Swiper>

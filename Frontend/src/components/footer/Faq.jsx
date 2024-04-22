@@ -69,7 +69,11 @@ const Faq = () => {
                 onClick={() => toggleFAQ(index)}
               >
                 <span>{faq.question}</span>
-                {activeIndex === index ? <ChevronUp /> : <ChevronDown />}
+                {activeIndex === index ? (
+                  <ChevronUp className="custom-expand-icon" />
+                ) : (
+                  <ChevronDown className="custom-expand-icon" />
+                )}
               </button>
             </h2>
             <div

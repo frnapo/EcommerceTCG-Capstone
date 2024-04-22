@@ -10,6 +10,7 @@ import { createSelector } from "reselect";
 import { Button } from "react-bootstrap";
 import CartManager from "../cart/CartManager";
 import toast from "react-hot-toast";
+import BackButton from "../BackButton";
 
 const baseWishlistItemsSelector = (state) => state.wishlist.items;
 const wishlistProductIdsSelector = createSelector([baseWishlistItemsSelector], (items) =>
@@ -72,7 +73,7 @@ const WishlistComponent = () => {
     return (
       <div className="container">
         <h1 className="my-4">
-          La tua <span className="secondary-color">Watchlist</span>
+          <BackButton /> La tua <span className="secondary-color">Watchlist</span>
         </h1>
 
         <p>
