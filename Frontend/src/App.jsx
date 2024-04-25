@@ -1,6 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.scss";
-// import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import NavbarComponent from "./components/navigation/NavbarComponent";
 import Login from "./components/authentication/Login";
@@ -33,11 +32,18 @@ import nprogress from "nprogress";
 import "nprogress/nprogress.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import ManagementComponent from "./components/navigation/ManagementComponent";
+import ManagementComponent from "./components/management/ManagementComponent";
+import TotalOrders from "./components/management/TotalOrder";
+import OrdersToShip from "./components/management/OrdersToShip";
+import NotFoundPage from "./components/navigation/NotFoundPage";
+import OrdersByDate from "./components/management/OrdersByDate";
+import AllProducts from "./components/management/AllProducts";
+import TodaysOrders from "./components/management/TodaysOrders";
+import AllTCGs from "./components/management/AllTCGs";
+import AllExpansions from "./components/management/AllExpansions";
+import AllRarities from "./components/management/AllRarities";
 
-nprogress.configure({ showSpinner: false, speed: 400, minimum: 0.4 });
-nprogress.start();
-nprogress.done();
+nprogress.configure({ showSpinner: false, speed: 300, minimum: 0.4 });
 
 function App() {
   useEffect(() => {
@@ -91,6 +97,14 @@ function AppContainer() {
             <Route path="/logout" element={<Logout />} />
             <Route path="/userprofile" element={<UserComponent />} />
             <Route path="/management" element={<ManagementComponent />} />
+            <Route path="/management/totalorders" element={<TotalOrders />} />
+            <Route path="/management/orderstoship" element={<OrdersToShip />} />
+            <Route path="/management/ordersbydate/:date" element={<OrdersByDate />} />
+            <Route path="/management/tcg" element={<AllTCGs />} />
+            <Route path="/management/expansions" element={<AllExpansions />} />
+            <Route path="/management/rarities" element={<AllRarities />} />
+            <Route path="/management/products" element={<AllProducts />} />
+            <Route path="/management/todaysorders" element={<TodaysOrders />} />
             <Route path="/categories/:categoryId" element={<ProductComponent />} />
             <Route path="/expansions" element={<ExpansionsComponent />} />
             <Route path="/expansions/type/:typeId" element={<ExpansionsTypeComponent />} />
@@ -110,6 +124,7 @@ function AppContainer() {
             <Route path="/termsandconditions" element={<TermsAndConditions />} />
             <Route path="/privacypolicy" element={<PrivacyPolicy />} />
             <Route path="/shippingpolicy" element={<ShippingPolicy />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </div>
         <Chatbot />

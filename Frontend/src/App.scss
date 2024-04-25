@@ -838,3 +838,24 @@ pre {
   background: $secondary-color !important;
   height: 4px !important;
 }
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: white !important;
+  margin-inline: 10px !important;
+}
+
+////////////////////////// ADMIN CONTROL /////////////////////////////////////
+
+.admin-control {
+  background-color: $main-color;
+  color: $text !important;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.admin-control:hover {
+  transform: scale(1.05);
+  background-color: $secondary-color !important;
+  color: $background-color !important;
+}

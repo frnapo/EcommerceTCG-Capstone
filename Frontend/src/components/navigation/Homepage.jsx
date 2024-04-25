@@ -6,11 +6,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { Form, Button, InputGroup } from "react-bootstrap";
 import SearchOffcanvas from "./SearchOffcanvas";
 import HoloCardComponent from "../products/HoloCardComponent";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Header from "../../assets/img/header.png";
 import Instagram from "../../assets/img/instagram.png";
 import TikTok from "../../assets/img/tiktok.png";
 import Youtube from "../../assets/img/youtube.png";
+import img1 from "../../assets/img/1.png";
+import img2 from "../../assets/img/2.png";
+import img3 from "../../assets/img/3.png";
+import { motion } from "framer-motion";
 
 const images = [
   {
@@ -63,7 +67,7 @@ const ContinuousCarousel = () => {
   const toggleHoloEffect = () => {
     setIsHoloActive((prevState) => !prevState);
   };
-
+  const constraintsRef = useRef(null);
   const [latestExp, setLatestExp] = useState([]);
 
   const fetchLatestExp = async () => {
@@ -185,12 +189,39 @@ const ContinuousCarousel = () => {
                 interattiva.
               </p>
             </div>
-            <div
+            <motion.div
               className="col-7 col-md-5 col-lg-4 col-xl-3 my-2 my-md-0  mx-auto me-md-0 me-md-auto"
               data-aos="fade-left"
+              ref={constraintsRef}
             >
-              <HoloCardComponent isFocused={true} isHoloActive={isHoloActive} prodotto={prodotto} />
-            </div>
+              <motion.img
+                drag
+                dragElastic={0.2}
+                dragConstraints={constraintsRef}
+                dragTransition={{ bounceDamping: 14 }}
+                dragSnapToOrigin={true}
+                src={img1}
+                className="img-fluid rounded-3 my-2 scale-img cursor-pointer"
+              />
+              <motion.img
+                drag
+                dragElastic={0.2}
+                dragConstraints={constraintsRef}
+                dragTransition={{ bounceDamping: 14 }}
+                dragSnapToOrigin={true}
+                src={img2}
+                className="img-fluid rounded-3 my-2 scale-img cursor-pointer"
+              />
+              <motion.img
+                drag
+                dragElastic={0.2}
+                dragConstraints={constraintsRef}
+                dragTransition={{ bounceDamping: 14 }}
+                dragSnapToOrigin={true}
+                src={img3}
+                className="img-fluid rounded-3 my-2 scale-img cursor-pointer"
+              />
+            </motion.div>
           </div>
         </div>
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import ITflag from "../../assets/img/ITflag.png";
 import ENGflag from "../../assets/img/ENGflag.png";
 import JPflag from "../../assets/img/JPflag.png";
@@ -81,9 +81,9 @@ const OrderConfirmPage = () => {
           inviato se hai selezionato una spedizione che prevede il tracking.
           <br />
           Puoi consultare tutti i tuoi ordini{" "}
-          <a href="#" className="text-decoration-none">
+          <Link tp="/userprofile" className="text-decoration-none">
             cliccando qui
-          </a>
+          </Link>
           .
         </p>
       </div>

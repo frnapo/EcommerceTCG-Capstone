@@ -78,7 +78,7 @@ const ProductDetailModal = ({
           animate={{ opacity: 1, scale: 0.9 }}
           exit={{ opacity: 1, scale: 0 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
-          className="position-fixed top-50 start-50 translate-middle bg-dark bg-opacity-50 p-3 p-md-5 rounded-5"
+          className="position-fixed top-50 start-50 translate-middle bg-dark bg-opacity-25 p-3 p-md-5 rounded-5"
           style={{ zIndex: 1051, maxWidth: "800px", width: "95%" }}
         >
           <div className="position-absolute top-0 end-0 me-3 mt-2">
