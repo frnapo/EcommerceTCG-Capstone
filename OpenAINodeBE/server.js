@@ -12,7 +12,7 @@ const port = 3001;
 app.use(bodyParser.json());
 
 const openai = new OpenAI({
-  apiKey: "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",
+  apiKey: "",
 });
 
 app.post("/api/question", async (req, res) => {
