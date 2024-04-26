@@ -241,7 +241,7 @@ namespace EcommerceTCG.Controllers
         [HttpGet("hotbuy")]
         public async Task<ActionResult<IEnumerable<Product>>> GetHotbuy()
         {
-            var products = _context.Products.Where(p => p.Price > 30 && p.AvailableQuantity > 1)
+            var products = _context.Products.Where(p => p.Price > 30 && p.AvailableQuantity > 0)
                                     .OrderByDescending(p => p.AvailableQuantity)
                                     .Select(p => new
 

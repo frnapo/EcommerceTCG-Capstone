@@ -150,7 +150,7 @@ namespace EcommerceTCG.Controllers
                     json,
                     Request.Headers["Stripe-Signature"],
                     "whsec_IWamLoXDnMo6KMP17cMe1ZRagnT9lkFc",
-                    throwOnApiVersionMismatch: true
+                    throwOnApiVersionMismatch: false
                 );
 
                 Debug.WriteLine($"Evento ricevuto: {stripeEvent.Type}");
